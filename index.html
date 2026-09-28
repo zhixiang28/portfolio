@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tan Zhi Xiang | Design engineer portfolio</title>
+<meta name="description" content="Portfolio of Tan Zhi Xiang, mechanical and electronic design engineer: interactive exhibits, electronics, robots and software.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bench:#D9DEE1; --sheet:#F6F8F8; --ink:#18222B; --ink2:#4A5863; --rule:#9AA6AE;
+  --accent:#0E7C8F; --accent-ink:#FFFFFF; --laser:#D63A2F; --media:#E8ECEE;
+  --head:'Barlow Semi Condensed','Arial Narrow',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bench:#0E1418;--sheet:#151D23;--ink:#E7ECEE;--ink2:#9FB0B9;--rule:#33434C;--accent:#3FD0E0;--accent-ink:#06222A;--laser:#FF6A5C;--media:#0F171C}
+}
+:root[data-theme="dark"]{--bench:#0E1418;--sheet:#151D23;--ink:#E7ECEE;--ink2:#9FB0B9;--rule:#33434C;--accent:#3FD0E0;--accent-ink:#06222A;--laser:#FF6A5C;--media:#0F171C}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bench);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.05;margin:0;letter-spacing:.005em}
+
+/* title block */
+.tb{margin-top:20px;background:var(--sheet);border:2px solid var(--ink);display:grid;grid-template-columns:1.2fr 1.6fr 1fr;}
+.tb>div{padding:12px 16px;border-right:1px solid var(--ink);min-width:0}
+.tb>div:last-child{border-right:0}
+.tb small{display:block;font-size:13px;color:var(--ink2);margin-bottom:2px}
+.tb strong{font-family:var(--head);font-size:22px;font-weight:600;line-height:1.15}
+.tb a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.tb a:hover{border-color:var(--accent);color:var(--accent)}
+.tb .links{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:16px}
+.theme{all:unset;cursor:pointer;float:right;font-size:14px;color:var(--ink2);border:1px solid var(--rule);padding:2px 10px;margin-left:8px}
+.theme:hover{color:var(--ink);border-color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:0;margin-top:20px;background:var(--sheet);border:2px solid var(--ink)}
+.hero .txt{padding:44px 40px 36px;display:flex;flex-direction:column;justify-content:space-between;gap:32px;border-right:1px solid var(--ink)}
+.hero h1{font-size:clamp(34px,4.6vw,58px);font-weight:700;max-width:16ch}
+.hero p{max-width:46ch;margin:18px 0 0;color:var(--ink2);font-size:19px}
+.skills{display:grid;grid-template-columns:auto 1fr;font-size:15.5px;border-top:1px solid var(--rule)}
+.skills dt,.skills dd{margin:0;padding:7px 0;border-bottom:1px solid var(--rule)}
+.skills dt{font-weight:600;padding-right:22px;font-family:var(--head);font-size:17px}
+.skills dd{color:var(--ink2)}
+.hero .ph{position:relative;min-height:340px;background:var(--media)}
+.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 50%}
+
+/* filters */
+.bar{position:sticky;top:0;z-index:20;margin-top:36px;background:var(--bench);padding:calc(env(safe-area-inset-top,0px) + 10px) 0 10px;border-bottom:1px solid var(--rule)}
+.bar .row{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:space-between}
+.bar h2{font-size:32px}
+.group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.group span.l{font-size:14.5px;color:var(--ink2);margin-right:4px}
+.chip{all:unset;cursor:pointer;border:1px solid var(--ink);padding:5px 13px;font-size:15.5px;background:var(--sheet);line-height:1.2}
+.chip:hover{background:var(--media)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.chip i{font-style:normal;opacity:.65;margin-left:6px;font-size:14px}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:22px 0 64px}
+.card{background:var(--sheet);border:1px solid var(--ink);display:flex;flex-direction:column;text-align:left;cursor:pointer;padding:0;font:inherit;color:inherit}
+.card:hover .cover img,.card:focus-visible .cover img{transform:scale(1.03)}
+.card.feat{grid-column:span 2}
+.cover{position:relative;aspect-ratio:4/3;background:var(--media);overflow:hidden;border-bottom:1px solid var(--ink)}
+.card.feat .cover{aspect-ratio:16/9}
+.cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.cover img.contain{object-fit:contain;background:#fff}
+.cover .vid{position:absolute;left:10px;bottom:10px;background:var(--ink);color:var(--sheet);font-size:13.5px;padding:2px 9px;display:flex;gap:6px;align-items:center}
+.cover .vid::before{content:"";border-left:8px solid var(--sheet);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.cover.none{display:grid;place-items:center;background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px}
+.cover.none b{font-family:var(--head);font-size:30px;background:var(--sheet);padding:6px 16px;border:1px solid var(--ink)}
+.body{padding:16px 18px 14px;flex:1}
+.card h3{font-size:25px;margin-bottom:8px}
+.card p{margin:0;color:var(--ink2);font-size:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.facts{display:flex;border-top:1px solid var(--ink);font-size:14.5px}
+.facts div{padding:7px 12px;border-right:1px solid var(--rule);min-width:0;flex:0 1 auto}
+.facts div:last-child{border-right:0;flex:1}
+.facts small{display:block;color:var(--ink2);font-size:12.5px;line-height:1.2}
+.empty{grid-column:1/-1;padding:40px;border:1px dashed var(--rule);text-align:center;color:var(--ink2)}
+
+/* dialog */
+dialog{padding:0;border:2px solid var(--ink);background:var(--sheet);color:var(--ink);width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;margin:auto}
+dialog::backdrop{background:rgba(8,14,18,.72)}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 22px 14px;border-bottom:1px solid var(--ink)}
+.dhead h2{font-size:clamp(28px,4vw,42px)}
+.x{all:unset;cursor:pointer;border:1px solid var(--ink);padding:6px 14px;font-size:16px;white-space:nowrap}
+.x:hover{background:var(--ink);color:var(--sheet)}
+.x:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.dgrid{display:grid;grid-template-columns:1.5fr 1fr}
+.stage{background:var(--media);border-right:1px solid var(--ink)}
+.view{position:relative;height:clamp(240px,50vh,500px);background:var(--media);border-bottom:1px solid var(--ink)}
+.view img,.view video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0b1013}
+.view img.light{background:#fff}
+.cap{padding:8px 14px;font-size:15px;color:var(--ink2);min-height:38px;border-bottom:1px solid var(--rule)}
+.thumbs{display:flex;gap:8px;padding:10px 12px;overflow-x:auto}
+.th{all:unset;cursor:pointer;flex:0 0 auto;width:96px;height:66px;border:2px solid transparent;outline:1px solid var(--rule);outline-offset:-1px;position:relative;background:var(--media)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th img.tall{object-fit:contain;background:#0b1013}
+.th[aria-current="true"]{border-color:var(--accent)}
+.th:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.th .pl{position:absolute;right:4px;bottom:4px;background:var(--ink);width:20px;height:20px;display:grid;place-items:center}
+.th .pl::before{content:"";border-left:8px solid var(--sheet);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.info{padding:20px 22px}
+.info p{margin:0 0 14px;font-size:17px}
+.info .facts{border:1px solid var(--ink);flex-wrap:wrap;margin-top:6px}
+.info .facts div{flex:1 1 45%;border-bottom:1px solid var(--rule)}
+.dnav{display:flex;justify-content:space-between;border-top:1px solid var(--ink)}
+.dnav button{all:unset;cursor:pointer;padding:12px 22px;font-family:var(--head);font-size:20px;font-weight:600;flex:1;line-height:1.2}
+.dnav button+button{text-align:right;border-left:1px solid var(--ink)}
+.dnav button:hover{background:var(--media)}
+.dnav button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.dnav small{display:block;font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--ink2)}
+
+/* detail sections */
+.sec h4{font-family:var(--head);font-weight:600;font-size:19px;margin:20px 0 6px;letter-spacing:.005em}
+.sec ul{margin:0;padding-left:19px}
+.sec li{margin:0 0 7px;font-size:16px;color:var(--ink2)}
+.sec li b{color:var(--ink);font-weight:600}
+.capbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 14px;min-height:42px;border-bottom:1px solid var(--rule)}
+.capbar span{font-size:15px;color:var(--ink2)}
+.zoom{all:unset;cursor:pointer;border:1px solid var(--ink);padding:2px 12px;font-size:14.5px;white-space:nowrap;background:var(--sheet)}
+.zoom:hover{background:var(--ink);color:var(--sheet)}
+.zoom:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#lb{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border:0;background:rgba(6,10,13,.94);padding:12px}
+#lb img{width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-out}
+#lb .x{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;background:var(--sheet);z-index:2}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;background:var(--sheet);border:2px solid var(--ink);margin-bottom:56px}
+.about>div{padding:30px 32px}
+.about>div+div{border-left:1px solid var(--ink)}
+.about h2{font-size:32px;margin-bottom:14px}
+.about p{margin:0 0 12px;max-width:52ch}
+.about dl{display:grid;grid-template-columns:auto 1fr;margin:0}
+.about dt,.about dd{margin:0;padding:8px 0;border-bottom:1px solid var(--rule)}
+.about dt{font-weight:600;padding-right:22px;font-family:var(--head);font-size:18px}
+.about dd{color:var(--ink2)}
+.copy{all:unset;cursor:pointer;margin-left:10px;border:1px solid var(--ink);padding:1px 10px;font-size:14.5px;color:var(--ink);background:var(--sheet)}
+.copy:hover{background:var(--ink);color:var(--sheet)}
+.copy:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);background:var(--ink);color:var(--sheet);padding:10px 18px;font-size:15.5px;z-index:100;max-width:calc(100vw - 24px);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dgrid{grid-template-columns:1fr}.stage{border-right:0;border-bottom:1px solid var(--ink)}
+  .hero{grid-template-columns:1fr}.hero .txt{border-right:0;border-bottom:1px solid var(--ink);padding:32px 24px}
+  .hero .ph{min-height:300px}
+  .tb{grid-template-columns:1fr}.tb>div{border-right:0;border-bottom:1px solid var(--ink)}.tb>div:last-child{border-bottom:0}
+  .about{grid-template-columns:1fr}.about>div+div{border-left:0;border-top:1px solid var(--ink)}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 12px}
+  .grid{grid-template-columns:1fr}.card.feat{grid-column:auto}.card.feat .cover{aspect-ratio:4/3}
+  .bar .row{gap:10px}.dhead{padding:14px}.info{padding:16px}.about>div{padding:22px 18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="tb">
+    <div><small>Designer</small><strong>Tan Zhi Xiang</strong></div>
+    <div><small>Discipline</small><strong>Mechanical and electronic design engineer</strong></div>
+    <div><small>Contact <button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme">Theme</button></small>
+      <div class="links"><a href="mailto:itszhixiang@gmail.com" data-mail>Email</a><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+  </header>
+
+  <section class="hero" aria-label="Introduction">
+    <div class="txt">
+      <div>
+        <h1>I design the mechanisms, electronics and software behind interactive exhibits.</h1>
+        <p>Over 2 years building installations for science centres, museums and public events in Singapore, plus robots, web apps and AI tools of my own. <span id="count">21</span> projects are below.</p>
+      </div>
+      <dl class="skills">
+        <dt>Mechanical</dt><dd>Fusion 360, SolidWorks, Ansys</dd>
+        <dt>Electrical</dt><dd>Arduino, ESP32, KiCad</dd>
+        <dt>Software</dt><dd>JavaScript, React, Supabase (PostgreSQL), GitHub Pages</dd>
+        <dt>Audio visual</dt><dd>TouchDesigner, MediaPipe, Illustrator, Premiere Pro</dd>
+        <dt>Machines</dt><dd>FDM and resin 3D printers, laser cutter</dd>
+      </dl>
+    </div>
+    <div class="ph"><img id="heroimg" alt="Zhi Xiang working on an exhibit prototype on a workshop table"></div>
+  </section>
+
+  <div class="bar" id="projects">
+    <div class="row">
+      <h2>Projects</h2>
+      <div class="group" role="group" aria-label="Filter by category" id="fcat"></div>
+      <div class="group" role="group" aria-label="Filter by context" id="fctx"></div>
+    </div>
+  </div>
+  <main class="grid" id="grid" aria-live="polite"></main>
+
+  <section class="about" id="about">
+    <div>
+      <h2>About</h2>
+      <p>I'm a Mechanical Engineering graduate (Honours, INTI International University) and a Graduate Engineer registered with the Board of Engineers Malaysia.</p>
+      <p>Since July 2024 I have been an exhibit engineer at SPACElogic Pte Ltd, where I have engineered more than 10 interactive installations. I like R&amp;D, solving awkward problems, and turning a concept into something people can actually use.</p>
+    </div>
+    <div>
+      <h2>Get in touch</h2>
+      <dl>
+        <dt>Email</dt><dd><a href="mailto:itszhixiang@gmail.com" data-mail>itszhixiang@gmail.com</a> <button type="button" class="copy" data-copy="itszhixiang@gmail.com">Copy</button></dd>
+        <dt>Phone (SG)</dt><dd><a href="tel:+6586549325">+65 8654 9325</a></dd>
+        <dt>Phone (MY)</dt><dd><a href="tel:+601137791196">+60 11 3779 1196</a></dd>
+        <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">linkedin.com/in/itszhixiang</a></dd>
+        <dt>Languages</dt><dd>English, Mandarin (Chinese), Malay</dd>
+      </dl>
+    </div>
+  </section>
+  <footer>Tan Zhi Xiang, 2026</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<dialog id="lb" aria-label="Enlarged image"><button class="x" id="lbclose" type="button">Close</button><img id="lbimg" alt=""></dialog>
+
+<dialog id="dlg" aria-labelledby="dtitle">
+  <div class="dhead"><h2 id="dtitle"></h2><button class="x" id="dclose" type="button">Close</button></div>
+  <div class="dgrid">
+    <div class="stage"><div class="view" id="view"></div><div class="capbar"><span id="cap"></span><button type="button" class="zoom" id="zoom" hidden>Enlarge</button></div><div class="thumbs" id="thumbs"></div></div>
+    <div class="info"><p id="ddesc"></p><p id="ddesc2"></p><div class="facts" id="dfacts"></div><div class="sec" id="dsec"></div></div>
+  </div>
+  <div class="dnav"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
+</dialog>
+
+<script>
+const M = {
+"mr_5": "assets/img/mr_5.jpg",
+"mr_3": "assets/img/mr_3.jpg",
+"mr_2": "assets/img/mr_2.jpg",
+"mr_1": "assets/img/mr_1.jpg",
+"s1_image1": "assets/img/s1_image1.jpg",
+"cl_4": "assets/img/cl_4.jpg",
+"s16_image45": "assets/img/s16_image45.jpg",
+"s13_image38": "assets/img/s13_image38.jpg",
+"s9_image29": "assets/img/s9_image29.jpg",
+"s6_image22": "assets/img/s6_image22.jpg",
+"mr_4": "assets/img/mr_4.jpg",
+"s13_image36": "assets/img/s13_image36.jpg",
+"s6_image20": "assets/img/s6_image20.jpg",
+"s6_image21": "assets/img/s6_image21.jpg",
+"s21_image56": "assets/img/s21_image56.jpg",
+"s18_image51": "assets/img/s18_image51.jpg",
+"s4_image14": "assets/img/s4_image14.jpg",
+"s7_image25": "assets/img/s7_image25.jpg",
+"cl_1": "assets/img/cl_1.jpg",
+"s17_image47": "assets/img/s17_image47.jpg",
+"s3_image13": "assets/img/s3_image13.jpg",
+"s12_image34": "assets/img/s12_image34.jpg",
+"s8_image28": "assets/img/s8_image28.jpg",
+"s12_image35": "assets/img/s12_image35.jpg",
+"s18_image50": "assets/img/s18_image50.jpg",
+"s6_image23": "assets/img/s6_image23.jpg",
+"s18_image52": "assets/img/s18_image52.jpg",
+"s13_image37": "assets/img/s13_image37.jpg",
+"cl_2": "assets/img/cl_2.jpg",
+"s21_image55": "assets/img/s21_image55.jpg",
+"s15_image42": "assets/img/s15_image42.jpg",
+"s14_image40": "assets/img/s14_image40.jpg",
+"s14_image41": "assets/img/s14_image41.jpg",
+"s8_image26": "assets/img/s8_image26.jpg",
+"s4_image15": "assets/img/s4_image15.jpg",
+"s7_image24": "assets/img/s7_image24.jpg",
+"s15_image44": "assets/img/s15_image44.jpg",
+"s21_image54": "assets/img/s21_image54.jpg",
+"cl_3": "assets/img/cl_3.jpg",
+"cl_5": "assets/img/cl_5.jpg",
+"s3_image12": "assets/img/s3_image12.jpg",
+"s15_image43": "assets/img/s15_image43.jpg",
+"s10_image32": "assets/img/s10_image32.jpg",
+"s17_image49": "assets/img/s17_image49.jpg",
+"s5_image18": "assets/img/s5_image18.jpg",
+"s14_image39": "assets/img/s14_image39.jpg",
+"s5_image17": "assets/img/s5_image17.jpg",
+"s3_image4": "assets/img/s3_image4.jpg",
+"s4_image16": "assets/img/s4_image16.jpg",
+"v:planetgear": "assets/vid/planetgear.mp4",
+"v:gangway": "assets/vid/gangway.mp4",
+"v:gestaudio": "assets/vid/gestaudio.mp4",
+"v:ledmaps": "assets/vid/ledmaps.mp4",
+"v:gestvisual": "assets/vid/gestvisual.mp4",
+"v:gestbg": "assets/vid/gestbg.mp4",
+"v:gripper": "assets/vid/gripper.mp4",
+"v:btcar": "assets/vid/btcar.mp4",
+"v:nccs": "assets/vid/nccs.mp4",
+"v:handcrank": "assets/vid/handcrank.mp4",
+"v:robotpet": "assets/vid/robotpet.mp4",
+"p:gangway": "assets/vid/gangway.jpg",
+"p:gestbg": "assets/vid/gestbg.jpg",
+"p:robotpet": "assets/vid/robotpet.jpg",
+"p:handcrank": "assets/vid/handcrank.jpg",
+"p:nccs": "assets/vid/nccs.jpg",
+"p:btcar": "assets/vid/btcar.jpg",
+"p:ledmaps": "assets/vid/ledmaps.jpg",
+"p:gestaudio": "assets/vid/gestaudio.jpg",
+"p:planetgear": "assets/vid/planetgear.jpg",
+"p:gestvisual": "assets/vid/gestvisual.jpg",
+"p:gripper": "assets/vid/gripper.jpg"
+};
+const P = [
+ {id:'terrain-diorama',t:'Terrain Diorama',cat:'Other',ctx:'Work',where:'Romance of the Three Kingdoms theme',feat:1,
+  d:'The physical terrain for a 3 m x 3 m projection diorama: four organic corner terrain pieces around a flat central circle that takes the projection.',
+  d2:'I used AI-assisted 3D modelling and Fusion 360 to shape the mountains, ridges and rivers, refined the model for fabrication, and produced the sections on a large-format BigRep 3D printer.',
+  cover:'s21_image54',m:[['s21_image54'],['s21_image55'],['s21_image56']]},
+ {id:'mr-tracker',t:'MR Tracker',cat:'Software',ctx:'Work',where:'SPACElogic internal tool',
+  d:'A web-based materials requisition and e-signature approval system for SPACElogic. Every request follows one fixed chain (Submit, Manager Approval, Procurement Approval, Purchase, Received), and each approval is a timestamped signature tied to a verified person.',
+  d2:'When several people have to approve a purchase in order, the hard parts are visibility (where is it stuck?) and accountability (who approved what, and when?). I wanted one place where a requester can see exactly where a request stands, and where every signature leaves a permanent trail.',
+  stack:'HTML, CSS, vanilla JavaScript; Supabase (PostgreSQL, row-level security, PL/pgSQL, Edge Functions); Resend; GitHub Pages; jsPDF',
+  sec:[['What I built',[
+    ['Requisition form','with drafts, running totals, drag-to-reorder rows, duplicate row and duplicate form, an in-form currency converter, and PDF export (including Chinese text).'],
+    ['Sequential e-signature chain','where approvers sign through a link with a personal PIN, and the order is enforced on the server so steps cannot be skipped.'],
+    ['Live dashboard','with stage counts that double as filters, a banner that only appears when something needs your attention, and an expandable signature trail for every requisition.'],
+    ['Decline, revise and resubmit:','declined requests reopen in the full form, and resubmitting restarts the chain so everyone re-confirms the revised request.'],
+    ['Withdraw, reminders and notifications:','requesters can withdraw before purchase, set their own overdue thresholds per stage, and get emailed on decline, purchase and receipt.'],
+    ['Admin tools','to manage accounts and roles, and to override or reassign a stuck stage.'],
+    ['Built-in user manual and FAQ','for onboarding.']]],
+   ['Design decisions',[
+    ['Security lives in the database, not the page.','Tables are closed to direct access and everything goes through functions that check identity and role, so hiding a button is never the only protection.'],
+    ['PINs are hashed with bcrypt,','and signing locks after repeated wrong attempts.'],
+    ['Accounts are tied to a verified company email,','one account per address.'],
+    ['Low running cost by design:','it runs on the free tiers of GitHub Pages, Supabase and Resend, with a clear upgrade path if usage grows.']]],
+   ['Problems I had to solve',[
+    ['Chinese text disappeared from exported PDFs.','The PDF library\'s built-in fonts only cover Latin characters, so I detected CJK text and rendered just those strings as high-resolution images, keeping everything else as normal vector text.'],
+    ['Signature boxes vanished on longer forms.','With about 10 line items the totals and sign-off sections were drawn below the page edge. I traced the layout maths and added page-break handling.'],
+    ['Drag-and-drop reordering was unreliable','with the browser\'s native drag events, so I rebuilt it on plain mouse events.'],
+    ['Notification emails were delivered but never arrived.','A brand-new sending domain was being silently held by the company mail filter. I set up a verified domain (SPF and DKIM) and documented what IT needs to allowlist.']]]],
+  cover:'mr_1',m:[['mr_1','MR Tracker: digital materials requisition and e-signature approval system'],['mr_2','One requisition moves through five tracked stages, with a timestamped signature at each step'],['mr_3','The requisition form (left) and the PIN-protected approval screen (right)'],['mr_4','The dashboard: stage counts as filters, an action banner, and a full signature trail per requisition'],['mr_5','Architecture: static front end, Supabase back end and Resend email, plus the security design']]},
+ {id:'forced-to-go',t:'SCS Forced to Go',cat:'Mechanical',ctx:'Work',where:'Science Centre Singapore',feat:1,
+  d:'A travelling exhibition that brings science to life through hands-on experiments on forces, magnetism, buoyancy, pressure and electrostatics.',
+  d2:'Exhibits I worked on include buoyancy changing with pressure, a falling copper plate slowed by a magnetic field, and a slinky bouncing down a moving treadmill.',
+  cover:'s3_image12',m:[['s3_image12'],['s3_image4'],['s3_image13','Slinky bouncing down a moving treadmill']]},
+ {id:'sam-misting',t:'SAM Misting Machine',cat:'Mechanical',ctx:'Work',where:'ArtScience Museum, artist Masuri Mazlan',
+  d:'A misting shower unit for an artwork by Masuri Mazlan. The water circulates on its own to make the mist, and lighting carries the artist\'s intent.',
+  d2:'I designed it from a proof-of-concept prototype through to the final piece.',
+  cover:'s4_image14',m:[['s4_image16','Prototype for proving the concept'],['s4_image14','Final look before power on'],['s4_image15','Final look with the misting effect']]},
+ {id:'robot-pet',t:'Robot Pet (Cubot)',cat:'Electronics',ctx:'Personal',where:'ESP32, OLED face, Bluetooth app',
+  d:'A palm-sized desk robot that responds to touch and head rubbing with vibration and expressive facial animations.',
+  d2:'It runs on an ESP32 with an OLED face, a touch sensor, a vibration motor and an MPU-6050 motion sensor, and pairs with a phone app over Bluetooth to sync the time and change settings. There is a mini cube version and a portable version.',
+  cover:'s17_image49',m:[['v:robotpet','Product showcase'],['s17_image49','Mini cube version'],['s17_image47','Portable version']]},
+ {id:'chalkline',t:'Chalkline',cat:'Software',ctx:'Personal',where:'React, Supabase, GitHub Pages',
+  d:'A climbing log and community app. Log every climb, track your progress and share it with your crew.',
+  d2:'I built it as a real app for real use, with email sign-up, private logs kept private by the database, and account deletion that removes everything.',
+  stack:'React; Supabase (Postgres, Auth, Edge Functions); GitHub Pages',
+  sec:[['Features',[
+    ['Live Log:','an attempt timer, one-tap falls at 1/4, 1/2 or 3/4 height, and a separate rest timer.'],
+    ['Photo markers:','tap your wall photo to place start, end and numbered fall points.'],
+    ['Full story:','every session on a route adds up (tries, time and sends), in list or grid view.'],
+    ['Daily summary:','best climb, climbs, time, sends and a grade breakdown on its own page, ready to share.'],
+    ['Share cards:','log, day, badge, progress and name tag cards generated in the browser, in four looks: blurred, photo card, transparent PNG and full photo.'],
+    ['Community:','feed, gear deals, climbing sessions and chat between climbers.'],
+    ['Private by design:','Row Level Security in the database keeps private logs private.']]]],
+  cover:'cl_1',m:[['cl_1','Chalkline: climbing log and community app'],['cl_2','Logging a climb with a live attempt timer and photo markers'],['cl_3','Daily summary with best climb, grade breakdown and share cards'],['cl_4','Share cards: one layout, four looks'],['cl_5','What is under the hood']]},
+ {id:'some-call-it-science',t:'SCS Some Call It Science',cat:'Mechanical',ctx:'Work',where:'Science Centre Singapore',
+  d:'An installation of 11 interactive exhibits that shows visitors how science shapes everyday life.',
+  d2:'I was involved in upgrading the exhibits: resolving issues and improving durability and reliability, including a modified microphone casing, a modified handheld UV light and holders, and a redesigned casing with an integrated light.',
+  cover:'s6_image23',m:[['s6_image23','Overview'],['s6_image21','Modified microphone casing'],['s6_image22','Modified handheld UV light and holders'],['s6_image20','Redesigned casing with integrated light']]},
+ {id:'liv-golf',t:'LIV Golf Game Station',cat:'Electronics',ctx:'Work',where:'Sentosa, Singapore',
+  d:'Two interactive game booths, a golf game and a soccer game, for a public event held alongside the LIV Golf competition at Sentosa.',
+  d2:'Both games are driven by IR sensors, built to be played by the public all day.',
+  cover:'s14_image40',m:[['s14_image39','Visitor playing the game'],['s14_image40','IR sensor-based golf game'],['s14_image41','IR sensor-based soccer game']]},
+ {id:'mandai',t:'Mandai Bird Park Installation',cat:'Mechanical',ctx:'Work',where:'Mandai Bird Park',
+  d:'A flip information panel and an interactive mechanism that moves the flamingo\'s head to show how it feeds.',
+  d2:'Visitors get an intuitive, hands-on way to learn about the bird.',
+  cover:'s7_image25',m:[['s7_image24','Flip panel'],['s7_image25','Movable flamingo head']]},
+ {id:'gesture-visual',t:'Hand Gesture Visual Effect Control',cat:'Other',ctx:'Personal',where:'MediaPipe, TouchDesigner',
+  d:'An AI camera system that recognises hand gestures and turns them into real-time visual effects for touch-free interaction.',
+  d2:'The clips show the visual output and the background system running.',
+  cover:'v:gestvisual',m:[['v:gestvisual','Visual output'],['v:gestbg','Background system']]},
+ {id:'gesture-audio',t:'Hand Gesture Audio Control',cat:'Other',ctx:'Personal',where:'AI hand tracking, audio system',
+  d:'An interactive system that uses AI hand tracking through a camera so users can control different sound effects with hand gestures.',
+  d2:'',cover:'v:gestaudio',m:[['v:gestaudio']]},
+ {id:'led-maps',t:'LED Transport Map',cat:'Electronics',ctx:'Work',where:'Philippines',
+  d:'A transport map of the Philippines with five differently coloured LEDs, each controlled by its own button that also triggers a matching sound effect.',
+  d2:'I completed the wiring and sound system setup, and supported the overall electronics design and integration of the interactive system.',
+  cover:'s12_image35',m:[['v:ledmaps'],['s12_image35'],['s12_image34']]},
+ {id:'nccs-donor-wall',t:'NCCS Donor Wall Glowing Light',cat:'Electronics',ctx:'Work',where:'National Cancer Centre Singapore',
+  d:'A curved solid wall with many LED bulbs that create a glowing star around each donor\'s name, lighting the names with a warm, moving glow.',
+  d2:'I designed and programmed the light animation.',
+  cover:'s16_image45',m:[['v:nccs','Visual animation'],['s16_image45','Overview']]},
+ {id:'bowmore',t:'Bowmore Running Light Counter',cat:'Electronics',ctx:'Work',where:'Bowmore',
+  d:'A counter tabletop with an animated LED light box. Carefully arranged wiring and programmed LED sequences give a smooth, continuous running-light effect.',
+  d2:'',cover:'s15_image44',m:[['s15_image44','Final look'],['s15_image42'],['s15_image43']]},
+ {id:'shore-gangway',t:'Telescopic Shore Gangway',cat:'Mechanical',ctx:'Academic',where:'INTI International University',
+  d:'A flexible gangway for LNG ship workers to embark, with three mechanical designs so its orientation and position can be adjusted for different shore set-ups.',
+  d2:'',cover:'s10_image32',contain:1,m:[['v:gangway'],['s10_image32','Project poster']]},
+ {id:'soft-gripper',t:'Pneumatic Soft Gripper',cat:'Mechanical',ctx:'Academic',where:'INTI International University',
+  d:'A soft pneumatic clamp made with 3D printing and a hollow-chamber design. It grips small, irregular objects, and separates fabric, without damaging their surfaces.',
+  d2:'',cover:'s9_image29',contain:1,m:[['v:gripper'],['s9_image29','Project poster']]},
+ {id:'planet-gear',t:'Planet Gear Signage',cat:'Mechanical',ctx:'Work',where:'Maker space signage',
+  d:'A metallic-look, 3D-printed planetary gear mechanism built as a moving sign that pairs mechanical motion with an eye-catching finish.',
+  d2:'',cover:'s8_image26',m:[['v:planetgear'],['s8_image26'],['s8_image28']]},
+ {id:'handcrank-fan',t:'Handcrank Fan',cat:'Mechanical',ctx:'Work',where:'Proof-of-concept mock-up',
+  d:'A mock-up that shows a speed step-up gear mechanism driving a counter-rotating blade, so you can see how the parts move and interact.',
+  d2:'',cover:'v:handcrank',m:[['v:handcrank','Working prototype'],['s5_image17','Technical drawing'],['s5_image18','AI render']]},
+ {id:'fundamental-exhibits',t:'SCS Fundamental Exhibits',cat:'Electronics',ctx:'Work',where:'Science Centre Singapore',
+  d:'Concept mock-ups built to demonstrate and validate the intended scientific effect and visitor experience before full builds.',
+  d2:'They include a sound wave visualiser, a hand-holding experiment and a spiral water effect.',
+  cover:'s13_image37',m:[['s13_image36'],['s13_image37'],['s13_image38']]},
+ {id:'stock-display',t:'Real-time Stock Price Display',cat:'Electronics',ctx:'Personal',where:'Wi-Fi, palm-sized',
+  d:'A Wi-Fi-connected, palm-sized device that pulls real-time stock market data and shows live prices on its built-in screen.',
+  d2:'',cover:'s18_image51',m:[['s18_image51'],['s18_image50']]},
+ {id:'digital-clock',t:'7-Segment Digital Clock',cat:'Electronics',ctx:'Personal',where:'Bluetooth, smartphone sync',
+  d:'A smart digital clock that connects to a smartphone over Bluetooth, so the time syncs automatically and its settings can be changed from the phone.',
+  d2:'',cover:'s18_image52',m:[['s18_image52']]},
+ {id:'bluetooth-car',t:'Bluetooth-Controlled Car',cat:'Electronics',ctx:'Academic',where:'INTI International University',
+  d:'A toy car operated from a smartphone, with wireless control of turning, acceleration and movement. The design is omnidirectional.',
+  d2:'',cover:'v:btcar',m:[['v:btcar']]}
+];
+
+const $=s=>document.querySelector(s);
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+const src=k=>k.startsWith('v:')?M[k]:M[k];
+const poster=k=>M['p:'+k.slice(2)];
+const BG={mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
+let fcat='All',fctx='All',cur=null,list=[];
+const CATS=['All','Mechanical','Electronics','Software','Other'],CTX=['All','Work','Personal','Academic'];
+P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
+
+$('#heroimg').src=M['s1_image1'];
+$('#count').textContent=P.length;
+
+function mkChips(host,arr,get,cb,label){
+  if(label)host.appendChild(el('span','l',label));
+  arr.forEach(v=>{
+    const n=v==='All'?P.length:P.filter(p=>get(p)===v).length;
+    const b=el('button','chip',v);b.type='button';b.appendChild(el('i',null,String(n)));
+    b.setAttribute('aria-pressed',v==='All'?'true':'false');b.dataset.v=v;
+    b.onclick=()=>{cb(v);host.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===v?'true':'false'));render()};
+    host.appendChild(b);
+  });
+}
+mkChips($('#fcat'),CATS,p=>p.cat,v=>fcat=v);
+mkChips($('#fctx'),CTX,p=>p.ctx,v=>fctx=v,'Where');
+
+function facts(p,host){
+  [['Category',p.cat],['Context',p.ctx],['Setting',p.where]].forEach(([k,v])=>{
+    if(!v)return;const d=el('div');d.appendChild(el('small',null,k));d.appendChild(document.createTextNode(v));host.appendChild(d);
+  });
+}
+function render(){
+  const g=$('#grid');g.textContent='';
+  list=P.filter(p=>(fcat==='All'||p.cat===fcat)&&(fctx==='All'||p.ctx===fctx));
+  if(!list.length){g.appendChild(el('div','empty','No projects match this combination. Try another filter.'));return}
+  const all=false;
+  list.forEach(p=>{
+    const c=el('button','card'+(all&&p.feat?' feat':''));c.type='button';c.setAttribute('aria-label','Open '+p.t);
+    const cv=el('div','cover');
+    if(p.cover){const im=new Image();im.alt='';im.loading='lazy';im.decoding='async';im.src=p.cover.startsWith('v:')?poster(p.cover):M[p.cover];if(p.contain)im.className='contain';if(BG[p.cover]){im.className='contain';im.style.background='transparent';cv.style.background=BG[p.cover]}cv.appendChild(im)}
+    else{cv.className='cover none';cv.appendChild(el('b',null,p.t))}
+    if(p.vids)cv.appendChild(el('span','vid',p.vids>1?p.vids+' videos':'Video'));
+    c.appendChild(cv);
+    const b=el('div','body');b.appendChild(el('h3',null,p.t));b.appendChild(el('p',null,p.d));c.appendChild(b);
+    const f=el('div','facts');[['Category',p.cat],['Context',p.ctx]].forEach(([k,v])=>{const d=el('div');d.appendChild(el('small',null,k));d.appendChild(document.createTextNode(v));f.appendChild(d)});c.appendChild(f);
+    c.onclick=()=>open(p.id);
+    g.appendChild(c);
+  });
+}
+
+const dlg=$('#dlg');
+function open(id,fromNav){
+  const p=P.find(x=>x.id===id);if(!p)return;cur=p;
+  $('#dtitle').textContent=p.t;$('#ddesc').textContent=p.d;
+  const d2=$('#ddesc2');d2.textContent=p.d2||'';d2.style.display=p.d2?'':'none';
+  const fh=$('#dfacts');fh.textContent='';facts(p,fh);
+  if(p.stack){const d=el('div');d.style.flex='1 1 100%';d.appendChild(el('small',null,'Built with'));d.appendChild(document.createTextNode(p.stack));fh.appendChild(d)}
+  const sc=$('#dsec');sc.textContent='';
+  (p.sec||[]).forEach(([h,items])=>{sc.appendChild(el('h4',null,h));const u=el('ul');items.forEach(([a,b])=>{const li=el('li');li.appendChild(el('b',null,a+' '));li.appendChild(document.createTextNode(b));u.appendChild(li)});sc.appendChild(u)});
+  const stage=$('#view'),th=$('#thumbs');stage.textContent='';th.textContent='';$('#cap').textContent='';
+  const stg=document.querySelector('.stage');
+  if(!p.m.length){stg.style.display='none';document.querySelector('.dgrid').style.gridTemplateColumns='1fr'}
+  else{stg.style.display='';document.querySelector('.dgrid').style.gridTemplateColumns=''}
+  p.m.forEach((it,i)=>{
+    const b=el('button','th');b.type='button';b.setAttribute('aria-label',(it[1]||('Media '+(i+1)))+(it[0].startsWith('v:')?' (video)':''));
+    const im=new Image();im.alt='';im.src=it[0].startsWith('v:')?poster(it[0]):M[it[0]];im.onload=()=>{if(im.naturalHeight>im.naturalWidth*1.15)im.className='tall'};b.appendChild(im);
+    if(it[0].startsWith('v:'))b.appendChild(el('span','pl'));
+    b.onclick=()=>show(i);th.appendChild(b);
+  });
+  if(p.m.length)show(0);
+  const idx=list.findIndex(x=>x.id===id),pv=list[(idx-1+list.length)%list.length],nx=list[(idx+1)%list.length];
+  const lab=(btn,dir,q)=>{btn.textContent='';btn.appendChild(el('small',null,dir));btn.appendChild(document.createTextNode(q.t));btn.dataset.id=q.id};
+  lab($('#prev'),'Previous project',pv);lab($('#next'),'Next project',nx);
+  if(!dlg.open){dlg.showModal()}
+  dlg.scrollTop=0;
+  try{history.replaceState(null,'','#'+id)}catch(e){}
+}
+function show(i){
+  const p=cur,it=p.m[i],k=it[0],view=$('#view');
+  view.textContent='';
+  if(k.startsWith('v:')){const v=document.createElement('video');v.controls=true;v.playsInline=true;v.preload='metadata';v.poster=poster(k);v.src=M[k];v.setAttribute('aria-label',it[1]||p.t+' video');view.appendChild(v)}
+  else{const im=new Image();im.alt=it[1]||p.t;im.src=M[k];if(p.contain)im.className='light';if(BG[k])im.style.background=BG[k];view.appendChild(im)}
+  view.style.background=BG[k]||'';
+  $('#cap').textContent=it[1]||'';
+  const z=$('#zoom');z.hidden=k.startsWith('v:');z.dataset.k=k;z.dataset.alt=it[1]||p.t;
+  document.querySelectorAll('.th').forEach((t,j)=>{if(j===i)t.setAttribute('aria-current','true');else t.removeAttribute('aria-current')});
+}
+$('#dclose').onclick=()=>dlg.close();
+const lb=$('#lb');
+$('#zoom').onclick=e=>{const b=e.currentTarget;$('#lbimg').src=M[b.dataset.k];$('#lbimg').alt=b.dataset.alt;lb.showModal()};
+lb.addEventListener('click',()=>lb.close());
+dlg.addEventListener('close',()=>{dlg.querySelectorAll('video').forEach(v=>v.pause());try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+$('#prev').onclick=e=>open(e.currentTarget.dataset.id);
+$('#next').onclick=e=>open(e.currentTarget.dataset.id);
+
+/* email: copy the address and try to open the mail app */
+(function(){
+  const toast=$('#toast');let tm;
+  const say=m=>{toast.textContent=m;toast.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>toast.classList.remove('on'),3200)};
+  const copy=async a=>{
+    try{await navigator.clipboard.writeText(a);return true}catch(e){}
+    try{const ta=document.createElement('textarea');ta.value=a;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e){return false}
+  };
+  const A='itszhixiang@gmail.com';
+  document.querySelectorAll('[data-mail]').forEach(a=>a.addEventListener('click',async e=>{
+    e.preventDefault();
+    const ok=await copy(A);
+    say(ok?'Email address copied: '+A:'Email me at '+A);
+    try{location.href='mailto:'+A}catch(_){}
+  }));
+  document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
+    const ok=await copy(b.dataset.copy);say(ok?'Email address copied: '+b.dataset.copy:'Email me at '+b.dataset.copy);
+  }));
+})();
+
+/* theme */
+(function(){
+  const r=document.documentElement;
+  $('#theme').onclick=()=>{
+    const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    r.dataset.theme=dark?'light':'dark';
+  };
+})();
+
+render();
+if(location.hash.length>1){try{open(decodeURIComponent(location.hash.slice(1)))}catch(e){}}
+</script>
+</body>
+</html>
