@@ -45,15 +45,15 @@ a{color:inherit}
 h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.05;margin:0;letter-spacing:.005em}
 
 /* title block */
-.tb{margin-top:20px;background:var(--sheet);border:2px solid var(--ink);display:grid;grid-template-columns:1.2fr 1.6fr 1fr;}
-.tb>div{padding:12px 16px;border-right:1px solid var(--ink);min-width:0}
+.tb{margin-top:20px;background:var(--sheet);border:2px solid var(--ink);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr) auto;}
+.tb>div{padding:12px 16px;border-right:1px solid var(--ink);min-width:0;position:relative}
 .tb>div:last-child{border-right:0}
 .tb small{display:block;font-size:13px;color:var(--ink2);margin-bottom:2px}
 .tb strong{font-family:var(--head);font-size:22px;font-weight:600;line-height:1.15}
 .tb a{text-decoration:none;border-bottom:1px solid var(--rule)}
 .tb a:hover{border-color:var(--accent);color:var(--accent)}
-.tb .links{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:16px}
-.theme{all:unset;cursor:pointer;float:right;font-size:14px;color:var(--ink2);border:1px solid var(--rule);padding:2px 10px;margin-left:8px}
+.tb .links{display:flex;flex-wrap:nowrap;align-items:center;gap:6px 14px;font-size:16px;white-space:nowrap}
+.theme{all:unset;cursor:pointer;font-size:15px;line-height:1.3;color:var(--ink2);border:1px solid var(--ink2);padding:4px 12px}
 .theme:hover{color:var(--ink);border-color:var(--ink)}
 
 /* hero */
@@ -168,6 +168,8 @@ dialog::backdrop{background:rgba(8,14,18,.72)}
 .about{display:grid;grid-template-columns:1fr 1fr;background:var(--sheet);border:2px solid var(--ink);margin-bottom:56px}
 .about>div{padding:30px 32px}
 .about>div+div{border-left:1px solid var(--ink)}
+.about>div{min-width:0}
+.about dd{min-width:0;overflow-wrap:anywhere}
 .about h2{font-size:32px;margin-bottom:14px}
 .about p{margin:0 0 12px;max-width:52ch}
 .about dl{display:grid;grid-template-columns:auto 1fr;margin:0}
@@ -187,9 +189,10 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
   .hero{grid-template-columns:1fr}.hero .txt{border-right:0;border-bottom:1px solid var(--ink);padding:32px 24px}
   .hero .ph{min-height:300px}
   .tb{grid-template-columns:1fr}.tb>div{border-right:0;border-bottom:1px solid var(--ink)}.tb>div:last-child{border-bottom:0}
-  .about{grid-template-columns:1fr}.about>div+div{border-left:0;border-top:1px solid var(--ink)}
+  .about{grid-template-columns:minmax(0,1fr)}.about>div+div{border-left:0;border-top:1px solid var(--ink)}
 }
 @media (max-width:640px){
+  .tb .links{flex-wrap:wrap;gap:8px 10px}
   body{font-size:16px}
   .wrap{padding:0 12px}
   .grid{grid-template-columns:1fr}.card.feat{grid-column:auto}.card.feat .cover{aspect-ratio:4/3}
@@ -197,6 +200,10 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
   .view{height:clamp(170px,30vh,280px)}.dhead h2{font-size:26px}.th{width:72px;height:50px}.thumbs{padding:8px 10px}
   .dnav button{font-size:16px;padding:10px 12px}.dnav small{font-size:12px}
   .info p{font-size:16px;margin-bottom:10px}.capbar{min-height:36px;padding:4px 10px}
+}
+@media (max-width:400px){
+  .tb .links{gap:6px 9px;font-size:15px}
+  .theme{font-size:14px;padding:4px 9px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -206,8 +213,8 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
   <header class="tb">
     <div><small>Designer</small><strong>Tan Zhi Xiang</strong></div>
     <div><small>Discipline</small><strong>Mechanical and electronic design engineer</strong></div>
-    <div><small>Contact <button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme">Theme</button></small>
-      <div class="links"><a href="mailto:itszhixiang@gmail.com" data-mail>Email</a><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a><a id="pdfbtn" href="assets/Tan_Zhi_Xiang_Portfolio.pdf" download>Portfolio PDF</a></div></div>
+    <div><small>Contact</small>
+      <div class="links"><a href="mailto:itszhixiang@gmail.com" data-mail>Email</a><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a><a id="pdfbtn" href="assets/Tan_Zhi_Xiang_Portfolio.pdf" download>Portfolio PDF</a><button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme">Theme</button></div></div>
   </header>
 
   <section class="hero" aria-label="Introduction">
@@ -368,8 +375,8 @@ const P = [
 ];
 
 const $=s=>document.querySelector(s);
-/* Visitor counter (GoatCounter: no cookies, no personal data). Put your GoatCounter code between the quotes, e.g. 'zhixiang28'. Leave empty to switch counting off. */
-const GC_CODE='';
+/* Visitor counter (GoatCounter: no cookies, no personal data). Your GoatCounter code goes between the quotes below. Leave empty to switch counting off. */
+const GC_CODE='zhixiang28';
 function track(path,title){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:path,title:title,event:true})}catch(e){}}
 (function(){
   if(!GC_CODE)return;
