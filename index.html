@@ -4,7 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tan Zhi Xiang | Design engineer portfolio</title>
-<meta name="description" content="Portfolio of Tan Zhi Xiang, mechanical and electronic design engineer: interactive exhibits, electronics, robots and software.">
+<meta name="description" content="Portfolio of Tan Zhi Xiang, mechanical and electronic design engineer: interactive exhibits, electronics and robots.">
+<meta name="theme-color" content="#F6F8F8">
+<link rel="canonical" href="https://zhixiang28.github.io/portfolio/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tan Zhi Xiang | Portfolio">
+<meta property="og:title" content="Tan Zhi Xiang | Mechanical and electronic design engineer">
+<meta property="og:description" content="Interactive exhibits, electronics and robots. 20+ projects with photos and videos.">
+<meta property="og:url" content="https://zhixiang28.github.io/portfolio/">
+<meta property="og:image" content="https://zhixiang28.github.io/portfolio/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Tan Zhi Xiang, mechanical and electronic design engineer, portfolio 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tan Zhi Xiang | Mechanical and electronic design engineer">
+<meta name="twitter:description" content="Interactive exhibits, electronics and robots. 20+ projects with photos and videos.">
+<meta name="twitter:image" content="https://zhixiang28.github.io/portfolio/assets/img/og-image.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +66,7 @@ h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.05;margin:0;lette
 .skills dt{font-weight:600;padding-right:22px;font-family:var(--head);font-size:17px}
 .skills dd{color:var(--ink2)}
 .hero .ph{position:relative;min-height:340px;background:var(--media)}
-.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 50%}
+.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 34%}
 
 /* filters */
 .bar{position:sticky;top:0;z-index:20;margin-top:36px;background:var(--bench);padding:calc(env(safe-area-inset-top,0px) + 10px) 0 10px;border-bottom:1px solid var(--rule)}
@@ -89,6 +104,9 @@ h1,h2,h3{font-family:var(--head);font-weight:600;line-height:1.05;margin:0;lette
 
 /* dialog */
 dialog{padding:0;border:2px solid var(--ink);background:var(--sheet);color:var(--ink);width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;margin:auto}
+#dlg[open]{display:flex;flex-direction:column;overflow:hidden}
+.dgrid{flex:1 1 auto;min-height:0;overflow:auto}
+.dhead,.dnav{flex:0 0 auto}
 dialog::backdrop{background:rgba(8,14,18,.72)}
 .dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 22px 14px;border-bottom:1px solid var(--ink)}
 .dhead h2{font-size:clamp(28px,4vw,42px)}
@@ -97,7 +115,7 @@ dialog::backdrop{background:rgba(8,14,18,.72)}
 .x:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .dgrid{display:grid;grid-template-columns:1.5fr 1fr}
 .stage{background:var(--media);border-right:1px solid var(--ink)}
-.view{position:relative;height:clamp(240px,50vh,500px);background:var(--media);border-bottom:1px solid var(--ink)}
+.view{position:relative;height:clamp(200px,44vh,460px);background:var(--media);border-bottom:1px solid var(--ink)}
 .view img,.view video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0b1013}
 .view img.light{background:#fff}
 .cap{padding:8px 14px;font-size:15px;color:var(--ink2);min-height:38px;border-bottom:1px solid var(--rule)}
@@ -109,7 +127,16 @@ dialog::backdrop{background:rgba(8,14,18,.72)}
 .th:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .th .pl{position:absolute;right:4px;bottom:4px;background:var(--ink);width:20px;height:20px;display:grid;place-items:center}
 .th .pl::before{content:"";border-left:8px solid var(--sheet);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
-.info{padding:20px 22px}
+.info{padding:18px 22px}
+.sec details{margin-top:14px;border:1px solid var(--ink)}
+.sec summary{cursor:pointer;padding:9px 14px;font-family:var(--head);font-weight:600;font-size:18px;list-style:none;background:var(--sheet)}
+.sec summary::-webkit-details-marker{display:none}
+.sec summary::after{content:'+';float:right}
+.sec details[open] summary::after{content:'\2212'}
+.sec summary:hover{background:var(--media)}
+.sec summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.sec details>*:not(summary){margin-left:14px;margin-right:14px}
+.sec details>ul{margin-bottom:12px;padding-left:19px}
 .info p{margin:0 0 14px;font-size:17px}
 .info .facts{border:1px solid var(--ink);flex-wrap:wrap;margin-top:6px}
 .info .facts div{flex:1 1 45%;border-bottom:1px solid var(--rule)}
@@ -127,6 +154,9 @@ dialog::backdrop{background:rgba(8,14,18,.72)}
 .sec li b{color:var(--ink);font-weight:600}
 .capbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 14px;min-height:42px;border-bottom:1px solid var(--rule)}
 .capbar span{font-size:15px;color:var(--ink2)}
+#cap{flex:1;min-width:0}
+.capbar .ctr{font-size:14px;white-space:nowrap}
+.dbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .zoom{all:unset;cursor:pointer;border:1px solid var(--ink);padding:2px 12px;font-size:14.5px;white-space:nowrap;background:var(--sheet)}
 .zoom:hover{background:var(--ink);color:var(--sheet)}
 .zoom:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
@@ -164,6 +194,9 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
   .wrap{padding:0 12px}
   .grid{grid-template-columns:1fr}.card.feat{grid-column:auto}.card.feat .cover{aspect-ratio:4/3}
   .bar .row{gap:10px}.dhead{padding:14px}.info{padding:16px}.about>div{padding:22px 18px}
+  .view{height:clamp(170px,30vh,280px)}.dhead h2{font-size:26px}.th{width:72px;height:50px}.thumbs{padding:8px 10px}
+  .dnav button{font-size:16px;padding:10px 12px}.dnav small{font-size:12px}
+  .info p{font-size:16px;margin-bottom:10px}.capbar{min-height:36px;padding:4px 10px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -174,24 +207,23 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
     <div><small>Designer</small><strong>Tan Zhi Xiang</strong></div>
     <div><small>Discipline</small><strong>Mechanical and electronic design engineer</strong></div>
     <div><small>Contact <button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme">Theme</button></small>
-      <div class="links"><a href="mailto:itszhixiang@gmail.com" data-mail>Email</a><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a></div></div>
+      <div class="links"><a href="mailto:itszhixiang@gmail.com" data-mail>Email</a><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a><a id="pdfbtn" href="assets/Tan_Zhi_Xiang_Portfolio.pdf" download>Portfolio PDF</a></div></div>
   </header>
 
   <section class="hero" aria-label="Introduction">
     <div class="txt">
       <div>
-        <h1>I design the mechanisms, electronics and software behind interactive exhibits.</h1>
+        <h1>I design the mechanisms and electronics behind interactive exhibits.</h1>
         <p>Over 2 years building installations for science centres, museums and public events in Singapore, plus robots, web apps and AI tools of my own. <span id="count">21</span> projects are below.</p>
       </div>
       <dl class="skills">
         <dt>Mechanical</dt><dd>Fusion 360, SolidWorks, Ansys</dd>
         <dt>Electrical</dt><dd>Arduino, ESP32, KiCad</dd>
-        <dt>Software</dt><dd>JavaScript, React, Supabase (PostgreSQL), GitHub Pages</dd>
         <dt>Audio visual</dt><dd>TouchDesigner, MediaPipe, Illustrator, Premiere Pro</dd>
         <dt>Machines</dt><dd>FDM and resin 3D printers, laser cutter</dd>
       </dl>
     </div>
-    <div class="ph"><img id="heroimg" alt="Zhi Xiang working on an exhibit prototype on a workshop table"></div>
+    <div class="ph"><img id="heroimg" alt="Zhi Xiang smiling in a forest, holding a wooden stick"></div>
   </section>
 
   <div class="bar" id="projects">
@@ -227,9 +259,9 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
 <dialog id="lb" aria-label="Enlarged image"><button class="x" id="lbclose" type="button">Close</button><img id="lbimg" alt=""></dialog>
 
 <dialog id="dlg" aria-labelledby="dtitle">
-  <div class="dhead"><h2 id="dtitle"></h2><button class="x" id="dclose" type="button">Close</button></div>
+  <div class="dhead"><h2 id="dtitle"></h2><div class="dbtns"><button class="x" id="copylink" type="button">Copy link</button><button class="x" id="dclose" type="button">Close</button></div></div>
   <div class="dgrid">
-    <div class="stage"><div class="view" id="view"></div><div class="capbar"><span id="cap"></span><button type="button" class="zoom" id="zoom" hidden>Enlarge</button></div><div class="thumbs" id="thumbs"></div></div>
+    <div class="stage"><div class="view" id="view"></div><div class="capbar"><span id="cap"></span><span class="ctr" id="ctr"></span><button type="button" class="zoom" id="zoom" hidden>Enlarge</button></div><div class="thumbs" id="thumbs"></div></div>
     <div class="info"><p id="ddesc"></p><p id="ddesc2"></p><div class="facts" id="dfacts"></div><div class="sec" id="dsec"></div></div>
   </div>
   <div class="dnav"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
@@ -238,11 +270,12 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
 <script>
 const M = {
 "mr_5": "assets/img/mr_5.jpg",
+"profile": "assets/img/profile.jpg",
 "mr_3": "assets/img/mr_3.jpg",
 "mr_2": "assets/img/mr_2.jpg",
 "mr_1": "assets/img/mr_1.jpg",
-"s1_image1": "assets/img/s1_image1.jpg",
 "cl_4": "assets/img/cl_4.jpg",
+"og-image": "assets/img/og-image.jpg",
 "s16_image45": "assets/img/s16_image45.jpg",
 "s13_image38": "assets/img/s13_image38.jpg",
 "s9_image29": "assets/img/s9_image29.jpg",
@@ -310,116 +343,41 @@ const M = {
 "p:gripper": "assets/vid/gripper.jpg"
 };
 const P = [
- {id:'terrain-diorama',t:'Terrain Diorama',cat:'Other',ctx:'Work',where:'Romance of the Three Kingdoms theme',feat:1,
-  d:'The physical terrain for a 3 m x 3 m projection diorama: four organic corner terrain pieces around a flat central circle that takes the projection.',
-  d2:'I used AI-assisted 3D modelling and Fusion 360 to shape the mountains, ridges and rivers, refined the model for fabrication, and produced the sections on a large-format BigRep 3D printer.',
-  cover:'s21_image54',m:[['s21_image54'],['s21_image55'],['s21_image56']]},
- {id:'mr-tracker',t:'MR Tracker',cat:'Software',ctx:'Work',where:'SPACElogic internal tool',
-  d:'A web-based materials requisition and e-signature approval system for SPACElogic. Every request follows one fixed chain (Submit, Manager Approval, Procurement Approval, Purchase, Received), and each approval is a timestamped signature tied to a verified person.',
-  d2:'When several people have to approve a purchase in order, the hard parts are visibility (where is it stuck?) and accountability (who approved what, and when?). I wanted one place where a requester can see exactly where a request stands, and where every signature leaves a permanent trail.',
-  stack:'HTML, CSS, vanilla JavaScript; Supabase (PostgreSQL, row-level security, PL/pgSQL, Edge Functions); Resend; GitHub Pages; jsPDF',
-  sec:[['What I built',[
-    ['Requisition form','with drafts, running totals, drag-to-reorder rows, duplicate row and duplicate form, an in-form currency converter, and PDF export (including Chinese text).'],
-    ['Sequential e-signature chain','where approvers sign through a link with a personal PIN, and the order is enforced on the server so steps cannot be skipped.'],
-    ['Live dashboard','with stage counts that double as filters, a banner that only appears when something needs your attention, and an expandable signature trail for every requisition.'],
-    ['Decline, revise and resubmit:','declined requests reopen in the full form, and resubmitting restarts the chain so everyone re-confirms the revised request.'],
-    ['Withdraw, reminders and notifications:','requesters can withdraw before purchase, set their own overdue thresholds per stage, and get emailed on decline, purchase and receipt.'],
-    ['Admin tools','to manage accounts and roles, and to override or reassign a stuck stage.'],
-    ['Built-in user manual and FAQ','for onboarding.']]],
-   ['Design decisions',[
-    ['Security lives in the database, not the page.','Tables are closed to direct access and everything goes through functions that check identity and role, so hiding a button is never the only protection.'],
-    ['PINs are hashed with bcrypt,','and signing locks after repeated wrong attempts.'],
-    ['Accounts are tied to a verified company email,','one account per address.'],
-    ['Low running cost by design:','it runs on the free tiers of GitHub Pages, Supabase and Resend, with a clear upgrade path if usage grows.']]],
-   ['Problems I had to solve',[
-    ['Chinese text disappeared from exported PDFs.','The PDF library\'s built-in fonts only cover Latin characters, so I detected CJK text and rendered just those strings as high-resolution images, keeping everything else as normal vector text.'],
-    ['Signature boxes vanished on longer forms.','With about 10 line items the totals and sign-off sections were drawn below the page edge. I traced the layout maths and added page-break handling.'],
-    ['Drag-and-drop reordering was unreliable','with the browser\'s native drag events, so I rebuilt it on plain mouse events.'],
-    ['Notification emails were delivered but never arrived.','A brand-new sending domain was being silently held by the company mail filter. I set up a verified domain (SPF and DKIM) and documented what IT needs to allowlist.']]]],
-  cover:'mr_1',m:[['mr_1','MR Tracker: digital materials requisition and e-signature approval system'],['mr_2','One requisition moves through five tracked stages, with a timestamped signature at each step'],['mr_3','The requisition form (left) and the PIN-protected approval screen (right)'],['mr_4','The dashboard: stage counts as filters, an action banner, and a full signature trail per requisition'],['mr_5','Architecture: static front end, Supabase back end and Resend email, plus the security design']]},
- {id:'forced-to-go',t:'SCS Forced to Go',cat:'Mechanical',ctx:'Work',where:'Science Centre Singapore',feat:1,
-  d:'A travelling exhibition that brings science to life through hands-on experiments on forces, magnetism, buoyancy, pressure and electrostatics.',
-  d2:'Exhibits I worked on include buoyancy changing with pressure, a falling copper plate slowed by a magnetic field, and a slinky bouncing down a moving treadmill.',
-  cover:'s3_image12',m:[['s3_image12'],['s3_image4'],['s3_image13','Slinky bouncing down a moving treadmill']]},
- {id:'sam-misting',t:'SAM Misting Machine',cat:'Mechanical',ctx:'Work',where:'ArtScience Museum, artist Masuri Mazlan',
-  d:'A misting shower unit for an artwork by Masuri Mazlan. The water circulates on its own to make the mist, and lighting carries the artist\'s intent.',
-  d2:'I designed it from a proof-of-concept prototype through to the final piece.',
-  cover:'s4_image14',m:[['s4_image16','Prototype for proving the concept'],['s4_image14','Final look before power on'],['s4_image15','Final look with the misting effect']]},
- {id:'robot-pet',t:'Robot Pet (Cubot)',cat:'Electronics',ctx:'Personal',where:'ESP32, OLED face, Bluetooth app',
-  d:'A palm-sized desk robot that responds to touch and head rubbing with vibration and expressive facial animations.',
-  d2:'It runs on an ESP32 with an OLED face, a touch sensor, a vibration motor and an MPU-6050 motion sensor, and pairs with a phone app over Bluetooth to sync the time and change settings. There is a mini cube version and a portable version.',
-  cover:'s17_image49',m:[['v:robotpet','Product showcase'],['s17_image49','Mini cube version'],['s17_image47','Portable version']]},
- {id:'chalkline',t:'Chalkline',cat:'Software',ctx:'Personal',where:'React, Supabase, GitHub Pages',
-  d:'A climbing log and community app. Log every climb, track your progress and share it with your crew.',
-  d2:'I built it as a real app for real use, with email sign-up, private logs kept private by the database, and account deletion that removes everything.',
-  stack:'React; Supabase (Postgres, Auth, Edge Functions); GitHub Pages',
-  sec:[['Features',[
-    ['Live Log:','an attempt timer, one-tap falls at 1/4, 1/2 or 3/4 height, and a separate rest timer.'],
-    ['Photo markers:','tap your wall photo to place start, end and numbered fall points.'],
-    ['Full story:','every session on a route adds up (tries, time and sends), in list or grid view.'],
-    ['Daily summary:','best climb, climbs, time, sends and a grade breakdown on its own page, ready to share.'],
-    ['Share cards:','log, day, badge, progress and name tag cards generated in the browser, in four looks: blurred, photo card, transparent PNG and full photo.'],
-    ['Community:','feed, gear deals, climbing sessions and chat between climbers.'],
-    ['Private by design:','Row Level Security in the database keeps private logs private.']]]],
-  cover:'cl_1',m:[['cl_1','Chalkline: climbing log and community app'],['cl_2','Logging a climb with a live attempt timer and photo markers'],['cl_3','Daily summary with best climb, grade breakdown and share cards'],['cl_4','Share cards: one layout, four looks'],['cl_5','What is under the hood']]},
- {id:'some-call-it-science',t:'SCS Some Call It Science',cat:'Mechanical',ctx:'Work',where:'Science Centre Singapore',
-  d:'An installation of 11 interactive exhibits that shows visitors how science shapes everyday life.',
-  d2:'I was involved in upgrading the exhibits: resolving issues and improving durability and reliability, including a modified microphone casing, a modified handheld UV light and holders, and a redesigned casing with an integrated light.',
-  cover:'s6_image23',m:[['s6_image23','Overview'],['s6_image21','Modified microphone casing'],['s6_image22','Modified handheld UV light and holders'],['s6_image20','Redesigned casing with integrated light']]},
- {id:'liv-golf',t:'LIV Golf Game Station',cat:'Electronics',ctx:'Work',where:'Sentosa, Singapore',
-  d:'Two interactive game booths, a golf game and a soccer game, for a public event held alongside the LIV Golf competition at Sentosa.',
-  d2:'Both games are driven by IR sensors, built to be played by the public all day.',
-  cover:'s14_image40',m:[['s14_image39','Visitor playing the game'],['s14_image40','IR sensor-based golf game'],['s14_image41','IR sensor-based soccer game']]},
- {id:'mandai',t:'Mandai Bird Park Installation',cat:'Mechanical',ctx:'Work',where:'Mandai Bird Park',
-  d:'A flip information panel and an interactive mechanism that moves the flamingo\'s head to show how it feeds.',
-  d2:'Visitors get an intuitive, hands-on way to learn about the bird.',
-  cover:'s7_image25',m:[['s7_image24','Flip panel'],['s7_image25','Movable flamingo head']]},
- {id:'gesture-visual',t:'Hand Gesture Visual Effect Control',cat:'Other',ctx:'Personal',where:'MediaPipe, TouchDesigner',
-  d:'An AI camera system that recognises hand gestures and turns them into real-time visual effects for touch-free interaction.',
-  d2:'The clips show the visual output and the background system running.',
-  cover:'v:gestvisual',m:[['v:gestvisual','Visual output'],['v:gestbg','Background system']]},
- {id:'gesture-audio',t:'Hand Gesture Audio Control',cat:'Other',ctx:'Personal',where:'AI hand tracking, audio system',
-  d:'An interactive system that uses AI hand tracking through a camera so users can control different sound effects with hand gestures.',
-  d2:'',cover:'v:gestaudio',m:[['v:gestaudio']]},
- {id:'led-maps',t:'LED Transport Map',cat:'Electronics',ctx:'Work',where:'Philippines',
-  d:'A transport map of the Philippines with five differently coloured LEDs, each controlled by its own button that also triggers a matching sound effect.',
-  d2:'I completed the wiring and sound system setup, and supported the overall electronics design and integration of the interactive system.',
-  cover:'s12_image35',m:[['v:ledmaps'],['s12_image35'],['s12_image34']]},
- {id:'nccs-donor-wall',t:'NCCS Donor Wall Glowing Light',cat:'Electronics',ctx:'Work',where:'National Cancer Centre Singapore',
-  d:'A curved solid wall with many LED bulbs that create a glowing star around each donor\'s name, lighting the names with a warm, moving glow.',
-  d2:'I designed and programmed the light animation.',
-  cover:'s16_image45',m:[['v:nccs','Visual animation'],['s16_image45','Overview']]},
- {id:'bowmore',t:'Bowmore Running Light Counter',cat:'Electronics',ctx:'Work',where:'Bowmore',
-  d:'A counter tabletop with an animated LED light box. Carefully arranged wiring and programmed LED sequences give a smooth, continuous running-light effect.',
-  d2:'',cover:'s15_image44',m:[['s15_image44','Final look'],['s15_image42'],['s15_image43']]},
- {id:'shore-gangway',t:'Telescopic Shore Gangway',cat:'Mechanical',ctx:'Academic',where:'INTI International University',
-  d:'A flexible gangway for LNG ship workers to embark, with three mechanical designs so its orientation and position can be adjusted for different shore set-ups.',
-  d2:'',cover:'s10_image32',contain:1,m:[['v:gangway'],['s10_image32','Project poster']]},
- {id:'soft-gripper',t:'Pneumatic Soft Gripper',cat:'Mechanical',ctx:'Academic',where:'INTI International University',
-  d:'A soft pneumatic clamp made with 3D printing and a hollow-chamber design. It grips small, irregular objects, and separates fabric, without damaging their surfaces.',
-  d2:'',cover:'s9_image29',contain:1,m:[['v:gripper'],['s9_image29','Project poster']]},
- {id:'planet-gear',t:'Planet Gear Signage',cat:'Mechanical',ctx:'Work',where:'Maker space signage',
-  d:'A metallic-look, 3D-printed planetary gear mechanism built as a moving sign that pairs mechanical motion with an eye-catching finish.',
-  d2:'',cover:'s8_image26',m:[['v:planetgear'],['s8_image26'],['s8_image28']]},
- {id:'handcrank-fan',t:'Handcrank Fan',cat:'Mechanical',ctx:'Work',where:'Proof-of-concept mock-up',
-  d:'A mock-up that shows a speed step-up gear mechanism driving a counter-rotating blade, so you can see how the parts move and interact.',
-  d2:'',cover:'v:handcrank',m:[['v:handcrank','Working prototype'],['s5_image17','Technical drawing'],['s5_image18','AI render']]},
- {id:'fundamental-exhibits',t:'SCS Fundamental Exhibits',cat:'Electronics',ctx:'Work',where:'Science Centre Singapore',
-  d:'Concept mock-ups built to demonstrate and validate the intended scientific effect and visitor experience before full builds.',
-  d2:'They include a sound wave visualiser, a hand-holding experiment and a spiral water effect.',
-  cover:'s13_image37',m:[['s13_image36'],['s13_image37'],['s13_image38']]},
- {id:'stock-display',t:'Real-time Stock Price Display',cat:'Electronics',ctx:'Personal',where:'Wi-Fi, palm-sized',
-  d:'A Wi-Fi-connected, palm-sized device that pulls real-time stock market data and shows live prices on its built-in screen.',
-  d2:'',cover:'s18_image51',m:[['s18_image51'],['s18_image50']]},
- {id:'digital-clock',t:'7-Segment Digital Clock',cat:'Electronics',ctx:'Personal',where:'Bluetooth, smartphone sync',
-  d:'A smart digital clock that connects to a smartphone over Bluetooth, so the time syncs automatically and its settings can be changed from the phone.',
-  d2:'',cover:'s18_image52',m:[['s18_image52']]},
- {id:'bluetooth-car',t:'Bluetooth-Controlled Car',cat:'Electronics',ctx:'Academic',where:'INTI International University',
-  d:'A toy car operated from a smartphone, with wireless control of turning, acceleration and movement. The design is omnidirectional.',
-  d2:'',cover:'v:btcar',m:[['v:btcar']]}
+ {"id": "terrain-diorama", "t": "Terrain Diorama", "cat": "Other", "ctx": "Work", "where": "Romance of the Three Kingdoms theme", "feat": 1, "d": "Physical terrain for a 3 m x 3 m projection diorama: four organic corner pieces around a flat centre, printed in sections on a large-format 3D printer.", "d2": "", "cover": "s21_image54", "m": [["s21_image54"], ["s21_image55"], ["s21_image56"]]},
+ {"id": "mr-tracker", "t": "MR Tracker", "cat": "Software", "ctx": "Work", "where": "SPACElogic internal tool", "d": "Web-based materials requisition and e-signature approval system for SPACElogic: five tracked stages, PIN-verified signatures, live dashboard and email notifications.", "d2": "", "stack": "HTML, CSS, vanilla JavaScript; Supabase (PostgreSQL, row-level security, PL/pgSQL, Edge Functions); Resend; GitHub Pages; jsPDF", "sec": [["What I built", [["Requisition form", "with drafts, running totals, drag-to-reorder rows, duplicate row and duplicate form, an in-form currency converter, and PDF export (including Chinese text)."], ["Sequential e-signature chain", "where approvers sign through a link with a personal PIN, and the order is enforced on the server so steps cannot be skipped."], ["Live dashboard", "with stage counts that double as filters, a banner that only appears when something needs your attention, and an expandable signature trail for every requisition."], ["Decline, revise and resubmit:", "declined requests reopen in the full form, and resubmitting restarts the chain so everyone re-confirms the revised request."], ["Withdraw, reminders and notifications:", "requesters can withdraw before purchase, set their own overdue thresholds per stage, and get emailed on decline, purchase and receipt."], ["Admin tools", "to manage accounts and roles, and to override or reassign a stuck stage."], ["Built-in user manual and FAQ", "for onboarding."]]], ["Design decisions", [["Security lives in the database, not the page.", "Tables are closed to direct access and everything goes through functions that check identity and role, so hiding a button is never the only protection."], ["PINs are hashed with bcrypt,", "and signing locks after repeated wrong attempts."], ["Accounts are tied to a verified company email,", "one account per address."], ["Low running cost by design:", "it runs on the free tiers of GitHub Pages, Supabase and Resend, with a clear upgrade path if usage grows."]]], ["Problems I had to solve", [["Chinese text disappeared from exported PDFs.", "The PDF library's built-in fonts only cover Latin characters, so I detected CJK text and rendered just those strings as high-resolution images, keeping everything else as normal vector text."], ["Signature boxes vanished on longer forms.", "With about 10 line items the totals and sign-off sections were drawn below the page edge. I traced the layout maths and added page-break handling."], ["Drag-and-drop reordering was unreliable", "with the browser's native drag events, so I rebuilt it on plain mouse events."], ["Notification emails were delivered but never arrived.", "A brand-new sending domain was being silently held by the company mail filter. I set up a verified domain (SPF and DKIM) and documented what IT needs to allowlist."]]]], "cover": "mr_1", "m": [["mr_1", "MR Tracker: digital materials requisition and e-signature approval system"], ["mr_2", "One requisition moves through five tracked stages, with a timestamped signature at each step"], ["mr_3", "The requisition form (left) and the PIN-protected approval screen (right)"], ["mr_4", "The dashboard: stage counts as filters, an action banner, and a full signature trail per requisition"], ["mr_5", "Architecture: static front end, Supabase back end and Resend email, plus the security design"]]},
+ {"id": "forced-to-go", "t": "SCS Forced to Go", "cat": "Mechanical", "ctx": "Work", "where": "Science Centre Singapore", "feat": 1, "d": "Hands-on exhibits for a travelling science exhibition: buoyancy that changes with pressure, a copper plate slowed by magnets, and a slinky on a moving treadmill.", "d2": "", "cover": "s3_image12", "m": [["s3_image12"], ["s3_image4"], ["s3_image13", "Slinky bouncing down a moving treadmill"]]},
+ {"id": "sam-misting", "t": "SAM Misting Machine", "cat": "Mechanical", "ctx": "Work", "where": "ArtScience Museum, artist Masuri Mazlan", "d": "Self-circulating misting shower unit for an artwork, developed from proof-of-concept prototype to final piece.", "d2": "", "cover": "s4_image14", "m": [["s4_image16", "Prototype for proving the concept"], ["s4_image14", "Final look before power on"], ["s4_image15", "Final look with the misting effect"]]},
+ {"id": "robot-pet", "t": "Robot Pet (Cubot)", "cat": "Electronics", "ctx": "Personal", "where": "ESP32, OLED face, Bluetooth app", "d": "Palm-sized desk robot that reacts to touch and head rubbing with vibration and animated facial expressions.", "d2": "", "cover": "s17_image49", "m": [["v:robotpet", "Product showcase"], ["s17_image49", "Mini cube version"], ["s17_image47", "Portable version"]]},
+ {"id": "chalkline", "t": "Chalkline", "cat": "Software", "ctx": "Personal", "where": "React, Supabase, GitHub Pages", "d": "Climbing log and community app: log every climb, track progress and share it with your crew.", "d2": "", "stack": "React; Supabase (Postgres, Auth, Edge Functions); GitHub Pages", "sec": [["Features", [["Live Log:", "an attempt timer, one-tap falls at 1/4, 1/2 or 3/4 height, and a separate rest timer."], ["Photo markers:", "tap your wall photo to place start, end and numbered fall points."], ["Full story:", "every session on a route adds up (tries, time and sends), in list or grid view."], ["Daily summary:", "best climb, climbs, time, sends and a grade breakdown on its own page, ready to share."], ["Share cards:", "log, day, badge, progress and name tag cards generated in the browser, in four looks: blurred, photo card, transparent PNG and full photo."], ["Community:", "feed, gear deals, climbing sessions and chat between climbers."], ["Private by design:", "Row Level Security in the database keeps private logs private."]]]], "cover": "cl_1", "m": [["cl_1", "Chalkline: climbing log and community app"], ["cl_2", "Logging a climb with a live attempt timer and photo markers"], ["cl_3", "Daily summary with best climb, grade breakdown and share cards"], ["cl_4", "Share cards: one layout, four looks"], ["cl_5", "What is under the hood"]]},
+ {"id": "some-call-it-science", "t": "SCS Some Call It Science", "cat": "Mechanical", "ctx": "Work", "where": "Science Centre Singapore", "d": "Upgrade of an 11-exhibit installation: redesigned casings, holders and integrated lighting for durability.", "d2": "", "cover": "s6_image23", "m": [["s6_image23", "Overview"], ["s6_image21", "Modified microphone casing"], ["s6_image22", "Modified handheld UV light and holders"], ["s6_image20", "Redesigned casing with integrated light"]]},
+ {"id": "liv-golf", "t": "LIV Golf Game Station", "cat": "Electronics", "ctx": "Work", "where": "Sentosa, Singapore", "d": "Two IR sensor-based public game booths, golf and soccer, for an event at Sentosa.", "d2": "", "cover": "s14_image40", "m": [["s14_image39", "Visitor playing the game"], ["s14_image40", "IR sensor-based golf game"], ["s14_image41", "IR sensor-based soccer game"]]},
+ {"id": "mandai", "t": "Mandai Bird Park Installation", "cat": "Mechanical", "ctx": "Work", "where": "Mandai Bird Park", "d": "Flip information panel and a mechanism that moves a flamingo head to show how it feeds.", "d2": "", "cover": "s7_image25", "m": [["s7_image24", "Flip panel"], ["s7_image25", "Movable flamingo head"]]},
+ {"id": "gesture-visual", "t": "Hand Gesture Visual Effect Control", "cat": "Other", "ctx": "Personal", "where": "MediaPipe, TouchDesigner", "d": "AI camera system that turns hand gestures into real-time visual effects, touch-free.", "d2": "", "cover": "v:gestvisual", "m": [["v:gestvisual", "Visual output"], ["v:gestbg", "Background system"]]},
+ {"id": "gesture-audio", "t": "Hand Gesture Audio Control", "cat": "Other", "ctx": "Personal", "where": "AI hand tracking, audio system", "d": "AI hand tracking that lets users control sound effects with hand gestures.", "d2": "", "cover": "v:gestaudio", "m": [["v:gestaudio"]]},
+ {"id": "led-maps", "t": "LED Transport Map", "cat": "Electronics", "ctx": "Work", "where": "Philippines", "d": "Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.", "d2": "", "cover": "s12_image35", "m": [["v:ledmaps"], ["s12_image35"], ["s12_image34"]]},
+ {"id": "nccs-donor-wall", "t": "NCCS Donor Wall Glowing Light", "cat": "Electronics", "ctx": "Work", "where": "National Cancer Centre Singapore", "d": "Curved wall of LED bulbs that makes a warm, moving glowing star around each donor name. I designed and programmed the animation.", "d2": "", "cover": "s16_image45", "m": [["v:nccs", "Visual animation"], ["s16_image45", "Overview"]]},
+ {"id": "bowmore", "t": "Bowmore Running Light Counter", "cat": "Electronics", "ctx": "Work", "where": "Bowmore", "d": "Animated LED light box for a counter tabletop; I arranged the wiring and programmed the running-light sequence.", "d2": "", "cover": "s15_image44", "m": [["s15_image44", "Final look"], ["s15_image42"], ["s15_image43"]]},
+ {"id": "shore-gangway", "t": "Telescopic Shore Gangway", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "Adjustable gangway for LNG ship workers to embark, with three mechanical designs for different shore set-ups.", "d2": "", "cover": "s10_image32", "contain": 1, "m": [["v:gangway"], ["s10_image32", "Project poster"]]},
+ {"id": "soft-gripper", "t": "Pneumatic Soft Gripper", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "3D-printed hollow-chamber soft gripper that handles small, irregular objects and separates fabric without damage.", "d2": "", "cover": "s9_image29", "contain": 1, "m": [["v:gripper"], ["s9_image29", "Project poster"]]},
+ {"id": "planet-gear", "t": "Planet Gear Signage", "cat": "Mechanical", "ctx": "Work", "where": "Maker space signage", "d": "Metallic-look 3D-printed planetary gear mechanism built as a moving sign.", "d2": "", "cover": "s8_image26", "m": [["v:planetgear"], ["s8_image26"], ["s8_image28"]]},
+ {"id": "handcrank-fan", "t": "Handcrank Fan", "cat": "Mechanical", "ctx": "Work", "where": "Proof-of-concept mock-up", "d": "Mock-up of a speed step-up gear mechanism driving a counter-rotating blade.", "d2": "", "cover": "v:handcrank", "m": [["v:handcrank", "Working prototype"], ["s5_image17", "Technical drawing"], ["s5_image18", "AI render"]]},
+ {"id": "fundamental-exhibits", "t": "SCS Fundamental Exhibits", "cat": "Electronics", "ctx": "Work", "where": "Science Centre Singapore", "d": "Concept mock-ups to validate the science effect and visitor experience: sound wave visualiser, hand-holding experiment, spiral water effect.", "d2": "", "cover": "s13_image37", "m": [["s13_image36"], ["s13_image37"], ["s13_image38"]]},
+ {"id": "stock-display", "t": "Real-time Stock Price Display", "cat": "Electronics", "ctx": "Personal", "where": "Wi-Fi, palm-sized", "d": "Palm-sized Wi-Fi device showing live stock prices on its built-in screen.", "d2": "", "cover": "s18_image51", "m": [["s18_image51"], ["s18_image50"]]},
+ {"id": "digital-clock", "t": "7-Segment Digital Clock", "cat": "Electronics", "ctx": "Personal", "where": "Bluetooth, smartphone sync", "d": "Bluetooth 7-segment clock that syncs time and settings from a smartphone.", "d2": "", "cover": "s18_image52", "m": [["s18_image52"]]},
+ {"id": "bluetooth-car", "t": "Bluetooth-Controlled Car", "cat": "Electronics", "ctx": "Academic", "where": "INTI International University", "d": "Omnidirectional toy car controlled from a smartphone over Bluetooth.", "d2": "", "cover": "v:btcar", "m": [["v:btcar"]]}
 ];
 
 const $=s=>document.querySelector(s);
+/* Visitor counter (GoatCounter: no cookies, no personal data). Put your GoatCounter code between the quotes, e.g. 'zhixiang28'. Leave empty to switch counting off. */
+const GC_CODE='';
+function track(path,title){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:path,title:title,event:true})}catch(e){}}
+(function(){
+  if(!GC_CODE)return;
+  const s=document.createElement('script');
+  s.async=true;s.src='https://gc.zgo.at/count.js';
+  s.setAttribute('data-goatcounter','https://'+GC_CODE+'.goatcounter.com/count');
+  document.head.appendChild(s);
+})();
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
 const src=k=>k.startsWith('v:')?M[k]:M[k];
 const poster=k=>M['p:'+k.slice(2)];
@@ -428,7 +386,7 @@ let fcat='All',fctx='All',cur=null,list=[];
 const CATS=['All','Mechanical','Electronics','Software','Other'],CTX=['All','Work','Personal','Academic'];
 P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
 
-$('#heroimg').src=M['s1_image1'];
+$('#heroimg').src=M['profile'];
 $('#count').textContent=P.length;
 
 function mkChips(host,arr,get,cb,label){
@@ -469,14 +427,15 @@ function render(){
 }
 
 const dlg=$('#dlg');
-function open(id,fromNav){
-  const p=P.find(x=>x.id===id);if(!p)return;cur=p;
+let curIdx=0;
+function open(id,start){
+  const p=P.find(x=>x.id===id);if(!p)return;cur=p;track('project/'+id,p.t);
   $('#dtitle').textContent=p.t;$('#ddesc').textContent=p.d;
   const d2=$('#ddesc2');d2.textContent=p.d2||'';d2.style.display=p.d2?'':'none';
   const fh=$('#dfacts');fh.textContent='';facts(p,fh);
   if(p.stack){const d=el('div');d.style.flex='1 1 100%';d.appendChild(el('small',null,'Built with'));d.appendChild(document.createTextNode(p.stack));fh.appendChild(d)}
   const sc=$('#dsec');sc.textContent='';
-  (p.sec||[]).forEach(([h,items])=>{sc.appendChild(el('h4',null,h));const u=el('ul');items.forEach(([a,b])=>{const li=el('li');li.appendChild(el('b',null,a+' '));li.appendChild(document.createTextNode(b));u.appendChild(li)});sc.appendChild(u)});
+  if(p.sec&&p.sec.length){const det=document.createElement('details');det.appendChild(el('summary',null,'More details'));p.sec.forEach(([h,items])=>{det.appendChild(el('h4',null,h));const u=el('ul');items.forEach(([a,b])=>{const li=el('li');li.appendChild(el('b',null,a+' '));li.appendChild(document.createTextNode(b));u.appendChild(li)});det.appendChild(u)});sc.appendChild(det)}
   const stage=$('#view'),th=$('#thumbs');stage.textContent='';th.textContent='';$('#cap').textContent='';
   const stg=document.querySelector('.stage');
   if(!p.m.length){stg.style.display='none';document.querySelector('.dgrid').style.gridTemplateColumns='1fr'}
@@ -487,16 +446,17 @@ function open(id,fromNav){
     if(it[0].startsWith('v:'))b.appendChild(el('span','pl'));
     b.onclick=()=>show(i);th.appendChild(b);
   });
-  if(p.m.length)show(0);
+  if(p.m.length)show(start==='last'?p.m.length-1:0);
   const idx=list.findIndex(x=>x.id===id),pv=list[(idx-1+list.length)%list.length],nx=list[(idx+1)%list.length];
   const lab=(btn,dir,q)=>{btn.textContent='';btn.appendChild(el('small',null,dir));btn.appendChild(document.createTextNode(q.t));btn.dataset.id=q.id};
   lab($('#prev'),'Previous project',pv);lab($('#next'),'Next project',nx);
   if(!dlg.open){dlg.showModal()}
-  dlg.scrollTop=0;
+  dlg.scrollTop=0;document.querySelector('.dgrid').scrollTop=0;
   try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 function show(i){
   const p=cur,it=p.m[i],k=it[0],view=$('#view');
+  curIdx=i;$('#ctr').textContent=p.m.length>1?(i+1)+' / '+p.m.length:'';
   view.textContent='';
   if(k.startsWith('v:')){const v=document.createElement('video');v.controls=true;v.playsInline=true;v.preload='metadata';v.poster=poster(k);v.src=M[k];v.setAttribute('aria-label',it[1]||p.t+' video');view.appendChild(v)}
   else{const im=new Image();im.alt=it[1]||p.t;im.src=M[k];if(p.contain)im.className='light';if(BG[k])im.style.background=BG[k];view.appendChild(im)}
@@ -509,6 +469,38 @@ $('#dclose').onclick=()=>dlg.close();
 const lb=$('#lb');
 $('#zoom').onclick=e=>{const b=e.currentTarget;$('#lbimg').src=M[b.dataset.k];$('#lbimg').alt=b.dataset.alt;lb.showModal()};
 lb.addEventListener('click',()=>lb.close());
+function step(dir){
+  if(!cur||!dlg.open||lb.open)return;
+  const n=cur.m.length;
+  if(dir>0){if(curIdx<n-1)show(curIdx+1);else open($('#next').dataset.id)}
+  else{if(curIdx>0)show(curIdx-1);else open($('#prev').dataset.id,'last')}
+}
+document.addEventListener('keydown',e=>{
+  if(!dlg.open||lb.open)return;
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  const tg=e.target;if(tg&&(tg.tagName==='VIDEO'||tg.tagName==='INPUT'||tg.tagName==='TEXTAREA'))return;
+  e.preventDefault();step(e.key==='ArrowRight'?1:-1);
+});
+(function(){
+  const v=$('#view');let sx=0,sy=0,ok=false;
+  v.addEventListener('touchstart',e=>{
+    const t=e.changedTouches[0];
+    if(e.target.tagName==='VIDEO'){const r=e.target.getBoundingClientRect();if(t.clientY>r.bottom-64){ok=false;return}}
+    sx=t.clientX;sy=t.clientY;ok=true;
+  },{passive:true});
+  v.addEventListener('touchend',e=>{
+    if(!ok)return;ok=false;
+    const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)step(dx<0?1:-1);
+  },{passive:true});
+})();
+$('#copylink').onclick=async e=>{
+  const b=e.currentTarget;
+  const url=location.href.split('#')[0]+'#'+cur.id;
+  const ok=await window.__copy(url);
+  b.textContent=ok?'Link copied':'Copy failed';
+  clearTimeout(b._t);b._t=setTimeout(()=>{b.textContent='Copy link'},1800);
+};
 dlg.addEventListener('close',()=>{dlg.querySelectorAll('video').forEach(v=>v.pause());try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 $('#prev').onclick=e=>open(e.currentTarget.dataset.id);
@@ -522,17 +514,27 @@ $('#next').onclick=e=>open(e.currentTarget.dataset.id);
     try{await navigator.clipboard.writeText(a);return true}catch(e){}
     try{const ta=document.createElement('textarea');ta.value=a;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(e){return false}
   };
+  window.__copy=copy;window.__say=say;
   const A='itszhixiang@gmail.com';
   document.querySelectorAll('[data-mail]').forEach(a=>a.addEventListener('click',async e=>{
-    e.preventDefault();
+    e.preventDefault();track('click/email','Email');
     const ok=await copy(A);
     say(ok?'Email address copied: '+A:'Email me at '+A);
     try{location.href='mailto:'+A}catch(_){}
   }));
   document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
-    const ok=await copy(b.dataset.copy);say(ok?'Email address copied: '+b.dataset.copy:'Email me at '+b.dataset.copy);
+    track('click/email-copy','Copy email');const ok=await copy(b.dataset.copy);say(ok?'Email address copied: '+b.dataset.copy:'Email me at '+b.dataset.copy);
   }));
 })();
+
+/* PDF button: works on the hosted site; the chat preview cannot download files */
+$('#pdfbtn').addEventListener('click',e=>{
+  const a=e.currentTarget;
+  if(a.dataset.preview){e.preventDefault();window.__say('The PDF download works on your GitHub site, not in this preview.')}else track('download/portfolio-pdf','Portfolio PDF');
+});
+
+document.querySelectorAll('a[href*="linkedin.com"]').forEach(a=>a.addEventListener('click',()=>track('click/linkedin','LinkedIn')));
+document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.addEventListener('click',()=>track('click/phone','Phone')));
 
 /* theme */
 (function(){
