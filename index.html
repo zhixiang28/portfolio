@@ -113,7 +113,9 @@ dialog::backdrop{background:rgba(8,14,18,.72)}
 .x{all:unset;cursor:pointer;border:1px solid var(--ink);padding:6px 14px;font-size:16px;white-space:nowrap}
 .x:hover{background:var(--ink);color:var(--sheet)}
 .x:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.dgrid{display:grid;grid-template-columns:1.5fr 1fr}
+.dgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.stage,.info{min-width:0}
+.dhead h2{min-width:0;overflow-wrap:anywhere}
 .stage{background:var(--media);border-right:1px solid var(--ink)}
 .view{position:relative;height:clamp(200px,44vh,460px);background:var(--media);border-bottom:1px solid var(--ink)}
 .view img,.view video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0b1013}
@@ -185,7 +187,7 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
 
 @media (max-width:980px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .dgrid{grid-template-columns:1fr}.stage{border-right:0;border-bottom:1px solid var(--ink)}
+  .dgrid{grid-template-columns:minmax(0,1fr)}.stage{border-right:0;border-bottom:1px solid var(--ink)}
   .hero{grid-template-columns:1fr}.hero .txt{border-right:0;border-bottom:1px solid var(--ink);padding:32px 24px}
   .hero .ph{min-height:300px}
   .tb{grid-template-columns:1fr}.tb>div{border-right:0;border-bottom:1px solid var(--ink)}.tb>div:last-child{border-bottom:0}
@@ -196,6 +198,7 @@ footer{padding:0 0 48px;color:var(--ink2);font-size:15px}
   body{font-size:16px}
   .wrap{padding:0 12px}
   .grid{grid-template-columns:1fr}.card.feat{grid-column:auto}.card.feat .cover{aspect-ratio:4/3}
+  .dhead{flex-wrap:wrap}.dhead h2{flex:1 1 100%}.dbtns{justify-content:flex-start}
   .bar .row{gap:10px}.dhead{padding:14px}.info{padding:16px}.about>div{padding:22px 18px}
   .view{height:clamp(170px,30vh,280px)}.dhead h2{font-size:26px}.th{width:72px;height:50px}.thumbs{padding:8px 10px}
   .dnav button{font-size:16px;padding:10px 12px}.dnav small{font-size:12px}
@@ -445,7 +448,7 @@ function open(id,start){
   if(p.sec&&p.sec.length){const det=document.createElement('details');det.appendChild(el('summary',null,'More details'));p.sec.forEach(([h,items])=>{det.appendChild(el('h4',null,h));const u=el('ul');items.forEach(([a,b])=>{const li=el('li');li.appendChild(el('b',null,a+' '));li.appendChild(document.createTextNode(b));u.appendChild(li)});det.appendChild(u)});sc.appendChild(det)}
   const stage=$('#view'),th=$('#thumbs');stage.textContent='';th.textContent='';$('#cap').textContent='';
   const stg=document.querySelector('.stage');
-  if(!p.m.length){stg.style.display='none';document.querySelector('.dgrid').style.gridTemplateColumns='1fr'}
+  if(!p.m.length){stg.style.display='none';document.querySelector('.dgrid').style.gridTemplateColumns='minmax(0,1fr)'}
   else{stg.style.display='';document.querySelector('.dgrid').style.gridTemplateColumns=''}
   p.m.forEach((it,i)=>{
     const b=el('button','th');b.type='button';b.setAttribute('aria-label',(it[1]||('Media '+(i+1)))+(it[0].startsWith('v:')?' (video)':''));
