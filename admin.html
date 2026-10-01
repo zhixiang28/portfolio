@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Manage projects (private)</title>
+<style>
+:root{--bg:#f4f2ec;--ink:#14212b;--ink2:#52606b;--line:#14212b;--accent:#c4501b;--ok:#1b7a43;--err:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#10171c;--ink:#e8ecef;--ink2:#9aa7b0;--line:#e8ecef;--accent:#ff8a50;--ok:#58c486;--err:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:26px;margin:8px 0 4px}h2{font-size:19px;margin:0 0 10px}
+p.sub{color:var(--ink2);margin:0 0 20px}
+section{border:1px solid var(--line);padding:16px;margin-bottom:18px}
+label{display:block;font-weight:600;margin:12px 0 4px}
+small{color:var(--ink2);font-weight:400}
+input[type=text],input[type=password],textarea,select{width:100%;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);padding:9px 10px;border-radius:0}
+textarea{min-height:90px;resize:vertical}
+button{font:inherit;cursor:pointer;color:var(--bg);background:var(--ink);border:1px solid var(--ink);padding:10px 18px}
+button.alt{background:transparent;color:var(--ink)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 140px}
+.media{display:flex;gap:10px;align-items:center;border:1px solid var(--line);padding:8px;margin-top:8px}
+.media img,.media video{width:64px;height:48px;object-fit:cover;background:#000;flex:0 0 auto}
+.media input{flex:1 1 auto;min-width:0}
+.media button{padding:6px 10px}
+#log{white-space:pre-wrap;font-size:14px;margin-top:12px;min-height:20px}
+.ok{color:var(--ok)}.err{color:var(--err)}
+a{color:var(--accent)}
+.proj{display:flex;gap:10px;align-items:center;border:1px solid var(--line);padding:8px;margin-top:8px}
+.proj b{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}.proj small{display:block}
+.proj button{padding:6px 10px;flex:0 0 auto}
+.sec{border:1px dashed var(--line);padding:10px;margin-top:10px}
+.item{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.item input{flex:1 1 120px;min-width:0}.item textarea{flex:2 1 100%;min-height:70px}
+.danger{background:var(--err);border-color:var(--err);color:#fff}
+.cov{display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+<h1>Manage projects</h1>
+<p class="sub">Private page. It only works with your GitHub token, which stays in this browser.</p>
+
+<section id="auth">
+  <h2>Sign in</h2>
+  <label for="tok">GitHub token <small>(fine-grained, this repo only, Contents: read and write)</small></label>
+  <input type="password" id="tok" autocomplete="off" placeholder="github_pat_...">
+  <label for="repo">Repository</label>
+  <input type="text" id="repo" value="zhixiang28/portfolio">
+  <label for="branch">Branch</label>
+  <input type="text" id="branch" value="main">
+  <p><button id="save" type="button">Save and check</button> <button id="forget" class="alt" type="button">Sign out</button></p>
+  <div id="authmsg"></div>
+</section>
+
+<section id="listview" hidden>
+  <h2>Your projects</h2>
+  <p><button id="addnew" type="button">+ Add new project</button> <button id="saveorder" class="alt" type="button" hidden>Save new order</button></p>
+  <div id="plist"></div>
+</section>
+
+<form id="form" hidden>
+<section>
+  <h2 id="ftitle">Project details</h2>
+  <label for="t">Title</label><input type="text" id="t" required>
+  <div class="row">
+    <div><label for="cat">Category</label>
+      <select id="cat"><option>Mechanical</option><option>Electronics</option><option>Software</option><option>Other</option></select></div>
+    <div><label for="ctx">Context</label>
+      <select id="ctx"><option>Work</option><option>Personal</option><option>Academic</option></select></div>
+  </div>
+  <label for="where">Where / tools <small>(short line under the title)</small></label><input type="text" id="where">
+  <label for="d">Description</label><textarea id="d" required></textarea>
+  <label for="d2">More description <small>(optional)</small></label><textarea id="d2"></textarea>
+  <label for="stack">Built with <small>(optional)</small></label><input type="text" id="stack">
+  <label><input type="checkbox" id="feat"> Feature this project (bigger card)</label>
+  <label id="toplbl"><input type="checkbox" id="top" checked> Show it first on the page</label>
+</section>
+
+<section>
+  <h2>"More details" sections <small>(optional)</small></h2>
+  <div id="secs"></div>
+  <p><button type="button" class="alt" id="addsec">+ Add section</button></p>
+</section>
+
+<section>
+  <h2>Photos and videos</h2>
+  <p class="sub">Pick which one is the cover. Photos are shrunk to 1600px automatically. Videos over about 60 MB will be refused by GitHub.</p>
+  <input type="file" id="files" accept="image/*,video/mp4,video/quicktime" multiple>
+  <div id="list"></div>
+</section>
+
+<p><button type="submit" id="go">Save project</button> <button type="button" class="alt" id="cancel">Back to list</button> <button type="button" class="danger" id="del" hidden>Delete project</button></p>
+</form>
+<div id="log"></div>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const API='https://api.github.com';
+let items=[];      // {key?,file?,kind,url,cap}
+let secs=[];       // [[heading,[[label,text],...]],...]
+let editing=null;  // existing project id, or null for new
+let cover=0;       // index of cover item
+let PL=[];         // loaded projects: {id,t,cat,...}
+const store={get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+const log=(m,c='')=>{const l=$('#log');l.textContent=m;l.className=c};
+
+/* ---- GitHub ---- */
+const cfg=()=>({tok:$('#tok').value.trim(),repo:$('#repo').value.trim(),branch:$('#branch').value.trim()||'main'});
+async function gh(path,opt={}){
+  const c=cfg();
+  const r=await fetch(API+path,{...opt,headers:{'Authorization':'Bearer '+c.tok,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.headers||{})}});
+  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status+' '+(m||r.statusText))}
+  return opt.raw?r.text():r.json();
+}
+async function loadSite(){
+  const c=cfg();
+  const ref=await gh(`/repos/${c.repo}/git/ref/heads/${c.branch}`),parent=ref.object.sha;
+  const commit=await gh(`/repos/${c.repo}/git/commits/${parent}`);
+  const html=await gh(`/repos/${c.repo}/contents/index.html?ref=${parent}`,{raw:true,headers:{'Accept':'application/vnd.github.raw+json'}});
+  const m0=html.indexOf('const M = {'),m1=html.indexOf('\n};',m0),p0=html.indexOf('const P = ['),p1=html.indexOf('\n];',p0);
+  if(m0<0||m1<0||p0<0||p1<0)throw new Error('Could not find the project list in index.html.');
+  const M=JSON.parse(html.slice(m0+10,m1+2));
+  const lines=html.slice(html.indexOf('\n',p0)+1,p1).split('\n').filter(x=>x.trim());
+  const P=lines.map(l=>{const raw=l.trim().replace(/,$/,'');return {raw,o:JSON.parse(raw)}});
+  return {c,parent,tree:commit.tree.sha,html,m0,m1,p0,p1,M,P};
+}
+/* commit: mutate(site) edits site.M (object), site.P (array of {raw,o,dirty}), pushes to site.files / site.deletes */
+async function commitSite(msg,mutate){
+  const site=await loadSite();site.files=[];site.deletes=[];
+  await mutate(site);
+  const {c,html,M,P}=site;
+  const rest=html.slice(site.p1+2);const mBlock='const M = {\n'+Object.entries(M).map(([k,v])=>JSON.stringify(k)+': '+JSON.stringify(v)).join(',\n')+'\n}';
+  const pBlock='const P = [\n'+P.map(e=>' '+(e.dirty?JSON.stringify(e.o):e.raw)).join(',\n')+'\n]';
+  const bg=html.slice(site.m1+2,site.p0);
+  const out=html.slice(0,site.m0)+mBlock+bg+pBlock+rest;
+  const entries=[];
+  const add=[{path:'index.html',content:out,encoding:'utf-8'},...site.files];
+  for(let i=0;i<add.length;i++){
+    log(`Uploading ${i+1} of ${add.length}…`);
+    const b=await gh(`/repos/${c.repo}/git/blobs`,{method:'POST',body:JSON.stringify({content:add[i].content,encoding:add[i].encoding})});
+    entries.push({path:add[i].path,mode:'100644',type:'blob',sha:b.sha});
+  }
+  site.deletes.forEach(path=>entries.push({path,mode:'100644',type:'blob',sha:null}));
+  log('Publishing…');
+  const tree=await gh(`/repos/${c.repo}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:site.tree,tree:entries})});
+  const nc=await gh(`/repos/${c.repo}/git/commits`,{method:'POST',body:JSON.stringify({message:msg,tree:tree.sha,parents:[site.parent]})});
+  await gh(`/repos/${c.repo}/git/refs/heads/${c.branch}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
+}
+/* remove media keys of a project that nothing else uses; queue file deletion */
+function dropMedia(site,keys){
+  const rest=site.P.map(e=>JSON.stringify(e.o)).join('')+site.html.slice(site.m1+2,site.p0);
+  keys.forEach(k=>{
+    if(rest.includes(JSON.stringify(k)))return;
+    [k,k.startsWith('v:')?'p:'+k.slice(2):null].filter(Boolean).forEach(kk=>{
+      if(site.M[kk]){site.deletes.push(site.M[kk]);delete site.M[kk]}
+    });
+  });
+}
+
+/* ---- sign in ---- */
+$('#tok').value=store.get('adm_tok');$('#repo').value=store.get('adm_repo')||$('#repo').value;$('#branch').value=store.get('adm_branch')||$('#branch').value;
+async function check(){
+  const c=cfg(),m=$('#authmsg');
+  if(!c.tok){m.textContent='Paste your token first.';m.className='err';return}
+  try{
+    const r=await gh(`/repos/${c.repo}`);
+    if(!r.permissions||!r.permissions.push) throw new Error('This token cannot write to the repository.');
+    store.set('adm_tok',c.tok);store.set('adm_repo',c.repo);store.set('adm_branch',c.branch);
+    m.textContent='Signed in to '+r.full_name;m.className='ok';
+    await showList();
+  }catch(e){m.textContent='Could not sign in: '+e.message;m.className='err';$('#form').hidden=true;$('#listview').hidden=true}
+}
+$('#save').onclick=check;
+$('#forget').onclick=()=>{['adm_tok','adm_repo','adm_branch'].forEach(store.del);$('#tok').value='';$('#form').hidden=true;$('#listview').hidden=true;$('#authmsg').textContent='Signed out.';$('#authmsg').className=''};
+if($('#tok').value)check();
+
+/* ---- project list ---- */
+let site0=null;
+async function showList(){
+  $('#form').hidden=true;$('#listview').hidden=false;$('#saveorder').hidden=true;log('');
+  site0=await loadSite();PL=site0.P.map(e=>e.o);renderList();
+}
+function renderList(){
+  const l=$('#plist');l.textContent='';
+  PL.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='proj';
+    const b=document.createElement('b');b.textContent=p.t;const sm=document.createElement('small');sm.textContent=p.cat+' · '+p.ctx;b.appendChild(sm);
+    const mk=(txt,fn,dis)=>{const x=document.createElement('button');x.type='button';x.className='alt';x.textContent=txt;x.disabled=!!dis;x.onclick=fn;return x};
+    d.append(b,mk('↑',()=>mv(i,-1),i===0),mk('↓',()=>mv(i,1),i===PL.length-1),mk('Edit',()=>edit(p.id)));
+    l.appendChild(d);
+  });
+}
+function mv(i,dx){PL.splice(i+dx,0,PL.splice(i,1)[0]);$('#saveorder').hidden=false;renderList()}
+$('#saveorder').onclick=async()=>{
+  $('#saveorder').disabled=true;
+  try{
+    await commitSite('Reorder projects',site=>{const by=Object.fromEntries(site.P.map(e=>[e.o.id,e]));site.P=PL.map(p=>by[p.id]);});
+    await showList();log('Order saved. The site updates in a minute or two.','ok');
+  }catch(e){log('Failed: '+e.message,'err')}
+  $('#saveorder').disabled=false;
+};
+$('#addnew').onclick=()=>edit(null);
+
+/* ---- editor ---- */
+const SEL=(id,v)=>{const s=$(id);if(![...s.options].some(o=>o.value===v)){s.add(new Option(v,v))}s.value=v};
+function edit(id){
+  editing=id;items=[];secs=[];cover=0;
+  const p=id?PL.find(x=>x.id===id):{};
+  $('#ftitle').textContent=id?'Edit: '+p.t:'New project';
+  $('#t').value=p.t||'';SEL('#cat',p.cat||'Mechanical');SEL('#ctx',p.ctx||'Work');
+  $('#where').value=p.where||'';$('#d').value=p.d||'';$('#d2').value=p.d2||'';$('#stack').value=p.stack||'';
+  $('#feat').checked=!!p.feat;$('#toplbl').hidden=!!id;$('#top').checked=true;
+  secs=JSON.parse(JSON.stringify(p.sec||[]));
+  (p.m||[]).forEach(([k,cap])=>{
+    const path=site0.M[k]||'';items.push({key:k,kind:k.startsWith('v:')?'video':'image',url:path,cap:cap||''});
+  });
+  cover=Math.max(0,items.findIndex(x=>x.key===p.cover));
+  $('#del').hidden=!id;
+  renderSecs();render();
+  $('#listview').hidden=true;$('#form').hidden=false;log('');window.scrollTo(0,0);
+}
+$('#cancel').onclick=()=>showList();
+
+function renderSecs(){
+  const w=$('#secs');w.textContent='';
+  const inp=(v,ph,fn,area)=>{const x=document.createElement(area?'textarea':'input');if(!area)x.type='text';x.value=v;x.placeholder=ph;x.oninput=()=>fn(x.value);return x};
+  const btn=(t,fn)=>{const b=document.createElement('button');b.type='button';b.className='alt';b.textContent=t;b.onclick=fn;return b};
+  secs.forEach((s,si)=>{
+    const d=document.createElement('div');d.className='sec';
+    d.appendChild(inp(s[0],'Section heading, e.g. What I built',v=>s[0]=v));
+    s[1].forEach((it,ii)=>{
+      const r=document.createElement('div');r.className='item';
+      r.append(inp(it[0],'Bold label (optional)',v=>it[0]=v),inp(it[1],'Text',v=>it[1]=v,true),btn('✕',()=>{s[1].splice(ii,1);renderSecs()}));
+      d.appendChild(r);
+    });
+    const r=document.createElement('p');r.append(btn('+ Add line',()=>{s[1].push(['','']);renderSecs()}),' ',btn('Remove section',()=>{secs.splice(si,1);renderSecs()}));
+    d.appendChild(r);w.appendChild(d);
+  });
+}
+$('#addsec').onclick=()=>{secs.push(['',[['','']]]);renderSecs()};
+
+function render(){
+  const l=$('#list');l.textContent='';
+  items.forEach((it,i)=>{
+    const d=document.createElement('div');d.className='media';
+    const m=document.createElement(it.kind==='video'?'video':'img');m.src=it.url;if(it.kind==='video')m.muted=true;
+    const c=document.createElement('input');c.type='text';c.placeholder='Caption (optional)';c.value=it.cap;c.oninput=()=>it.cap=c.value;
+    const cv=document.createElement('label');cv.className='cov';const r=document.createElement('input');r.type='radio';r.name='cover';r.checked=i===cover;r.onchange=()=>cover=i;cv.append(r,'Cover');
+    const up=document.createElement('button');up.type='button';up.className='alt';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{const cur=items[cover];items.splice(i-1,0,items.splice(i,1)[0]);cover=items.indexOf(cur);render()};
+    const x=document.createElement('button');x.type='button';x.className='alt';x.textContent='✕';x.onclick=()=>{const cur=items[cover];items.splice(i,1);cover=Math.max(0,items.indexOf(cur));render()};
+    d.append(m,c,cv,up,x);l.appendChild(d);
+  });
+}
+$('#files').onchange=e=>{
+  for(const f of e.target.files)items.push({file:f,kind:f.type.startsWith('video')?'video':'image',url:URL.createObjectURL(f),cap:''});
+  e.target.value='';render();
+};
+
+/* ---- helpers ---- */
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'project';
+const b64=buf=>{let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)};
+async function shrink(file,max=1600){
+  const bmp=await createImageBitmap(file);
+  const k=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  const cv=document.createElement('canvas');cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
+  cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+  return new Promise(r=>cv.toBlob(r,'image/jpeg',.85));
+}
+async function videoPoster(file){
+  const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=URL.createObjectURL(file);
+  await new Promise((ok,no)=>{v.onloadeddata=ok;v.onerror=()=>no(new Error('Cannot read video '+file.name))});
+  v.currentTime=Math.min(1,(v.duration||2)/2);
+  await new Promise(ok=>v.onseeked=ok);
+  const k=Math.min(1,1280/Math.max(v.videoWidth,v.videoHeight));
+  const cv=document.createElement('canvas');cv.width=Math.round(v.videoWidth*k);cv.height=Math.round(v.videoHeight*k);
+  cv.getContext('2d').drawImage(v,0,0,cv.width,cv.height);
+  return new Promise(r=>cv.toBlob(r,'image/jpeg',.82));
+}
+
+/* ---- save / delete ---- */
+$('#form').onsubmit=async e=>{
+  e.preventDefault();
+  if(!items.length){log('Add at least one photo or video.','err');return}
+  $('#go').disabled=true;
+  try{
+    const t=$('#t').value.trim();
+    // prepare new media outside the commit (slow)
+    const pre=[];
+    for(let i=0;i<items.length;i++){
+      const it=items[i];if(it.key)continue;log(`Preparing file ${i+1} of ${items.length}…`);
+      pre.push({it,data:it.kind==='image'?b64(await (await shrink(it.file)).arrayBuffer()):b64(await it.file.arrayBuffer()),poster:it.kind==='video'?b64(await (await videoPoster(it.file)).arrayBuffer()):null});
+    }
+    const coverItem=items[cover];
+    await commitSite((editing?'Edit project: ':'Add project: ')+t,site=>{
+      const old=editing?site.P.find(x=>x.o.id===editing):null;
+      let id=editing;
+      if(!id){id=slug(t);let n=2;const b=id;while(site.P.some(x=>x.o.id===id))id=b+'-'+n++}
+      const kb=id.replace(/-/g,'_');
+      const free=(k)=>!(k in site.M);
+      pre.forEach(({it,data,poster})=>{
+        let n=1,key;
+        if(it.kind==='image'){while(!free(key=`${kb}_${n}`)||site.files.some(f=>f.path===`assets/img/${key}.jpg`))n++;
+          const path=`assets/img/${key}.jpg`;site.M[key]=path;site.files.push({path,content:data,encoding:'base64'});it.key=key}
+        else{let name;while(!free('v:'+(name=n===1?kb:`${kb}_v${n}`)))n++;
+          const vp=`assets/vid/${name}.mp4`,pp=`assets/vid/${name}.jpg`;site.M['v:'+name]=vp;site.M['p:'+name]=pp;
+          site.files.push({path:vp,content:data,encoding:'base64'},{path:pp,content:poster,encoding:'base64'});it.key='v:'+name}
+      });
+      const o=old?{...old.o}:{id};
+      o.id=id;o.t=t;o.cat=$('#cat').value;o.ctx=$('#ctx').value;o.where=$('#where').value.trim();
+      if($('#feat').checked)o.feat=1;else delete o.feat;
+      o.d=$('#d').value.trim();o.d2=$('#d2').value.trim();
+      const st=$('#stack').value.trim();if(st)o.stack=st;else delete o.stack;
+      const sc=secs.map(([h,its])=>[h.trim(),its.filter(x=>x[0].trim()||x[1].trim()).map(x=>[x[0].trim(),x[1].trim()])]).filter(s=>s[0]||s[1].length);
+      if(sc.length)o.sec=sc;else delete o.sec;
+      const oldKeys=old?(old.o.m||[]).map(x=>x[0]):[];
+      o.cover=coverItem.key;
+      o.m=items.map(it=>it.cap.trim()?[it.key,it.cap.trim()]:[it.key]);
+      const removed=oldKeys.filter(k=>!items.some(it=>it.key===k));
+      if(old){old.o=o;old.dirty=true}
+      else{const e={o,dirty:true};if($('#top').checked)site.P.unshift(e);else site.P.push(e)}
+      dropMedia(site,removed);
+    });
+    await showList();log('Saved "'+t+'". The site updates in a minute or two.','ok');
+  }catch(err){log('Failed: '+err.message,'err')}
+  $('#go').disabled=false;
+};
+$('#del').onclick=async()=>{
+  const p=PL.find(x=>x.id===editing);
+  if(!confirm('Delete "'+p.t+'" and its photos and videos? This cannot be undone from this page.'))return;
+  $('#del').disabled=true;
+  try{
+    await commitSite('Delete project: '+p.t,site=>{
+      const i=site.P.findIndex(x=>x.o.id===editing);const [gone]=site.P.splice(i,1);
+      dropMedia(site,(gone.o.m||[]).map(x=>x[0]).concat(gone.o.cover?[gone.o.cover]:[]));
+    });
+    await showList();log('Deleted "'+p.t+'". The site updates in a minute or two.','ok');
+  }catch(err){log('Failed: '+err.message,'err')}
+  $('#del').disabled=false;
+};
+</script>
+</body>
+</html>
