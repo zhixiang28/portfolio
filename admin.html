@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Add project (private)</title>
+<title>Manage projects (private)</title>
 <style>
 :root{--bg:#f4f2ec;--ink:#14212b;--ink2:#52606b;--line:#14212b;--accent:#c4501b;--ok:#1b7a43;--err:#b3261e}
 @media (prefers-color-scheme:dark){:root{--bg:#10171c;--ink:#e8ecef;--ink2:#9aa7b0;--line:#e8ecef;--accent:#ff8a50;--ok:#58c486;--err:#ff8a80}}
@@ -29,15 +29,22 @@ button:disabled{opacity:.5;cursor:default}
 #log{white-space:pre-wrap;font-size:14px;margin-top:12px;min-height:20px}
 .ok{color:var(--ok)}.err{color:var(--err)}
 a{color:var(--accent)}
+.proj{display:flex;gap:10px;align-items:center;border:1px solid var(--line);padding:8px;margin-top:8px}
+.proj b{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}.proj small{display:block}
+.proj button{padding:6px 10px;flex:0 0 auto}
+.sec{border:1px dashed var(--line);padding:10px;margin-top:10px}
+.item{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.item input{flex:1 1 120px;min-width:0}.item textarea{flex:2 1 100%;min-height:70px}
+.danger{background:var(--err);border-color:var(--err);color:#fff}
+.cov{display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap}
 </style>
 </head>
 <body>
 <main>
-<h1>Add a project</h1>
+<h1>Manage projects</h1>
 <p class="sub">Private page. It only works with your GitHub token, which stays in this browser.</p>
 
 <section id="auth">
-  <h2>1. Sign in</h2>
+  <h2>Sign in</h2>
   <label for="tok">GitHub token <small>(fine-grained, this repo only, Contents: read and write)</small></label>
   <input type="password" id="tok" autocomplete="off" placeholder="github_pat_...">
   <label for="repo">Repository</label>
@@ -48,9 +55,15 @@ a{color:var(--accent)}
   <div id="authmsg"></div>
 </section>
 
+<section id="listview" hidden>
+  <h2>Your projects</h2>
+  <p><button id="addnew" type="button">+ Add new project</button> <button id="saveorder" class="alt" type="button" hidden>Save new order</button></p>
+  <div id="plist"></div>
+</section>
+
 <form id="form" hidden>
 <section>
-  <h2>2. Project details</h2>
+  <h2 id="ftitle">Project details</h2>
   <label for="t">Title</label><input type="text" id="t" required>
   <div class="row">
     <div><label for="cat">Category</label>
@@ -63,29 +76,39 @@ a{color:var(--accent)}
   <label for="d2">More description <small>(optional)</small></label><textarea id="d2"></textarea>
   <label for="stack">Built with <small>(optional)</small></label><input type="text" id="stack">
   <label><input type="checkbox" id="feat"> Feature this project (bigger card)</label>
-  <label><input type="checkbox" id="top" checked> Show it first on the page</label>
+  <label id="toplbl"><input type="checkbox" id="top" checked> Show it first on the page</label>
 </section>
 
 <section>
-  <h2>3. Photos and videos</h2>
-  <p class="sub">The first item is the cover. Photos are shrunk to 1600px automatically. Videos over about 60 MB will be refused by GitHub.</p>
+  <h2>"More details" sections <small>(optional)</small></h2>
+  <div id="secs"></div>
+  <p><button type="button" class="alt" id="addsec">+ Add section</button></p>
+</section>
+
+<section>
+  <h2>Photos and videos</h2>
+  <p class="sub">Pick which one is the cover. Photos are shrunk to 1600px automatically. Videos over about 60 MB will be refused by GitHub.</p>
   <input type="file" id="files" accept="image/*,video/mp4,video/quicktime" multiple>
   <div id="list"></div>
 </section>
 
-<p><button type="submit" id="go">Publish project</button></p>
-<div id="log"></div>
+<p><button type="submit" id="go">Save project</button> <button type="button" class="alt" id="cancel">Back to list</button> <button type="button" class="danger" id="del" hidden>Delete project</button></p>
 </form>
+<div id="log"></div>
 </main>
 
 <script>
 const $=s=>document.querySelector(s);
 const API='https://api.github.com';
-let items=[]; // {file,kind,url,cap,poster}
-
-/* ---- token handling ---- */
+let items=[];      // {key?,file?,kind,url,cap}
+let secs=[];       // [[heading,[[label,text],...]],...]
+let editing=null;  // existing project id, or null for new
+let cover=0;       // index of cover item
+let PL=[];         // loaded projects: {id,t,cat,...}
 const store={get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
-$('#tok').value=store.get('adm_tok');$('#repo').value=store.get('adm_repo')||$('#repo').value;$('#branch').value=store.get('adm_branch')||$('#branch').value;
+const log=(m,c='')=>{const l=$('#log');l.textContent=m;l.className=c};
+
+/* ---- GitHub ---- */
 const cfg=()=>({tok:$('#tok').value.trim(),repo:$('#repo').value.trim(),branch:$('#branch').value.trim()||'main'});
 async function gh(path,opt={}){
   const c=cfg();
@@ -93,6 +116,53 @@ async function gh(path,opt={}){
   if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status+' '+(m||r.statusText))}
   return opt.raw?r.text():r.json();
 }
+async function loadSite(){
+  const c=cfg();
+  const ref=await gh(`/repos/${c.repo}/git/ref/heads/${c.branch}`),parent=ref.object.sha;
+  const commit=await gh(`/repos/${c.repo}/git/commits/${parent}`);
+  const html=await gh(`/repos/${c.repo}/contents/index.html?ref=${parent}`,{raw:true,headers:{'Accept':'application/vnd.github.raw+json'}});
+  const m0=html.indexOf('const M = {'),m1=html.indexOf('\n};',m0),p0=html.indexOf('const P = ['),p1=html.indexOf('\n];',p0);
+  if(m0<0||m1<0||p0<0||p1<0)throw new Error('Could not find the project list in index.html.');
+  const M=JSON.parse(html.slice(m0+10,m1+2));
+  const lines=html.slice(html.indexOf('\n',p0)+1,p1).split('\n').filter(x=>x.trim());
+  const P=lines.map(l=>{const raw=l.trim().replace(/,$/,'');return {raw,o:JSON.parse(raw)}});
+  return {c,parent,tree:commit.tree.sha,html,m0,m1,p0,p1,M,P};
+}
+/* commit: mutate(site) edits site.M (object), site.P (array of {raw,o,dirty}), pushes to site.files / site.deletes */
+async function commitSite(msg,mutate){
+  const site=await loadSite();site.files=[];site.deletes=[];
+  await mutate(site);
+  const {c,html,M,P}=site;
+  const rest=html.slice(site.p1+2);const mBlock='const M = {\n'+Object.entries(M).map(([k,v])=>JSON.stringify(k)+': '+JSON.stringify(v)).join(',\n')+'\n}';
+  const pBlock='const P = [\n'+P.map(e=>' '+(e.dirty?JSON.stringify(e.o):e.raw)).join(',\n')+'\n]';
+  const bg=html.slice(site.m1+2,site.p0);
+  const out=html.slice(0,site.m0)+mBlock+bg+pBlock+rest;
+  const entries=[];
+  const add=[{path:'index.html',content:out,encoding:'utf-8'},...site.files];
+  for(let i=0;i<add.length;i++){
+    log(`Uploading ${i+1} of ${add.length}…`);
+    const b=await gh(`/repos/${c.repo}/git/blobs`,{method:'POST',body:JSON.stringify({content:add[i].content,encoding:add[i].encoding})});
+    entries.push({path:add[i].path,mode:'100644',type:'blob',sha:b.sha});
+  }
+  site.deletes.forEach(path=>entries.push({path,mode:'100644',type:'blob',sha:null}));
+  log('Publishing…');
+  const tree=await gh(`/repos/${c.repo}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:site.tree,tree:entries})});
+  const nc=await gh(`/repos/${c.repo}/git/commits`,{method:'POST',body:JSON.stringify({message:msg,tree:tree.sha,parents:[site.parent]})});
+  await gh(`/repos/${c.repo}/git/refs/heads/${c.branch}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
+}
+/* remove media keys of a project that nothing else uses; queue file deletion */
+function dropMedia(site,keys){
+  const rest=site.P.map(e=>JSON.stringify(e.o)).join('')+site.html.slice(site.m1+2,site.p0);
+  keys.forEach(k=>{
+    if(rest.includes(JSON.stringify(k)))return;
+    [k,k.startsWith('v:')?'p:'+k.slice(2):null].filter(Boolean).forEach(kk=>{
+      if(site.M[kk]){site.deletes.push(site.M[kk]);delete site.M[kk]}
+    });
+  });
+}
+
+/* ---- sign in ---- */
+$('#tok').value=store.get('adm_tok');$('#repo').value=store.get('adm_repo')||$('#repo').value;$('#branch').value=store.get('adm_branch')||$('#branch').value;
 async function check(){
   const c=cfg(),m=$('#authmsg');
   if(!c.tok){m.textContent='Paste your token first.';m.className='err';return}
@@ -100,30 +170,93 @@ async function check(){
     const r=await gh(`/repos/${c.repo}`);
     if(!r.permissions||!r.permissions.push) throw new Error('This token cannot write to the repository.');
     store.set('adm_tok',c.tok);store.set('adm_repo',c.repo);store.set('adm_branch',c.branch);
-    m.textContent='Signed in to '+r.full_name;m.className='ok';$('#form').hidden=false;
-  }catch(e){m.textContent='Could not sign in: '+e.message;m.className='err';$('#form').hidden=true}
+    m.textContent='Signed in to '+r.full_name;m.className='ok';
+    await showList();
+  }catch(e){m.textContent='Could not sign in: '+e.message;m.className='err';$('#form').hidden=true;$('#listview').hidden=true}
 }
 $('#save').onclick=check;
-$('#forget').onclick=()=>{['adm_tok','adm_repo','adm_branch'].forEach(store.del);$('#tok').value='';$('#form').hidden=true;$('#authmsg').textContent='Signed out.';$('#authmsg').className=''};
+$('#forget').onclick=()=>{['adm_tok','adm_repo','adm_branch'].forEach(store.del);$('#tok').value='';$('#form').hidden=true;$('#listview').hidden=true;$('#authmsg').textContent='Signed out.';$('#authmsg').className=''};
 if($('#tok').value)check();
 
-/* ---- media list ---- */
+/* ---- project list ---- */
+let site0=null;
+async function showList(){
+  $('#form').hidden=true;$('#listview').hidden=false;$('#saveorder').hidden=true;log('');
+  site0=await loadSite();PL=site0.P.map(e=>e.o);renderList();
+}
+function renderList(){
+  const l=$('#plist');l.textContent='';
+  PL.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='proj';
+    const b=document.createElement('b');b.textContent=p.t;const sm=document.createElement('small');sm.textContent=p.cat+' · '+p.ctx;b.appendChild(sm);
+    const mk=(txt,fn,dis)=>{const x=document.createElement('button');x.type='button';x.className='alt';x.textContent=txt;x.disabled=!!dis;x.onclick=fn;return x};
+    d.append(b,mk('↑',()=>mv(i,-1),i===0),mk('↓',()=>mv(i,1),i===PL.length-1),mk('Edit',()=>edit(p.id)));
+    l.appendChild(d);
+  });
+}
+function mv(i,dx){PL.splice(i+dx,0,PL.splice(i,1)[0]);$('#saveorder').hidden=false;renderList()}
+$('#saveorder').onclick=async()=>{
+  $('#saveorder').disabled=true;
+  try{
+    await commitSite('Reorder projects',site=>{const by=Object.fromEntries(site.P.map(e=>[e.o.id,e]));site.P=PL.map(p=>by[p.id]);});
+    await showList();log('Order saved. The site updates in a minute or two.','ok');
+  }catch(e){log('Failed: '+e.message,'err')}
+  $('#saveorder').disabled=false;
+};
+$('#addnew').onclick=()=>edit(null);
+
+/* ---- editor ---- */
+const SEL=(id,v)=>{const s=$(id);if(![...s.options].some(o=>o.value===v)){s.add(new Option(v,v))}s.value=v};
+function edit(id){
+  editing=id;items=[];secs=[];cover=0;
+  const p=id?PL.find(x=>x.id===id):{};
+  $('#ftitle').textContent=id?'Edit: '+p.t:'New project';
+  $('#t').value=p.t||'';SEL('#cat',p.cat||'Mechanical');SEL('#ctx',p.ctx||'Work');
+  $('#where').value=p.where||'';$('#d').value=p.d||'';$('#d2').value=p.d2||'';$('#stack').value=p.stack||'';
+  $('#feat').checked=!!p.feat;$('#toplbl').hidden=!!id;$('#top').checked=true;
+  secs=JSON.parse(JSON.stringify(p.sec||[]));
+  (p.m||[]).forEach(([k,cap])=>{
+    const path=site0.M[k]||'';items.push({key:k,kind:k.startsWith('v:')?'video':'image',url:path,cap:cap||''});
+  });
+  cover=Math.max(0,items.findIndex(x=>x.key===p.cover));
+  $('#del').hidden=!id;
+  renderSecs();render();
+  $('#listview').hidden=true;$('#form').hidden=false;log('');window.scrollTo(0,0);
+}
+$('#cancel').onclick=()=>showList();
+
+function renderSecs(){
+  const w=$('#secs');w.textContent='';
+  const inp=(v,ph,fn,area)=>{const x=document.createElement(area?'textarea':'input');if(!area)x.type='text';x.value=v;x.placeholder=ph;x.oninput=()=>fn(x.value);return x};
+  const btn=(t,fn)=>{const b=document.createElement('button');b.type='button';b.className='alt';b.textContent=t;b.onclick=fn;return b};
+  secs.forEach((s,si)=>{
+    const d=document.createElement('div');d.className='sec';
+    d.appendChild(inp(s[0],'Section heading, e.g. What I built',v=>s[0]=v));
+    s[1].forEach((it,ii)=>{
+      const r=document.createElement('div');r.className='item';
+      r.append(inp(it[0],'Bold label (optional)',v=>it[0]=v),inp(it[1],'Text',v=>it[1]=v,true),btn('✕',()=>{s[1].splice(ii,1);renderSecs()}));
+      d.appendChild(r);
+    });
+    const r=document.createElement('p');r.append(btn('+ Add line',()=>{s[1].push(['','']);renderSecs()}),' ',btn('Remove section',()=>{secs.splice(si,1);renderSecs()}));
+    d.appendChild(r);w.appendChild(d);
+  });
+}
+$('#addsec').onclick=()=>{secs.push(['',[['','']]]);renderSecs()};
+
 function render(){
   const l=$('#list');l.textContent='';
   items.forEach((it,i)=>{
     const d=document.createElement('div');d.className='media';
     const m=document.createElement(it.kind==='video'?'video':'img');m.src=it.url;if(it.kind==='video')m.muted=true;
-    const c=document.createElement('input');c.type='text';c.placeholder=(i===0?'Cover. ':'')+'Caption (optional)';c.value=it.cap;c.oninput=()=>it.cap=c.value;
-    const up=document.createElement('button');up.type='button';up.className='alt';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{items.splice(i-1,0,items.splice(i,1)[0]);render()};
-    const x=document.createElement('button');x.type='button';x.className='alt';x.textContent='✕';x.onclick=()=>{items.splice(i,1);render()};
-    d.append(m,c,up,x);l.appendChild(d);
+    const c=document.createElement('input');c.type='text';c.placeholder='Caption (optional)';c.value=it.cap;c.oninput=()=>it.cap=c.value;
+    const cv=document.createElement('label');cv.className='cov';const r=document.createElement('input');r.type='radio';r.name='cover';r.checked=i===cover;r.onchange=()=>cover=i;cv.append(r,'Cover');
+    const up=document.createElement('button');up.type='button';up.className='alt';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{const cur=items[cover];items.splice(i-1,0,items.splice(i,1)[0]);cover=items.indexOf(cur);render()};
+    const x=document.createElement('button');x.type='button';x.className='alt';x.textContent='✕';x.onclick=()=>{const cur=items[cover];items.splice(i,1);cover=Math.max(0,items.indexOf(cur));render()};
+    d.append(m,c,cv,up,x);l.appendChild(d);
   });
 }
 $('#files').onchange=e=>{
-  for(const f of e.target.files){
-    const kind=f.type.startsWith('video')?'video':'image';
-    items.push({file:f,kind,url:URL.createObjectURL(f),cap:''});
-  }
+  for(const f of e.target.files)items.push({file:f,kind:f.type.startsWith('video')?'video':'image',url:URL.createObjectURL(f),cap:''});
   e.target.value='';render();
 };
 
@@ -147,76 +280,66 @@ async function videoPoster(file){
   cv.getContext('2d').drawImage(v,0,0,cv.width,cv.height);
   return new Promise(r=>cv.toBlob(r,'image/jpeg',.82));
 }
-const log=(m,c='')=>{const l=$('#log');l.textContent=m;l.className=c};
 
-/* ---- publish ---- */
+/* ---- save / delete ---- */
 $('#form').onsubmit=async e=>{
   e.preventDefault();
   if(!items.length){log('Add at least one photo or video.','err');return}
   $('#go').disabled=true;
   try{
-    const c=cfg();
-    log('Reading the site…');
-    const ref=await gh(`/repos/${c.repo}/git/ref/heads/${c.branch}`);
-    const parent=ref.object.sha;
-    const commit=await gh(`/repos/${c.repo}/git/commits/${parent}`);
-    let html=await gh(`/repos/${c.repo}/contents/index.html?ref=${parent}`,{raw:true,headers:{'Accept':'application/vnd.github.raw+json'}});
-
-    const mStart=html.indexOf('const M = {'),mEnd=html.indexOf('\n};',mStart);
-    const pStart=html.indexOf('const P = [');
-    if(mStart<0||mEnd<0||pStart<0)throw new Error('Could not find the project list in index.html.');
-    const mBlock=html.slice(mStart,mEnd);
-    const pBlock=html.slice(pStart,html.indexOf('\n];',pStart));
     const t=$('#t').value.trim();
-    let id=slug(t),n=2;const base=id;
-    while(pBlock.includes(`"id": "${id}"`))id=base+'-'+n++;
-    const keyBase=id.replace(/-/g,'_');
-
-    const files=[],mAdd=[],media=[];
-    let ni=0,nv=0;
+    // prepare new media outside the commit (slow)
+    const pre=[];
     for(let i=0;i<items.length;i++){
-      const it=items[i];
-      if(it.kind==='image'){
-        ni++;log(`Preparing photo ${i+1} of ${items.length}…`);
-        const key=`${keyBase}_${ni}`,path=`assets/img/${key}.jpg`;
-        files.push({path,content:b64(await (await shrink(it.file)).arrayBuffer()),encoding:'base64'});
-        mAdd.push(`"${key}": "${path}"`);media.push([key,it.cap.trim()]);
-      }else{
-        nv++;log(`Preparing video ${i+1} of ${items.length}…`);
-        const name=nv===1?keyBase:`${keyBase}_v${nv}`,key='v:'+name,vp=`assets/vid/${name}.mp4`,pp=`assets/vid/${name}.jpg`;
-        files.push({path:vp,content:b64(await it.file.arrayBuffer()),encoding:'base64'});
-        files.push({path:pp,content:b64(await (await videoPoster(it.file)).arrayBuffer()),encoding:'base64'});
-        mAdd.push(`"${key}": "${vp}"`,`"p:${name}": "${pp}"`);media.push([key,it.cap.trim()]);
-      }
+      const it=items[i];if(it.key)continue;log(`Preparing file ${i+1} of ${items.length}…`);
+      pre.push({it,data:it.kind==='image'?b64(await (await shrink(it.file)).arrayBuffer()):b64(await it.file.arrayBuffer()),poster:it.kind==='video'?b64(await (await videoPoster(it.file)).arrayBuffer()):null});
     }
-    const proj={id,t,cat:$('#cat').value,ctx:$('#ctx').value,where:$('#where').value.trim()};
-    if($('#feat').checked)proj.feat=1;
-    proj.d=$('#d').value.trim();proj.d2=$('#d2').value.trim();
-    const stack=$('#stack').value.trim();if(stack)proj.stack=stack;
-    proj.cover=media[0][0];
-    proj.m=media.map(([k,cap])=>cap?[k,cap]:[k]);
-
-    html=html.slice(0,mEnd)+',\n'+mAdd.join(',\n')+html.slice(mEnd);
-    const line='  '+JSON.stringify(proj)+',\n';
-    const pFirst=html.indexOf('\n',html.indexOf('const P = ['))+1;
-    if($('#top').checked){html=html.slice(0,pFirst)+line+html.slice(pFirst)}
-    else{const pEnd=html.indexOf('\n];',pFirst);const last=html.slice(0,pEnd);html=last+',\n'+line.replace(/,\n$/,'')+html.slice(pEnd)}
-    files.push({path:'index.html',content:html,encoding:'utf-8'});
-
-    const entries=[];
-    for(let i=0;i<files.length;i++){
-      log(`Uploading ${i+1} of ${files.length}…`);
-      const b=await gh(`/repos/${c.repo}/git/blobs`,{method:'POST',body:JSON.stringify({content:files[i].content,encoding:files[i].encoding})});
-      entries.push({path:files[i].path,mode:'100644',type:'blob',sha:b.sha});
-    }
-    log('Publishing…');
-    const tree=await gh(`/repos/${c.repo}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree:entries})});
-    const nc=await gh(`/repos/${c.repo}/git/commits`,{method:'POST',body:JSON.stringify({message:'Add project: '+t,tree:tree.sha,parents:[parent]})});
-    await gh(`/repos/${c.repo}/git/refs/heads/${c.branch}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
-    log('Done. "'+t+'" is committed. The site updates in a minute or two.','ok');
-    items=[];render();$('#form').reset();
+    const coverItem=items[cover];
+    await commitSite((editing?'Edit project: ':'Add project: ')+t,site=>{
+      const old=editing?site.P.find(x=>x.o.id===editing):null;
+      let id=editing;
+      if(!id){id=slug(t);let n=2;const b=id;while(site.P.some(x=>x.o.id===id))id=b+'-'+n++}
+      const kb=id.replace(/-/g,'_');
+      const free=(k)=>!(k in site.M);
+      pre.forEach(({it,data,poster})=>{
+        let n=1,key;
+        if(it.kind==='image'){while(!free(key=`${kb}_${n}`)||site.files.some(f=>f.path===`assets/img/${key}.jpg`))n++;
+          const path=`assets/img/${key}.jpg`;site.M[key]=path;site.files.push({path,content:data,encoding:'base64'});it.key=key}
+        else{let name;while(!free('v:'+(name=n===1?kb:`${kb}_v${n}`)))n++;
+          const vp=`assets/vid/${name}.mp4`,pp=`assets/vid/${name}.jpg`;site.M['v:'+name]=vp;site.M['p:'+name]=pp;
+          site.files.push({path:vp,content:data,encoding:'base64'},{path:pp,content:poster,encoding:'base64'});it.key='v:'+name}
+      });
+      const o=old?{...old.o}:{id};
+      o.id=id;o.t=t;o.cat=$('#cat').value;o.ctx=$('#ctx').value;o.where=$('#where').value.trim();
+      if($('#feat').checked)o.feat=1;else delete o.feat;
+      o.d=$('#d').value.trim();o.d2=$('#d2').value.trim();
+      const st=$('#stack').value.trim();if(st)o.stack=st;else delete o.stack;
+      const sc=secs.map(([h,its])=>[h.trim(),its.filter(x=>x[0].trim()||x[1].trim()).map(x=>[x[0].trim(),x[1].trim()])]).filter(s=>s[0]||s[1].length);
+      if(sc.length)o.sec=sc;else delete o.sec;
+      const oldKeys=old?(old.o.m||[]).map(x=>x[0]):[];
+      o.cover=coverItem.key;
+      o.m=items.map(it=>it.cap.trim()?[it.key,it.cap.trim()]:[it.key]);
+      const removed=oldKeys.filter(k=>!items.some(it=>it.key===k));
+      if(old){old.o=o;old.dirty=true}
+      else{const e={o,dirty:true};if($('#top').checked)site.P.unshift(e);else site.P.push(e)}
+      dropMedia(site,removed);
+    });
+    await showList();log('Saved "'+t+'". The site updates in a minute or two.','ok');
   }catch(err){log('Failed: '+err.message,'err')}
   $('#go').disabled=false;
+};
+$('#del').onclick=async()=>{
+  const p=PL.find(x=>x.id===editing);
+  if(!confirm('Delete "'+p.t+'" and its photos and videos? This cannot be undone from this page.'))return;
+  $('#del').disabled=true;
+  try{
+    await commitSite('Delete project: '+p.t,site=>{
+      const i=site.P.findIndex(x=>x.o.id===editing);const [gone]=site.P.splice(i,1);
+      dropMedia(site,(gone.o.m||[]).map(x=>x[0]).concat(gone.o.cover?[gone.o.cover]:[]));
+    });
+    await showList();log('Deleted "'+p.t+'". The site updates in a minute or two.','ok');
+  }catch(err){log('Failed: '+err.message,'err')}
+  $('#del').disabled=false;
 };
 </script>
 </body>
