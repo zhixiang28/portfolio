@@ -20,3 +20,7 @@ A static portfolio website (plain HTML, CSS and JavaScript, no build step).
 
 - Project text, categories and order are in the `P` list near the bottom of `index.html`.
 - To add a project, copy one entry in that list, change the text, and put its photos in `assets/img/`.
+
+## Adding projects from the browser
+
+Open `admin.html` (for example `https://YOUR-USERNAME.github.io/portfolio/admin.html`). It is hidden from search engines and does nothing without a GitHub token. Create a fine-grained token at github.com > Settings > Developer settings > Personal access tokens, limited to this repository with **Contents: Read and write**, and paste it into the page once. Fill in the form, add photos or videos, and press **Publish project**; the page commits the files to the repository and the site updates itself.

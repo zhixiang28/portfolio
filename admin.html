@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Add project (private)</title>
+<style>
+:root{--bg:#f4f2ec;--ink:#14212b;--ink2:#52606b;--line:#14212b;--accent:#c4501b;--ok:#1b7a43;--err:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#10171c;--ink:#e8ecef;--ink2:#9aa7b0;--line:#e8ecef;--accent:#ff8a50;--ok:#58c486;--err:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:26px;margin:8px 0 4px}h2{font-size:19px;margin:0 0 10px}
+p.sub{color:var(--ink2);margin:0 0 20px}
+section{border:1px solid var(--line);padding:16px;margin-bottom:18px}
+label{display:block;font-weight:600;margin:12px 0 4px}
+small{color:var(--ink2);font-weight:400}
+input[type=text],input[type=password],textarea,select{width:100%;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);padding:9px 10px;border-radius:0}
+textarea{min-height:90px;resize:vertical}
+button{font:inherit;cursor:pointer;color:var(--bg);background:var(--ink);border:1px solid var(--ink);padding:10px 18px}
+button.alt{background:transparent;color:var(--ink)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 140px}
+.media{display:flex;gap:10px;align-items:center;border:1px solid var(--line);padding:8px;margin-top:8px}
+.media img,.media video{width:64px;height:48px;object-fit:cover;background:#000;flex:0 0 auto}
+.media input{flex:1 1 auto;min-width:0}
+.media button{padding:6px 10px}
+#log{white-space:pre-wrap;font-size:14px;margin-top:12px;min-height:20px}
+.ok{color:var(--ok)}.err{color:var(--err)}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<h1>Add a project</h1>
+<p class="sub">Private page. It only works with your GitHub token, which stays in this browser.</p>
+
+<section id="auth">
+  <h2>1. Sign in</h2>
+  <label for="tok">GitHub token <small>(fine-grained, this repo only, Contents: read and write)</small></label>
+  <input type="password" id="tok" autocomplete="off" placeholder="github_pat_...">
+  <label for="repo">Repository</label>
+  <input type="text" id="repo" value="zhixiang28/portfolio">
+  <label for="branch">Branch</label>
+  <input type="text" id="branch" value="main">
+  <p><button id="save" type="button">Save and check</button> <button id="forget" class="alt" type="button">Sign out</button></p>
+  <div id="authmsg"></div>
+</section>
+
+<form id="form" hidden>
+<section>
+  <h2>2. Project details</h2>
+  <label for="t">Title</label><input type="text" id="t" required>
+  <div class="row">
+    <div><label for="cat">Category</label>
+      <select id="cat"><option>Mechanical</option><option>Electronics</option><option>Software</option><option>Other</option></select></div>
+    <div><label for="ctx">Context</label>
+      <select id="ctx"><option>Work</option><option>Personal</option><option>Academic</option></select></div>
+  </div>
+  <label for="where">Where / tools <small>(short line under the title)</small></label><input type="text" id="where">
+  <label for="d">Description</label><textarea id="d" required></textarea>
+  <label for="d2">More description <small>(optional)</small></label><textarea id="d2"></textarea>
+  <label for="stack">Built with <small>(optional)</small></label><input type="text" id="stack">
+  <label><input type="checkbox" id="feat"> Feature this project (bigger card)</label>
+  <label><input type="checkbox" id="top" checked> Show it first on the page</label>
+</section>
+
+<section>
+  <h2>3. Photos and videos</h2>
+  <p class="sub">The first item is the cover. Photos are shrunk to 1600px automatically. Videos over about 60 MB will be refused by GitHub.</p>
+  <input type="file" id="files" accept="image/*,video/mp4,video/quicktime" multiple>
+  <div id="list"></div>
+</section>
+
+<p><button type="submit" id="go">Publish project</button></p>
+<div id="log"></div>
+</form>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const API='https://api.github.com';
+let items=[]; // {file,kind,url,cap,poster}
+
+/* ---- token handling ---- */
+const store={get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+$('#tok').value=store.get('adm_tok');$('#repo').value=store.get('adm_repo')||$('#repo').value;$('#branch').value=store.get('adm_branch')||$('#branch').value;
+const cfg=()=>({tok:$('#tok').value.trim(),repo:$('#repo').value.trim(),branch:$('#branch').value.trim()||'main'});
+async function gh(path,opt={}){
+  const c=cfg();
+  const r=await fetch(API+path,{...opt,headers:{'Authorization':'Bearer '+c.tok,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.headers||{})}});
+  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status+' '+(m||r.statusText))}
+  return opt.raw?r.text():r.json();
+}
+async function check(){
+  const c=cfg(),m=$('#authmsg');
+  if(!c.tok){m.textContent='Paste your token first.';m.className='err';return}
+  try{
+    const r=await gh(`/repos/${c.repo}`);
+    if(!r.permissions||!r.permissions.push) throw new Error('This token cannot write to the repository.');
+    store.set('adm_tok',c.tok);store.set('adm_repo',c.repo);store.set('adm_branch',c.branch);
+    m.textContent='Signed in to '+r.full_name;m.className='ok';$('#form').hidden=false;
+  }catch(e){m.textContent='Could not sign in: '+e.message;m.className='err';$('#form').hidden=true}
+}
+$('#save').onclick=check;
+$('#forget').onclick=()=>{['adm_tok','adm_repo','adm_branch'].forEach(store.del);$('#tok').value='';$('#form').hidden=true;$('#authmsg').textContent='Signed out.';$('#authmsg').className=''};
+if($('#tok').value)check();
+
+/* ---- media list ---- */
+function render(){
+  const l=$('#list');l.textContent='';
+  items.forEach((it,i)=>{
+    const d=document.createElement('div');d.className='media';
+    const m=document.createElement(it.kind==='video'?'video':'img');m.src=it.url;if(it.kind==='video')m.muted=true;
+    const c=document.createElement('input');c.type='text';c.placeholder=(i===0?'Cover. ':'')+'Caption (optional)';c.value=it.cap;c.oninput=()=>it.cap=c.value;
+    const up=document.createElement('button');up.type='button';up.className='alt';up.textContent='↑';up.disabled=i===0;up.onclick=()=>{items.splice(i-1,0,items.splice(i,1)[0]);render()};
+    const x=document.createElement('button');x.type='button';x.className='alt';x.textContent='✕';x.onclick=()=>{items.splice(i,1);render()};
+    d.append(m,c,up,x);l.appendChild(d);
+  });
+}
+$('#files').onchange=e=>{
+  for(const f of e.target.files){
+    const kind=f.type.startsWith('video')?'video':'image';
+    items.push({file:f,kind,url:URL.createObjectURL(f),cap:''});
+  }
+  e.target.value='';render();
+};
+
+/* ---- helpers ---- */
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'project';
+const b64=buf=>{let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)};
+async function shrink(file,max=1600){
+  const bmp=await createImageBitmap(file);
+  const k=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  const cv=document.createElement('canvas');cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
+  cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);
+  return new Promise(r=>cv.toBlob(r,'image/jpeg',.85));
+}
+async function videoPoster(file){
+  const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=URL.createObjectURL(file);
+  await new Promise((ok,no)=>{v.onloadeddata=ok;v.onerror=()=>no(new Error('Cannot read video '+file.name))});
+  v.currentTime=Math.min(1,(v.duration||2)/2);
+  await new Promise(ok=>v.onseeked=ok);
+  const k=Math.min(1,1280/Math.max(v.videoWidth,v.videoHeight));
+  const cv=document.createElement('canvas');cv.width=Math.round(v.videoWidth*k);cv.height=Math.round(v.videoHeight*k);
+  cv.getContext('2d').drawImage(v,0,0,cv.width,cv.height);
+  return new Promise(r=>cv.toBlob(r,'image/jpeg',.82));
+}
+const log=(m,c='')=>{const l=$('#log');l.textContent=m;l.className=c};
+
+/* ---- publish ---- */
+$('#form').onsubmit=async e=>{
+  e.preventDefault();
+  if(!items.length){log('Add at least one photo or video.','err');return}
+  $('#go').disabled=true;
+  try{
+    const c=cfg();
+    log('Reading the site…');
+    const ref=await gh(`/repos/${c.repo}/git/ref/heads/${c.branch}`);
+    const parent=ref.object.sha;
+    const commit=await gh(`/repos/${c.repo}/git/commits/${parent}`);
+    let html=await gh(`/repos/${c.repo}/contents/index.html?ref=${parent}`,{raw:true,headers:{'Accept':'application/vnd.github.raw+json'}});
+
+    const mStart=html.indexOf('const M = {'),mEnd=html.indexOf('\n};',mStart);
+    const pStart=html.indexOf('const P = [');
+    if(mStart<0||mEnd<0||pStart<0)throw new Error('Could not find the project list in index.html.');
+    const mBlock=html.slice(mStart,mEnd);
+    const pBlock=html.slice(pStart,html.indexOf('\n];',pStart));
+    const t=$('#t').value.trim();
+    let id=slug(t),n=2;const base=id;
+    while(pBlock.includes(`"id": "${id}"`))id=base+'-'+n++;
+    const keyBase=id.replace(/-/g,'_');
+
+    const files=[],mAdd=[],media=[];
+    let ni=0,nv=0;
+    for(let i=0;i<items.length;i++){
+      const it=items[i];
+      if(it.kind==='image'){
+        ni++;log(`Preparing photo ${i+1} of ${items.length}…`);
+        const key=`${keyBase}_${ni}`,path=`assets/img/${key}.jpg`;
+        files.push({path,content:b64(await (await shrink(it.file)).arrayBuffer()),encoding:'base64'});
+        mAdd.push(`"${key}": "${path}"`);media.push([key,it.cap.trim()]);
+      }else{
+        nv++;log(`Preparing video ${i+1} of ${items.length}…`);
+        const name=nv===1?keyBase:`${keyBase}_v${nv}`,key='v:'+name,vp=`assets/vid/${name}.mp4`,pp=`assets/vid/${name}.jpg`;
+        files.push({path:vp,content:b64(await it.file.arrayBuffer()),encoding:'base64'});
+        files.push({path:pp,content:b64(await (await videoPoster(it.file)).arrayBuffer()),encoding:'base64'});
+        mAdd.push(`"${key}": "${vp}"`,`"p:${name}": "${pp}"`);media.push([key,it.cap.trim()]);
+      }
+    }
+    const proj={id,t,cat:$('#cat').value,ctx:$('#ctx').value,where:$('#where').value.trim()};
+    if($('#feat').checked)proj.feat=1;
+    proj.d=$('#d').value.trim();proj.d2=$('#d2').value.trim();
+    const stack=$('#stack').value.trim();if(stack)proj.stack=stack;
+    proj.cover=media[0][0];
+    proj.m=media.map(([k,cap])=>cap?[k,cap]:[k]);
+
+    html=html.slice(0,mEnd)+',\n'+mAdd.join(',\n')+html.slice(mEnd);
+    const line='  '+JSON.stringify(proj)+',\n';
+    const pFirst=html.indexOf('\n',html.indexOf('const P = ['))+1;
+    if($('#top').checked){html=html.slice(0,pFirst)+line+html.slice(pFirst)}
+    else{const pEnd=html.indexOf('\n];',pFirst);const last=html.slice(0,pEnd);html=last+',\n'+line.replace(/,\n$/,'')+html.slice(pEnd)}
+    files.push({path:'index.html',content:html,encoding:'utf-8'});
+
+    const entries=[];
+    for(let i=0;i<files.length;i++){
+      log(`Uploading ${i+1} of ${files.length}…`);
+      const b=await gh(`/repos/${c.repo}/git/blobs`,{method:'POST',body:JSON.stringify({content:files[i].content,encoding:files[i].encoding})});
+      entries.push({path:files[i].path,mode:'100644',type:'blob',sha:b.sha});
+    }
+    log('Publishing…');
+    const tree=await gh(`/repos/${c.repo}/git/trees`,{method:'POST',body:JSON.stringify({base_tree:commit.tree.sha,tree:entries})});
+    const nc=await gh(`/repos/${c.repo}/git/commits`,{method:'POST',body:JSON.stringify({message:'Add project: '+t,tree:tree.sha,parents:[parent]})});
+    await gh(`/repos/${c.repo}/git/refs/heads/${c.branch}`,{method:'PATCH',body:JSON.stringify({sha:nc.sha})});
+    log('Done. "'+t+'" is committed. The site updates in a minute or two.','ok');
+    items=[];render();$('#form').reset();
+  }catch(err){log('Failed: '+err.message,'err')}
+  $('#go').disabled=false;
+};
+</script>
+</body>
+</html>
