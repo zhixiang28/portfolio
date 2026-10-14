@@ -354,7 +354,11 @@ const M = {
 "ledmaps_wall": "assets/img/ledmaps_wall.jpg",
 "smartlight_1": "assets/img/smartlight_1.jpg",
 "v:ledmaps_wall": "assets/vid/ledmaps_wall.mp4",
-"p:ledmaps_wall": "assets/vid/ledmaps_wall.jpg"
+"p:ledmaps_wall": "assets/vid/ledmaps_wall.jpg",
+"asm_1": "assets/img/asm_1.jpg",
+"asm_2": "assets/img/asm_2.jpg",
+"asm_3": "assets/img/asm_3.jpg",
+"asm_4": "assets/img/asm_4.jpg"
 };
 const P = [
  {"id": "terrain-diorama", "t": "Terrain Diorama", "cat": "Other", "ctx": "Work", "where": "Romance of the Three Kingdoms theme", "feat": 1, "d": "Physical terrain for a 3 m x 3 m projection diorama: four organic corner pieces around a flat centre, printed in sections on a large-format 3D printer.", "d2": "", "cover": "s21_image54", "m": [["s21_image54"], ["s21_image55"], ["s21_image56"]]},
@@ -369,6 +373,7 @@ const P = [
  {"id": "gesture-visual", "t": "Hand Gesture Visual Effect Control", "cat": "Other", "ctx": "Personal", "where": "MediaPipe, TouchDesigner", "d": "AI camera system that turns hand gestures into real-time visual effects, touch-free.", "d2": "", "cover": "v:gestvisual", "m": [["v:gestvisual", "Visual output"], ["v:gestbg", "Background system"]]},
  {"id": "gesture-audio", "t": "Hand Gesture Audio Control", "cat": "Other", "ctx": "Personal", "where": "AI hand tracking, audio system", "d": "AI hand tracking that lets users control sound effects with hand gestures.", "d2": "", "cover": "v:gestaudio", "m": [["v:gestaudio"]]},
  {"id": "led-maps", "t": "LED Transport Map", "cat": "Electronics", "ctx": "Work", "where": "Philippines", "d": "Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.", "d2": "On the installed Philippines map wall, the buttons light up the Ports, Lighthouses and RoRo highlights.", "cover": "ledmaps_wall", "m": [["v:ledmaps_wall", "Installed wall, buttons lighting the map"], ["ledmaps_wall", "Installed wall: Ports, Lighthouses and RoRo"], ["v:ledmaps"], ["s12_image35"], ["s12_image34"]]},
+ {"id": "asm-prints", "t": "ASM Installation 3D Prints", "cat": "Mechanical", "ctx": "Work", "where": "ArtScience Museum", "d": "3D-printed bird nest, beehive and eagle tower for an ArtScience Museum art installation. I planned how to print and assemble them efficiently and robustly, then finished them to look like final pieces.", "d2": "Printed in a composite material (metal plus PLA), then finished with putty and spray paint.", "sec": [["What I did", [["Print planning:", "worked out how to split each piece into parts that print efficiently, such as the eagle tower in seven parts."], ["Robust assembly:", "designed the parts to fit together and hold up as one finished piece."], ["Post-processing:", "filled and smoothed with putty, then spray painted so the prints look finished."]]]], "cover": "asm_1", "m": [["asm_1", "Eagle tower: twisted rods between platforms, labelled for assembly"], ["asm_2", "Eagle tower model in CAD"], ["asm_3", "Exploded view: seven parts"], ["asm_4", "Printed piece with a dome base, pole and arms"]]},
  {"id": "smart-light", "t": "Smart Light", "cat": "Electronics", "ctx": "Work", "where": "Maker space; servos, web app, Supabase", "d": "Phone app that switches a maker space's square lights and wall spotlights on and off. Two servos with 3D-printed flaps in a printed bracket do the physical switching.", "d2": "", "cover": "smartlight_1", "m": [["smartlight_1", "Servo-driven flaps in their bracket"]], "stack": "HTML, CSS, vanilla JavaScript; Supabase (database and functions); servos; 3D-printed bracket", "sec": [["What it does", [["Two light groups:", "square lights and wall spotlights, each with a switch plate that shows the current state and when it last changed."], ["Weekly timer:", "pick days and on/off times; it runs on the server in Singapore time, even when the app is closed."], ["Servo calibration:", "set each servo's On and Off angle, and reverse On/Off if the app shows the opposite of the real light."]]]]},
  {"id": "nccs-donor-wall", "t": "NCCS Donor Wall Glowing Light", "cat": "Electronics", "ctx": "Work", "where": "National Cancer Centre Singapore", "d": "Curved wall of LED bulbs that makes a warm, moving glowing star around each donor name. I designed and programmed the animation.", "d2": "", "cover": "s16_image45", "m": [["v:nccs", "Visual animation"], ["s16_image45", "Overview"]]},
  {"id": "bowmore", "t": "Bowmore Running Light Counter", "cat": "Electronics", "ctx": "Work", "where": "Bowmore", "d": "Animated LED light box for a counter tabletop; I arranged the wiring and programmed the running-light sequence.", "d2": "", "cover": "s15_image44", "m": [["s15_image44", "Final look"], ["s15_image42"], ["s15_image43"]]},
@@ -396,7 +401,7 @@ function track(path,title){try{if(window.goatcounter&&window.goatcounter.count)w
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
 const src=k=>k.startsWith('v:')?M[k]:M[k];
 const poster=k=>M['p:'+k.slice(2)];
-const BG={mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
+const BG={asm_2:'#ffffff',asm_3:'#ffffff',mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
 let fcat='All',fctx='All',cur=null,list=[];
 const CATS=['All','Mechanical','Electronics','Software','Other'],CTX=['All','Work','Personal','Academic'];
 P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
