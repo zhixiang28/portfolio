@@ -350,7 +350,11 @@ const M = {
 "p:gestaudio": "assets/vid/gestaudio.jpg",
 "p:planetgear": "assets/vid/planetgear.jpg",
 "p:gestvisual": "assets/vid/gestvisual.jpg",
-"p:gripper": "assets/vid/gripper.jpg"
+"p:gripper": "assets/vid/gripper.jpg",
+"ledmaps_wall": "assets/img/ledmaps_wall.jpg",
+"smartlight_1": "assets/img/smartlight_1.jpg",
+"v:ledmaps_wall": "assets/vid/ledmaps_wall.mp4",
+"p:ledmaps_wall": "assets/vid/ledmaps_wall.jpg"
 };
 const P = [
  {"id": "terrain-diorama", "t": "Terrain Diorama", "cat": "Other", "ctx": "Work", "where": "Romance of the Three Kingdoms theme", "feat": 1, "d": "Physical terrain for a 3 m x 3 m projection diorama: four organic corner pieces around a flat centre, printed in sections on a large-format 3D printer.", "d2": "", "cover": "s21_image54", "m": [["s21_image54"], ["s21_image55"], ["s21_image56"]]},
@@ -364,7 +368,8 @@ const P = [
  {"id": "mandai", "t": "Mandai Bird Park Installation", "cat": "Mechanical", "ctx": "Work", "where": "Mandai Bird Park", "d": "Flip information panel and a mechanism that moves a flamingo head to show how it feeds.", "d2": "", "cover": "s7_image25", "m": [["s7_image24", "Flip panel"], ["s7_image25", "Movable flamingo head"]]},
  {"id": "gesture-visual", "t": "Hand Gesture Visual Effect Control", "cat": "Other", "ctx": "Personal", "where": "MediaPipe, TouchDesigner", "d": "AI camera system that turns hand gestures into real-time visual effects, touch-free.", "d2": "", "cover": "v:gestvisual", "m": [["v:gestvisual", "Visual output"], ["v:gestbg", "Background system"]]},
  {"id": "gesture-audio", "t": "Hand Gesture Audio Control", "cat": "Other", "ctx": "Personal", "where": "AI hand tracking, audio system", "d": "AI hand tracking that lets users control sound effects with hand gestures.", "d2": "", "cover": "v:gestaudio", "m": [["v:gestaudio"]]},
- {"id": "led-maps", "t": "LED Transport Map", "cat": "Electronics", "ctx": "Work", "where": "Philippines", "d": "Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.", "d2": "", "cover": "s12_image35", "m": [["v:ledmaps"], ["s12_image35"], ["s12_image34"]]},
+ {"id": "led-maps", "t": "LED Transport Map", "cat": "Electronics", "ctx": "Work", "where": "Philippines", "d": "Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.", "d2": "On the installed Philippines map wall, the buttons light up the Ports, Lighthouses and RoRo highlights.", "cover": "ledmaps_wall", "m": [["v:ledmaps_wall", "Installed wall, buttons lighting the map"], ["ledmaps_wall", "Installed wall: Ports, Lighthouses and RoRo"], ["v:ledmaps"], ["s12_image35"], ["s12_image34"]]},
+ {"id": "smart-light", "t": "Smart Light", "cat": "Mechanical", "ctx": "Work", "where": "Servo mechanism, 3D-printed parts", "d": "Two servos with 3D-printed flaps in a 3D-printed mounting bracket, built for a smart light installation.", "d2": "", "cover": "smartlight_1", "m": [["smartlight_1", "Servo-driven flaps in their bracket"]]},
  {"id": "nccs-donor-wall", "t": "NCCS Donor Wall Glowing Light", "cat": "Electronics", "ctx": "Work", "where": "National Cancer Centre Singapore", "d": "Curved wall of LED bulbs that makes a warm, moving glowing star around each donor name. I designed and programmed the animation.", "d2": "", "cover": "s16_image45", "m": [["v:nccs", "Visual animation"], ["s16_image45", "Overview"]]},
  {"id": "bowmore", "t": "Bowmore Running Light Counter", "cat": "Electronics", "ctx": "Work", "where": "Bowmore", "d": "Animated LED light box for a counter tabletop; I arranged the wiring and programmed the running-light sequence.", "d2": "", "cover": "s15_image44", "m": [["s15_image44", "Final look"], ["s15_image42"], ["s15_image43"]]},
  {"id": "shore-gangway", "t": "Telescopic Shore Gangway", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "Adjustable gangway for LNG ship workers to embark, with three mechanical designs for different shore set-ups.", "d2": "", "cover": "s10_image32", "contain": 1, "m": [["v:gangway"], ["s10_image32", "Project poster"]]},
