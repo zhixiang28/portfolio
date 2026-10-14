@@ -32,6 +32,14 @@ a{color:var(--accent)}
 .proj{display:flex;gap:10px;align-items:center;border:1px solid var(--line);padding:8px;margin-top:8px}
 .proj b{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}.proj small{display:block}
 .proj button{padding:6px 10px;flex:0 0 auto}
+.grip{flex:0 0 auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;font-size:22px;line-height:1;padding:8px 6px;color:var(--ink2)}
+.grip:focus-visible{outline:2px solid var(--accent)}
+.proj.drag{opacity:.85;border-color:var(--accent);box-shadow:0 4px 14px rgba(0,0,0,.25);background:var(--bg);position:relative;z-index:2}
+#dock{position:sticky;bottom:0;background:var(--bg);margin:0 -16px;padding:0 16px}
+#orderbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0;border-top:2px solid var(--accent)}
+#orderbar[hidden]{display:none}
+#orderbar span{flex:1 1 140px;font-weight:600}
+#log:not(:empty){padding:10px 0;border-top:1px solid var(--line)}
 .sec{border:1px dashed var(--line);padding:10px;margin-top:10px}
 .item{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.item input{flex:1 1 120px;min-width:0}.item textarea{flex:2 1 100%;min-height:70px}
 .danger{background:var(--err);border-color:var(--err);color:#fff}
@@ -57,7 +65,8 @@ a{color:var(--accent)}
 
 <section id="listview" hidden>
   <h2>Your projects</h2>
-  <p><button id="addnew" type="button">+ Add new project</button> <button id="saveorder" class="alt" type="button" hidden>Save new order</button></p>
+  <p><button id="addnew" type="button">+ Add new project</button></p>
+  <p class="sub">Drag the ⠿ handle to move a project up or down. With the handle selected you can also use the arrow keys.</p>
   <div id="plist"></div>
 </section>
 
@@ -94,7 +103,7 @@ a{color:var(--accent)}
 
 <p><button type="submit" id="go">Save project</button> <button type="button" class="alt" id="cancel">Back to list</button> <button type="button" class="danger" id="del" hidden>Delete project</button></p>
 </form>
-<div id="log"></div>
+<div id="dock"><div id="orderbar" hidden><span>Order changed</span><button id="saveorder" type="button">Save order</button><button id="undoorder" class="alt" type="button">Undo</button></div><div id="log"></div></div>
 </main>
 
 <script>
@@ -181,24 +190,58 @@ if($('#tok').value)check();
 /* ---- project list ---- */
 let site0=null;
 async function showList(){
-  $('#form').hidden=true;$('#listview').hidden=false;$('#saveorder').hidden=true;log('');
-  site0=await loadSite();PL=site0.P.map(e=>e.o);renderList();
+  $('#form').hidden=true;$('#listview').hidden=false;$('#orderbar').hidden=true;log('');
+  site0=await loadSite();PL=site0.P.map(e=>e.o);order0=PL.slice();renderList();
 }
+let order0=[];
 function renderList(){
   const l=$('#plist');l.textContent='';
-  PL.forEach((p,i)=>{
-    const d=document.createElement('div');d.className='proj';
+  PL.forEach(p=>{
+    const d=document.createElement('div');d.className='proj';d.dataset.id=p.id;
+    const g=document.createElement('span');g.className='grip';g.textContent='⠿';g.tabIndex=0;g.setAttribute('role','button');g.setAttribute('aria-label','Move '+p.t+'. Drag, or use arrow keys');
     const b=document.createElement('b');b.textContent=p.t;const sm=document.createElement('small');sm.textContent=p.cat+' · '+p.ctx;b.appendChild(sm);
-    const mk=(txt,fn,dis)=>{const x=document.createElement('button');x.type='button';x.className='alt';x.textContent=txt;x.disabled=!!dis;x.onclick=fn;return x};
-    d.append(b,mk('↑',()=>mv(i,-1),i===0),mk('↓',()=>mv(i,1),i===PL.length-1),mk('Edit',()=>edit(p.id)));
-    l.appendChild(d);
+    const e=document.createElement('button');e.type='button';e.className='alt';e.textContent='Edit';e.onclick=()=>edit(p.id);
+    g.addEventListener('pointerdown',ev=>startDrag(ev,d,g));
+    g.addEventListener('keydown',ev=>{
+      const dx=ev.key==='ArrowUp'?-1:ev.key==='ArrowDown'?1:0;if(!dx)return;ev.preventDefault();
+      const o=dx<0?d.previousElementSibling:d.nextElementSibling;if(!o)return;
+      dx<0?l.insertBefore(d,o):l.insertBefore(o,d);g.focus();syncOrder();
+    });
+    d.append(g,b,e);l.appendChild(d);
   });
 }
-function mv(i,dx){PL.splice(i+dx,0,PL.splice(i,1)[0]);$('#saveorder').hidden=false;renderList()}
+function syncOrder(){
+  const by=Object.fromEntries(PL.map(p=>[p.id,p]));
+  PL=[...$('#plist').children].map(x=>by[x.dataset.id]);
+  $('#orderbar').hidden=PL.every((p,i)=>p===order0[i]);
+}
+function startDrag(e,d,g){
+  if(e.button>0)return;e.preventDefault();
+  const l=$('#plist'),r=d.getBoundingClientRect(),dy=e.clientY-r.top;
+  const ph=document.createElement('div');ph.className='ph';ph.style.height=r.height+'px';ph.style.marginTop='8px';
+  l.insertBefore(ph,d);
+  g.setPointerCapture(e.pointerId);d.classList.add('drag');
+  Object.assign(d.style,{position:'fixed',left:r.left+'px',width:r.width+'px',top:r.top+'px',margin:'0',zIndex:5});
+  let y=e.clientY,raf=0;
+  const tick=()=>{
+    if(y<90)window.scrollBy(0,-14);else if(y>innerHeight-110)window.scrollBy(0,14);
+    d.style.top=(y-dy)+'px';
+    const next=[...l.children].find(x=>x!==d&&x!==ph&&y<x.getBoundingClientRect().top+x.getBoundingClientRect().height/2);
+    if(next){if(next!==ph.nextElementSibling)l.insertBefore(ph,next)}else if(l.lastElementChild!==ph)l.appendChild(ph);
+    raf=requestAnimationFrame(tick);
+  };
+  const move=ev=>{y=ev.clientY};
+  const end=()=>{
+    cancelAnimationFrame(raf);g.removeEventListener('pointermove',move);g.removeEventListener('pointerup',end);g.removeEventListener('pointercancel',end);
+    l.insertBefore(d,ph);ph.remove();d.classList.remove('drag');d.removeAttribute('style');syncOrder();
+  };
+  g.addEventListener('pointermove',move);g.addEventListener('pointerup',end);g.addEventListener('pointercancel',end);tick();
+}
+$('#undoorder').onclick=()=>{PL=order0.slice();$('#orderbar').hidden=true;renderList()};
 $('#saveorder').onclick=async()=>{
   $('#saveorder').disabled=true;
   try{
-    await commitSite('Reorder projects',site=>{const by=Object.fromEntries(site.P.map(e=>[e.o.id,e]));site.P=PL.map(p=>by[p.id]);});
+    await commitSite('Reorder projects',site=>{const by=Object.fromEntries(site.P.map(e=>[e.o.id,e]));const ids=PL.map(p=>p.id).filter(i=>by[i]);site.P=ids.map(i=>by[i]).concat(site.P.filter(e=>!ids.includes(e.o.id)));});
     await showList();log('Order saved. The site updates in a minute or two.','ok');
   }catch(e){log('Failed: '+e.message,'err')}
   $('#saveorder').disabled=false;
