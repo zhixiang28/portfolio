@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tan Zhi Xiang | Design engineer portfolio</title>
-<meta name="description" content="Portfolio of Tan Zhi Xiang, mechanical and electronic design engineer: interactive exhibits, electronics and robots.">
+<meta name="description" content="Tan Zhi Xiang, exhibit engineer in Singapore: mechanisms, electronics and interactive installations, with the software to run them.">
 <meta name="theme-color" content="#0A0F12">
 <link rel="canonical" href="https://zhixiang28.github.io/portfolio/">
 <meta property="og:type" content="website">
@@ -25,118 +25,121 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* One dark exhibition hall. Scroll scenes: photo pulls back and explodes into 3D layers -> statement -> curved gallery -> every project assembles into the grid -> about. */
+/* For people with a project: who I am -> what I can build for you -> proof (mechanical and electrical first) -> how I work -> contact. Normal scrolling; motion only as small reveals and one exploded-view hero. */
 :root{
-  --hall:#0A0F12; --hall2:#121A1F; --wall:#1B252C; --line:#2A3740;
-  --fg:#E8EDEF; --fg2:#9AABB4; --glow:#3FD0E0; --glow-ink:#06222A; --laser:#FF6A5C;
+  --hall:#0B1014; --hall2:#121A20; --wall:#1A242B; --line:#28353E;
+  --fg:#E9EEF0; --fg2:#A3B2BA; --glow:#3FD0E0; --glow-ink:#06222A; --warm:#FFB547;
   --head:'Barlow Semi Condensed','Arial Narrow',system-ui,sans-serif;
   --body:'Barlow',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
-  --hdr:56px;
+  --hdr:60px;
   color-scheme:dark;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--hdr) + 70px)}
-body{margin:0;background:var(--hall);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;overflow-x:hidden}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--hdr) + 12px)}
+body{margin:0;background:var(--hall);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;overflow-x:hidden}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--glow);outline-offset:2px}
-h1,h2,h3,h4{font-family:var(--head);line-height:1.04;margin:0;text-wrap:balance;font-weight:600}
+h1,h2,h3,h4{font-family:var(--head);line-height:1.05;margin:0;text-wrap:balance;font-weight:600}
 img{display:block;max-width:100%}
 .g{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.max{max-width:1240px;margin:0 auto;width:100%}
+.max{max-width:1200px;margin:0 auto;width:100%}
 .lab{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--glow)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-
-/* drafting-grid floor + cursor spotlight */
-.floor{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
-  background:radial-gradient(520px circle at var(--mx,50%) var(--my,30%),rgba(63,208,224,.10),transparent 70%),
-  linear-gradient(var(--line) 1px,transparent 1px) 0 calc(var(--gy,0)*1px)/48px 48px,
-  linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px}
 .page{position:relative;z-index:1;overflow-x:clip}
+.floor{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+  background:radial-gradient(600px circle at var(--mx,70%) var(--my,20%),rgba(63,208,224,.09),transparent 70%),
+  linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px;
+  -webkit-mask-image:linear-gradient(#000,transparent 85vh);mask-image:linear-gradient(#000,transparent 85vh)}
+
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;border:1px solid var(--glow);transition:background .2s,color .2s,transform .2s;font-family:var(--body)}
+.btn.pri{background:var(--glow);color:var(--glow-ink)}
+.btn.pri:hover{background:#7BE3EE;transform:translateY(-1px)}
+.btn.sec{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.sec:hover{border-color:var(--glow);color:var(--glow)}
+button.btn{appearance:none}
 
 /* header */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--hall)}
-.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;height:var(--hdr);display:flex;align-items:center;background:rgba(10,15,18,.84);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.hd .max{display:flex;align-items:center;gap:14px 20px}
-.hd .nm{font-family:var(--head);font-size:20px;font-weight:600;text-decoration:none;white-space:nowrap}
-.hd .nm small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--fg2);margin-left:8px}
-.hd .prog{flex:1;min-width:30px;height:2px;background:var(--line);position:relative}
-.hd .prog i{position:absolute;inset:0;background:var(--glow);transform-origin:left;transform:scaleX(var(--sp,0))}
-.hd nav{display:flex;gap:6px 18px;align-items:center;font-size:15.5px;white-space:nowrap}
-.hd nav a{text-decoration:none;color:var(--fg2);padding:6px 0}
-.hd nav a:hover{color:var(--glow)}
-.hd nav a.pdf{color:var(--fg);border:1px solid var(--line);padding:5px 12px;border-radius:999px}
-.hd nav a.pdf:hover{border-color:var(--glow)}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;height:var(--hdr);display:flex;align-items:center;background:rgba(11,16,20,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hd .max{display:flex;align-items:center;gap:12px 24px}
+.hd .nm{font-family:var(--head);font-size:21px;font-weight:600;text-decoration:none;white-space:nowrap;margin-right:auto}
+.hd nav{display:flex;gap:4px 22px;align-items:center;font-size:15.5px;white-space:nowrap}
+.hd nav a{text-decoration:none;color:var(--fg2);padding:8px 0}
+.hd nav a:hover{color:var(--fg)}
+.hd .btn{min-height:38px;padding:0 16px;font-size:15px}
 
-/* pinned scenes share this */
-.pin{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr));height:calc(100vh - var(--hdr) - env(safe-area-inset-top,0px));height:calc(100svh - var(--hdr) - env(safe-area-inset-top,0px));overflow:hidden}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:clamp(40px,8vh,90px) clamp(40px,7vh,80px)}
+.hero h1{font-size:clamp(42px,6vw,80px);font-weight:700;letter-spacing:-.01em;max-width:13ch}
+.hero h1 span{color:var(--glow)}
+.hero .lead{font-size:clamp(17px,1.6vw,20px);color:var(--fg2);max-width:46ch;margin:20px 0 0}
+.hero .lead b{color:var(--fg);font-weight:600}
+.hero .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.trust{margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+.trust ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:15px;color:var(--fg)}
+.trust li{white-space:nowrap}
+.trust li::before{content:"";display:inline-block;width:6px;height:6px;background:var(--glow);border-radius:50%;margin-right:8px;vertical-align:middle}
 
-/* 1. opening */
-.op{height:460vh;position:relative}
-.op .full{position:absolute;inset:0;overflow:hidden;z-index:3;opacity:var(--fo,1)}
-.op .full img{width:100%;height:100%;object-fit:cover;filter:brightness(calc(.45 + var(--a,0)*.45))}
-.op .ttl{position:absolute;inset:0;z-index:4;display:grid;place-content:center;text-align:center;padding-inline:16px;transform:translateY(calc(var(--a,0) * -30vh));opacity:calc(1 - var(--a,0)*1.6);pointer-events:none}
-.op h1{font-size:clamp(44px,8.6vw,130px);font-weight:700;letter-spacing:-.01em;color:#fff;text-shadow:0 2px 40px rgba(0,0,0,.5);max-width:13ch;margin:0 auto}
-.op .ttl p{color:#D3DCE0;font-size:clamp(16px,2vw,20px);margin:20px auto 0;max-width:44ch;text-shadow:0 1px 16px rgba(0,0,0,.6)}
-.op .hint{margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:8px}
-.op .hint i{width:1px;height:44px;background:linear-gradient(var(--glow),transparent);animation:drip 1.8s infinite}
-@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.op .scene{position:absolute;inset:0 0 150px;display:grid;place-items:center;perspective:1500px;z-index:2}
-.op .stack{position:relative;width:min(40vw,500px,calc((100vh - 330px)*1.333));aspect-ratio:4/3;max-width:100%;transform-style:preserve-3d;
-  transform:rotateY(calc(var(--py,0)*1deg)) rotateX(calc(var(--e,0)*56deg + var(--px,0)*1deg)) rotateZ(calc(var(--e,0)*-32deg))}
-.op .ly{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(var(--k)*var(--e,0)*var(--gap,105px)));
-  border:1px solid rgba(63,208,224,calc(var(--e,0)*.9));box-shadow:0 0 calc(var(--e,0)*28px) rgba(63,208,224,calc(var(--e,0)*.25)),0 40px 70px rgba(0,0,0,calc(var(--e,0)*.5));background:var(--hall2)}
-.op .ly img{width:100%;height:100%;object-fit:cover;transition:filter .35s}
-.op .ly.off img{filter:brightness(.3) saturate(.4)}
-.op .ly.hot{margin-top:-14px}
-.op .ly .tag{position:absolute;left:100%;top:0;display:flex;align-items:center;white-space:nowrap;transform-origin:left center;
-  transform:rotateZ(calc(var(--e,0)*32deg)) rotateX(calc(var(--e,0)*-56deg));opacity:clamp(0,calc((var(--e,0) - .55)*3),1)}
-.op .ly .tag::before{content:"";width:calc(var(--e,0)*56px);height:1px;background:var(--glow)}
-.op .ly .tag span{border:1px solid var(--glow);background:rgba(10,15,18,.85);padding:4px 9px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-.op .ly .tag b{color:var(--glow);font-weight:500;margin-right:6px}
-.op .ly.hot .tag span{background:var(--glow);color:var(--glow-ink)}
-.op .ly.hot .tag b{color:var(--glow-ink)}
-.op .cap{position:absolute;left:0;right:0;bottom:28px;z-index:5;display:flex;justify-content:center;opacity:clamp(0,calc((var(--e,0) - .3)*2),1)}
-.op .cap .box{max-width:560px;text-align:center;padding-inline:16px}
-.op .cap h2{font-size:clamp(26px,3.4vw,40px);margin-top:6px}
-.op .cap p{color:var(--fg2);margin:6px 0 0;font-size:15.5px;min-height:3.1em}
+.ex{position:relative;aspect-ratio:1/1;max-width:100%;perspective:1400px;display:grid;place-items:center}
+.stack{position:relative;width:74%;aspect-ratio:4/3;max-width:100%;transform-style:preserve-3d;transition:transform 1.4s cubic-bezier(.2,.8,.2,1);
+  transform:rotateY(calc(var(--py,0)*1deg)) rotateX(calc(var(--e,1)*54deg + var(--px,0)*1deg)) rotateZ(calc(var(--e,1)*-30deg))}
+.ly{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 1.4s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s;
+  transform:translateZ(calc(var(--k)*var(--e,1)*var(--gap,78px)));border:1px solid rgba(63,208,224,.7);background:var(--hall2);
+  box-shadow:0 0 22px rgba(63,208,224,.18),0 30px 60px rgba(0,0,0,.45)}
+.ly img{width:100%;height:100%;object-fit:cover;transition:filter .3s}
+.ex.pick .ly:not(.on) img{filter:brightness(.35) saturate(.5)}
+.ly .tag{position:absolute;left:100%;top:0;display:flex;align-items:center;white-space:nowrap;transform-origin:left center;
+  transform:rotateZ(calc(var(--e,1)*30deg)) rotateX(calc(var(--e,1)*-54deg));opacity:var(--e,1);transition:opacity .6s .9s}
+.ly .tag::before{content:"";width:44px;height:1px;background:var(--glow)}
+.ly .tag span{border:1px solid var(--glow);background:rgba(11,16,20,.9);padding:4px 9px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.ly.on .tag span{background:var(--glow);color:var(--glow-ink)}
+.ex.boot{--e:0}
+.legend{display:none}
 
-/* 2. statement */
-.st{padding-block:22vh 18vh}
-.st p{font-family:var(--head);font-weight:600;font-size:clamp(32px,5.4vw,72px);line-height:1.12;margin:0;max-width:20ch;text-wrap:balance}
-.st .w{opacity:var(--o,1);transition:opacity .25s}
-.st em{font-style:normal;color:var(--glow);white-space:nowrap}
-.st .chip{display:inline-block;vertical-align:middle;height:.78em;aspect-ratio:16/10;border-radius:999px;overflow:hidden;margin:0 .14em .1em;transform:scale(var(--c,1));transition:transform .5s cubic-bezier(.3,1.6,.5,1);border:2px solid var(--glow)}
-.st .chip img{width:100%;height:100%;object-fit:cover}
-.skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:9vh}
-.skills div{border-top:1px solid var(--line);padding-top:12px;min-width:0}
-.skills b{display:block;font-family:var(--head);font-size:20px;font-weight:600}
-.skills span{color:var(--fg2);font-size:15.5px}
+/* sections */
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:12px 24px;flex-wrap:wrap;margin-bottom:26px}
+.sec-h h2{font-size:clamp(32px,4.2vw,52px)}
+.sec-h p{margin:8px 0 0;color:var(--fg2);max-width:56ch}
+section.blk{padding-block:clamp(56px,9vh,100px);border-top:1px solid var(--line)}
 
-/* 3. curved gallery */
-.ga{height:var(--gh,520vh);position:relative}
-.ga .pin{display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,3vh,28px)}
-.ga .head{display:flex;justify-content:space-between;align-items:end;gap:16px}
-.ga h2{font-size:clamp(30px,4.4vw,52px)}
-.ga .count{font-family:var(--mono);font-size:14px;color:var(--fg2);font-variant-numeric:tabular-nums}
-.ga .count b{color:var(--fg);font-weight:500;font-size:22px}
-.ga .view3{perspective:1300px}
-.ga .track{display:flex;gap:clamp(14px,3vw,40px);width:max-content;transform-style:preserve-3d;transform:translateX(calc(var(--hx,0)*1px));will-change:transform}
-.ga .it{all:unset;cursor:pointer;width:var(--cw,480px);flex:none;transform-style:preserve-3d;transform:rotateY(calc(var(--d,0)*-38deg)) translateZ(calc(var(--ad,0)*-160px));opacity:calc(1 - var(--ad,0)*.45)}
-.ga .it:focus-visible{outline:3px solid var(--glow);outline-offset:6px}
-.ga .im{aspect-ratio:4/3;max-width:100%;overflow:hidden;border-radius:6px;background:var(--hall2);position:relative;border:1px solid var(--line);transition:border-color .2s}
-.ga .it:hover .im{border-color:var(--glow)}
-.ga .im img{width:118%;max-width:none;height:100%;object-fit:cover;transform:translateX(calc(-8% + var(--d,0)*6%))}
-.ga .im .no{position:absolute;left:14px;top:10px;font-family:var(--head);font-weight:700;font-size:64px;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.85);opacity:calc(1 - var(--ad,0)*1.5);text-shadow:0 0 20px rgba(0,0,0,.3)}
-.ga .it .lab{display:block;margin-top:14px}
-.ga .it h3{font-size:clamp(22px,2.4vw,30px);margin-top:4px}
-.ga .it p{margin:4px 0 0;color:var(--fg2);font-size:15.5px;max-width:44ch;opacity:calc(1 - var(--ad,0)*2)}
+/* services */
+.svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.sv{background:var(--hall2);border:1px solid var(--line);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .2s,transform .2s}
+.sv:hover{border-color:var(--glow);transform:translateY(-3px)}
+.sv .ic{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:var(--glow)}
+.sv .ic svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sv h3{font-size:24px}
+.sv p{margin:0;color:var(--fg2);font-size:15.5px}
+.sv .tools{font-family:var(--mono);font-size:12px;color:var(--fg2);letter-spacing:.02em}
+.sv .eg{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px}
+.sv .eg button{all:unset;cursor:pointer;font-size:14px;color:var(--glow);border-bottom:1px solid transparent}
+.sv .eg button:hover{border-color:var(--glow)}
+.sv .eg button:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+.sv.main{border-color:rgba(63,208,224,.45)}
+.sv .str{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:rgba(63,208,224,.12);color:var(--glow)}
+.sv .str.ai{background:rgba(255,181,71,.12);color:var(--warm)}
 
-/* 4. all projects */
-.bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr));z-index:20;background:rgba(10,15,18,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-block:10px}
-.bar .row{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;justify-content:space-between}
-.bar h2{font-size:clamp(28px,3.6vw,40px)}
+/* featured */
+.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.fc{all:unset;box-sizing:border-box;cursor:pointer;position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--hall2);display:flex;flex-direction:column;min-width:0;transition:border-color .2s}
+.fc:hover{border-color:var(--glow)}
+.fc:focus-visible{outline:3px solid var(--glow);outline-offset:3px}
+.fc .im{aspect-ratio:16/10;max-width:100%;overflow:hidden;background:var(--wall);position:relative}
+.fc .im img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.fc:hover .im img{transform:scale(1.04)}
+.fc .tx{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.fc h3{font-size:clamp(24px,2.4vw,30px)}
+.fc p{margin:0;color:var(--fg2)}
+.fc .more{margin-top:4px;color:var(--glow);font-weight:600;font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:13px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg2)}
+.vid{position:absolute;left:12px;bottom:12px;background:rgba(11,16,20,.82);color:var(--fg);font-size:13px;padding:3px 10px;border-radius:999px;display:flex;gap:6px;align-items:center}
+.vid::before{content:"";border-left:8px solid var(--glow);border-top:5px solid transparent;border-bottom:5px solid transparent}
+
+/* all projects */
+.bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr));z-index:20;background:rgba(11,16,20,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-block:10px;margin-bottom:22px}
+.bar .row{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
 .group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .group span.l{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2);margin-right:4px}
 .chip{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:15px;line-height:1.2;color:var(--fg2);transition:border-color .2s,color .2s,background .2s}
@@ -144,49 +147,51 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .chip[aria-pressed="true"]{background:var(--glow);border-color:var(--glow);color:var(--glow-ink)}
 .chip:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
 .chip i{font-style:normal;opacity:.65;margin-left:6px;font-size:13px;font-family:var(--mono)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-block:28px 90px;perspective:1400px}
-.pc{--amp:1;min-width:0;transform-style:preserve-3d;
-  transform:translate3d(calc(var(--sx)*var(--amp)*(1 - var(--q,1))*1vw),calc(var(--sy)*(1 - var(--q,1))*1vh),calc(var(--sz)*var(--amp)*(1 - var(--q,1))*1px)) rotateX(calc(var(--rx)*var(--amp)*(1 - var(--q,1))*1deg)) rotateY(calc(var(--ry)*var(--amp)*(1 - var(--q,1))*1deg)) rotateZ(calc(var(--rz)*var(--amp)*(1 - var(--q,1))*1deg));
-  opacity:calc(.25 + var(--q,1)*.75)}
-.card{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;height:100%;width:100%;background:var(--hall2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:transform .2s ease-out,border-color .2s;transform:perspective(800px) rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg))}
-.card:hover{border-color:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;min-width:0;background:var(--hall2);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--glow);transform:translateY(-3px)}
 .card:focus-visible{outline:3px solid var(--glow);outline-offset:3px}
 .cover{position:relative;aspect-ratio:4/3;max-width:100%;background:var(--wall);overflow:hidden}
-.cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.card:hover .cover img{transform:scale(1.05)}
+.cover img{width:100%;height:100%;object-fit:cover}
 .cover img.contain{object-fit:contain}
-.cover .vid{position:absolute;left:10px;bottom:10px;background:rgba(10,15,18,.8);color:var(--fg);font-size:13px;padding:3px 10px;border-radius:999px;display:flex;gap:6px;align-items:center}
-.cover .vid::before{content:"";border-left:8px solid var(--glow);border-top:5px solid transparent;border-bottom:5px solid transparent}
 .cover.none{display:grid;place-items:center}
-.cover.none b{font-family:var(--head);font-size:28px;padding:6px 16px;border:1px solid var(--glow)}
-.card .body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
-.card h3{font-size:24px}
-.card p{margin:0;color:var(--fg2);font-size:15.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.empty{grid-column:1/-1;padding:40px;border:1px dashed var(--line);border-radius:6px;text-align:center;color:var(--fg2)}
+.cover.none b{font-family:var(--head);font-size:26px;padding:6px 16px;border:1px solid var(--glow)}
+.card .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.card h3{font-size:22px}
+.card p{margin:0;color:var(--fg2);font-size:15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty{grid-column:1/-1;padding:40px;border:1px dashed var(--line);border-radius:8px;text-align:center;color:var(--fg2)}
+.morebtn{display:flex;justify-content:center;margin-top:26px}
 
-/* 5. numbers + about */
-.nu{padding-block:6vh 12vh;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.nu div{border-top:1px solid var(--line);padding-top:16px}
-.nu b{display:block;font-family:var(--head);font-weight:700;font-size:clamp(56px,7vw,104px);line-height:1;font-variant-numeric:tabular-nums}
-.nu span{color:var(--fg2)}
-.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);padding-block:6vh 10vh;align-items:start}
-.about .ph{aspect-ratio:4/5;max-width:100%;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
-.about .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
-.about h2{font-size:clamp(30px,3.6vw,44px);margin-bottom:14px}
-.about p{margin:0 0 12px;max-width:52ch;color:var(--fg2)}
-.about>div{min-width:0}
-.about dl{display:grid;grid-template-columns:auto minmax(0,1fr);margin:0}
-.about dt,.about dd{margin:0;padding:9px 0;border-bottom:1px solid var(--line)}
-.about dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--glow);padding-right:18px;padding-top:12px}
-.about dd{overflow-wrap:anywhere}
-.about dd a{text-decoration:none;border-bottom:1px solid var(--line)}
-.about dd a:hover{color:var(--glow);border-color:var(--glow)}
+/* process */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;counter-reset:s}
+.steps li{position:relative;padding:20px 18px 18px;border-top:2px solid var(--glow);background:linear-gradient(rgba(63,208,224,.06),transparent 60%);min-width:0}
+.steps li::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:13px;color:var(--glow)}
+.steps h3{font-size:22px;margin:6px 0 6px}
+.steps p{margin:0;color:var(--fg2);font-size:15.5px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(24px,4vw,56px);align-items:start}
+.contact .ph{aspect-ratio:4/5;max-width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.contact .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.contact h2{font-size:clamp(34px,4.6vw,58px)}
+.contact .intro{color:var(--fg2);max-width:56ch;margin:14px 0 0}
+.contact .cta{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 28px}
+.contact dl{display:grid;grid-template-columns:auto minmax(0,1fr);margin:0;max-width:620px}
+.contact dt,.contact dd{margin:0;padding:10px 0;border-bottom:1px solid var(--line)}
+.contact dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--glow);padding-right:18px;padding-top:13px}
+.contact dd{overflow-wrap:anywhere}
+.contact dd a{text-decoration:none;border-bottom:1px solid var(--line)}
+.contact dd a:hover{color:var(--glow);border-color:var(--glow)}
 .copy{all:unset;cursor:pointer;margin-left:8px;border:1px solid var(--line);border-radius:999px;padding:1px 10px;font-size:13.5px;color:var(--fg2)}
 .copy:hover{border-color:var(--glow);color:var(--fg)}
 .copy:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
-footer{padding-block:20px 48px;color:var(--fg2);font-size:15px;border-top:1px solid var(--line)}
+footer{padding-block:22px 48px;color:var(--fg2);font-size:15px;border-top:1px solid var(--line)}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);background:var(--glow);color:var(--glow-ink);padding:10px 18px;font-size:15px;border-radius:999px;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100vw - 32px);text-align:center}
 .toast.on{opacity:1}
+
+/* reveal: only for things that start below the screen */
+.rv{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.pre{opacity:0;transform:translateY(26px)}
 
 /* project window */
 dialog{padding:0;border:1px solid var(--line);border-radius:8px;background:var(--hall2);color:var(--fg);width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}
@@ -246,40 +251,44 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
 #lb{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border:0;border-radius:0;background:rgba(4,7,9,.95);padding:12px}
 #lb img{width:100%;height:100%;object-fit:contain;cursor:zoom-out}
 #lb .x{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;background:var(--hall2);z-index:2}
+.dcta{margin:18px 0 0!important;padding-top:14px;border-top:1px solid var(--line);color:var(--fg2);font-size:16px!important}
+.dcta a{color:var(--glow);font-weight:600}
 
 @media (max-width:980px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .ex{aspect-ratio:16/10;max-height:520px;width:100%}
+  .stack{width:min(56%,420px)}
+  .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dgrid{grid-template-columns:minmax(0,1fr)}.stage{border-right:0}
-  .about{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.about .ph{grid-row:span 2;aspect-ratio:3/4}
-  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hd nav .opt{display:none}
-}
-@media (max-width:760px){
-  .op .stack{width:min(70vw,400px);--gap:70px}
-  .op .ly .tag{display:none}
-  .nu{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .hd .nm small{display:none}
-  .hd nav{gap:4px 14px;font-size:15px}
-  .hd nav a{padding:10px 0}
-  .hd nav a.pdf{padding:7px 12px}
-  .grid{grid-template-columns:minmax(0,1fr);gap:18px}
-  .pc{--amp:.3}
-  .about{grid-template-columns:minmax(0,1fr)}.about .ph{grid-row:auto;aspect-ratio:4/3}
-  .skills{gap:14px}
-  /* filters: one sticky row that scrolls sideways */
+  .hd nav{gap:4px 14px}
+  .hd nav .opt2{display:none}
+  .hero{padding-block:28px 40px;gap:18px}
+  .hero .cta .btn{flex:1 1 auto;justify-content:center}
+  .ex{aspect-ratio:4/3}
+  .stack{width:62%;--gap:46px}
+  .ly .tag{display:none}
+  .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .legend span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--fg2)}
+  .legend span b{color:var(--glow);font-weight:500;margin-right:4px}
+  .svc,.feat,.grid,.steps{grid-template-columns:minmax(0,1fr)}
+  .sv .eg button{padding:6px 0}
+  .contact{grid-template-columns:minmax(0,1fr)}.contact .ph{aspect-ratio:4/3;order:2}
+  .contact .cta .btn{flex:1 1 auto;justify-content:center}
   .bar{padding-block:8px}
-  .bar .row{flex-wrap:nowrap;gap:6px;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  .bar .row{flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
     -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
   .bar .row::-webkit-scrollbar{display:none}
-  .bar h2{font-size:22px;flex:0 0 auto;margin-right:4px}
   .group{flex-wrap:nowrap;flex:0 0 auto}
   .group+.group{border-left:1px solid var(--line);padding-left:8px;margin-left:2px}
   .group span.l{display:none}
   .chip{min-height:40px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 14px;white-space:nowrap}
-  .about dd a{display:inline-block;padding:6px 0}
+  .contact dd a{display:inline-block;padding:6px 0}
   .copy,.zoom{padding:8px 12px}
   /* project window fills the phone screen */
   dialog#dlg{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0}
@@ -296,87 +305,94 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
   .dnav{padding-bottom:env(safe-area-inset-bottom,0px)}
   .dnav button{font-size:16px;padding:10px 12px;min-height:44px}
 }
-@media (max-width:380px){.hd nav .opt2{display:none}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+@media (max-width:360px){.hd .btn{padding:0 12px}.hd nav a.opt3{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv.pre{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <div class="floor" aria-hidden="true"></div>
 <header class="hd g">
   <div class="max">
-    <a class="nm" href="#top">Tan Zhi Xiang<small>Mechanical and electronic design engineer</small></a>
-    <div class="prog" aria-hidden="true"><i></i></div>
+    <a class="nm" href="#top">Tan Zhi Xiang</a>
     <nav aria-label="Site">
-      <a href="#projects">Projects</a>
+      <a href="#services" class="opt">What I do</a>
+      <a href="#work" class="opt3">Work</a>
+      <a href="#process" class="opt">How I work</a>
       <a href="#about" class="opt2">About</a>
-      <a href="mailto:itszhixiang@gmail.com" data-mail class="opt">Email</a>
-      <a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener" class="opt">LinkedIn</a>
-      <a id="pdfbtn" class="pdf" href="assets/Tan_Zhi_Xiang_Portfolio.pdf" download>PDF</a>
+      <a href="#contact" class="btn pri">Contact</a>
     </nav>
   </div>
 </header>
 
 <div class="page" id="top">
-  <section class="op" id="op" aria-label="Introduction">
-    <div class="pin">
-      <div class="scene" aria-hidden="true"><div class="stack" id="stack"></div></div>
-      <div class="full" id="full"><img id="fullimg" alt="NCCS Donor Wall Glowing Light at National Cancer Centre Singapore"></div>
-      <div class="ttl">
-        <div class="lab" style="margin-bottom:18px">Design engineer · Singapore</div>
-        <h1>I design the mechanisms and electronics.</h1>
-        <p>Over 2 years building installations for science centres, museums and public events in Singapore, plus robots, web apps and AI tools of my own.</p>
-        <div class="hint" aria-hidden="true"><span class="lab" style="color:var(--fg2)">Scroll</span><i></i></div>
+  <section class="g"><div class="max hero">
+    <div>
+      <div class="lab" style="margin-bottom:16px">Exhibit engineer · Singapore</div>
+      <h1>I design the <span>mechanisms</span> and <span>electronics.</span></h1>
+      <p class="lead">I turn an idea into a working, hands-on build: <b>moving parts, sensors, lights and sound</b>. With AI tools I also write the software that runs them, from control apps to web dashboards.</p>
+      <div class="cta">
+        <a class="btn pri" href="#contact">Talk about your project</a>
+        <a class="btn sec" href="#work">See my work</a>
       </div>
-      <div class="cap" aria-hidden="true"><div class="box"><span class="lab" id="capn">Layer 01 / 04</span><h2 id="capt">Electronics</h2><p id="capd"></p></div></div>
+      <div class="trust">
+        <span class="lab" style="color:var(--fg2)">Built for</span>
+        <ul>
+          <li>Science Centre Singapore</li><li>ArtScience Museum</li><li>Mandai Bird Park</li><li>National Cancer Centre Singapore</li><li>LIV Golf event, Sentosa</li>
+        </ul>
+      </div>
     </div>
-  </section>
-
-  <section class="st g" aria-label="What I do"><div class="max">
-    <p id="words">I build for <em>science centres<span class="chip"><img data-k="s3_image12" alt=""></span></em>, <em>museums<span class="chip"><img data-k="s4_image14" alt=""></span></em> and <em>public events<span class="chip"><img data-k="s14_image40" alt=""></span></em>, from the first sketch to the last screw.</p>
-    <div class="skills">
-      <div><b>Mechanical</b><span>Fusion 360, SolidWorks, Ansys</span></div>
-      <div><b>Electrical</b><span>Arduino, ESP32, KiCad</span></div>
-      <div><b>Audio visual</b><span>TouchDesigner, MediaPipe, Illustrator, Premiere Pro</span></div>
-      <div><b>Machines</b><span>FDM and resin 3D printers, laser cutter</span></div>
+    <div>
+      <div class="ex boot" id="ex" role="img" aria-label="Exploded view of four project photos: mechanical, electronics, fabrication and software"><div class="stack" id="stack"></div></div>
+      <div class="legend" id="legend" aria-hidden="true"></div>
     </div>
   </div></section>
 
-  <section class="ga" id="ga" aria-label="Selected work">
-    <div class="pin">
-      <div class="head g max"><h2>Selected work</h2><span class="count" aria-hidden="true"><b id="gan">01</b> / <span id="gat">06</span></span></div>
-      <div class="view3"><div class="track" id="track"></div></div>
-    </div>
-  </section>
+  <section class="blk g" id="services"><div class="max">
+    <div class="sec-h rv"><div><span class="lab">What I can build for you</span><h2>From mechanism to working exhibit</h2><p>Most of my projects need all of these at once. You can bring me in for one part or the whole build.</p></div></div>
+    <div class="svc" id="svc"></div>
+  </div></section>
 
-  <div class="bar g" id="projects">
-    <div class="row max">
-      <h2>All projects</h2>
-      <div class="group" role="group" aria-label="Filter by category" id="fcat"></div>
-      <div class="group" role="group" aria-label="Filter by context" id="fctx"></div>
-    </div>
+  <section class="blk g" id="work"><div class="max">
+    <div class="sec-h rv"><div><span class="lab">Featured work</span><h2>Built, installed and used by the public</h2><p>Each project opens with photos, videos and what I did on it.</p></div></div>
+    <div class="feat" id="feat"></div>
+  </div></section>
+
+  <section class="blk g" id="projects"><div class="max">
+    <div class="sec-h rv"><div><span class="lab">All projects</span><h2 id="alltitle">Every project</h2></div></div>
   </div>
-  <main class="g"><div class="grid max" id="grid" aria-live="polite"></div></main>
+    <div class="bar g"><div class="row max">
+      <div class="group" role="group" aria-label="Filter by type" id="fcat"></div>
+      <div class="group" role="group" aria-label="Filter by context" id="fctx"></div>
+    </div></div>
+    <div class="max"><div class="grid" id="grid" aria-live="polite"></div>
+    <div class="morebtn"><button type="button" class="btn sec" id="showall" hidden>Show all projects</button></div></div>
+  </section>
 
-  <section class="g" aria-label="In numbers"><div class="max nu" id="nu">
-    <div><b data-n="0" id="n1">0</b><span>projects on this site</span></div>
-    <div><b data-n="0" id="n2">0</b><span>client and workplace projects</span></div>
-    <div><b data-n="0" id="n3">0</b><span>photos and videos</span></div>
+  <section class="blk g" id="process"><div class="max">
+    <div class="sec-h rv"><div><span class="lab">How I work</span><h2>Prove it early, then build it to last</h2></div></div>
+    <ol class="steps rv">
+      <li><h3>Understand the brief</h3><p>What should a visitor see, touch or feel? I work out the effect first, then the space, budget and timeline.</p></li>
+      <li><h3>Mock up and test</h3><p>A quick prototype proves the science or the movement works before money goes into the final piece.</p></li>
+      <li><h3>Design and build</h3><p>CAD, mechanisms, wiring, 3D printing and code, designed for public use and easy repair.</p></li>
+      <li><h3>Install and support</h3><p>On-site setup, then maintenance. For one travelling exhibition I built the maintenance log app too.</p></li>
+    </ol>
   </div></section>
 
-  <section class="g" id="about"><div class="max about">
+  <section class="blk g" id="about"><div class="max contact" id="contact">
     <div class="ph"><img id="heroimg" alt="Zhi Xiang smiling in a forest, holding a wooden stick" loading="lazy"></div>
     <div>
-      <h2>About</h2>
-      <p>I'm a Mechanical Engineering graduate (Honours, INTI International University) and a Graduate Engineer registered with the Board of Engineers Malaysia.</p>
-      <p>Since July 2024 I have been an exhibit engineer at SPACElogic Pte Ltd, where I have engineered more than 10 interactive installations. I like R&amp;D, solving awkward problems, and turning a concept into something people can actually use.</p>
-    </div>
-    <div>
-      <h2>Get in touch</h2>
+      <span class="lab">About and contact</span>
+      <h2>Have a project in mind?</h2>
+      <p class="intro">I'm a Mechanical Engineering graduate (Honours, INTI International University) and a Graduate Engineer registered with the Board of Engineers Malaysia. Since July 2024 I have been an exhibit engineer at SPACElogic Pte Ltd, where I have engineered more than 10 interactive installations. I like R&amp;D, solving awkward problems, and turning a concept into something people can actually use.</p>
+      <div class="cta">
+        <a class="btn pri" href="mailto:itszhixiang@gmail.com" data-mail>Email me</a>
+        <a class="btn sec" href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn sec" id="pdfbtn" href="assets/Tan_Zhi_Xiang_Portfolio.pdf" download>Portfolio PDF</a>
+      </div>
       <dl>
         <dt>Email</dt><dd><a href="mailto:itszhixiang@gmail.com" data-mail>itszhixiang@gmail.com</a> <button type="button" class="copy" data-copy="itszhixiang@gmail.com">Copy</button></dd>
         <dt>Phone SG</dt><dd><a href="tel:+6586549325">+65 8654 9325</a></dd>
         <dt>Phone MY</dt><dd><a href="tel:+601137791196">+60 11 3779 1196</a></dd>
-        <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/itszhixiang/" target="_blank" rel="noopener">linkedin.com/in/itszhixiang</a></dd>
         <dt>Languages</dt><dd>English, Mandarin (Chinese), Malay</dd>
       </dl>
     </div>
@@ -391,7 +407,7 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
   <div class="dhead"><h2 id="dtitle"></h2><div class="dbtns"><button class="x" id="copylink" type="button">Copy link</button><button class="x" id="dclose" type="button">Close</button></div></div>
   <div class="dgrid">
     <div class="stage"><div class="view" id="view"></div><div class="capbar"><span id="cap"></span><span class="ctr" id="ctr"></span><button type="button" class="zoom" id="zoom" hidden>Enlarge</button></div><div class="thumbs" id="thumbs"></div></div>
-    <div class="info"><p id="ddesc"></p><p id="ddesc2"></p><div class="facts" id="dfacts"></div><div class="sec" id="dsec"></div></div>
+    <div class="info"><p id="ddesc"></p><p id="ddesc2"></p><div class="facts" id="dfacts"></div><div class="sec" id="dsec"></div><p class="dcta">Need something like this? <a href="mailto:itszhixiang@gmail.com" data-mail>Email me</a></p></div>
   </div>
   <div class="dnav"><button type="button" id="prev"></button><button type="button" id="next"></button></div>
 </dialog>
@@ -501,33 +517,33 @@ const M = {
 "arcade_3": "assets/img/arcade_3.jpg"
 };
 const P = [
- {"id": "terrain-diorama", "t": "Terrain Diorama", "cat": "Other", "ctx": "Work", "where": "Romance of the Three Kingdoms theme", "feat": 1, "d": "Physical terrain for a 3 m x 3 m projection diorama: four organic corner pieces around a flat centre, printed in sections on a large-format 3D printer.", "d2": "", "cover": "s21_image54", "m": [["s21_image54"], ["s21_image55"], ["s21_image56"], ["terrain_1", "Printed terrain section, partly painted"], ["terrain_2", "Slicer preview: 750 x 750 x 187 mm tile, about 1 day 22 hours to print"], ["terrain_3", "A terrain section printing on the large-format 3D printer"]]},
- {"id": "inventory-space", "t": "Inventory Space", "cat": "Software", "ctx": "Work", "where": "SPACElogic maker space", "d": "Web app that tells a workshop where every tool, part and piece of equipment lives, who has it, and when it runs low. It brings together a 3D map of the space, QR labels, load cells and a camera into one flow: find it, take it, put it back.", "d2": "Built in October 2026 in more than 40 updates over ten days, starting from a simple tool status board. Phones open in a Lite view that hides the editing tools.", "stack": "Vanilla JavaScript, Three.js, Supabase (Postgres); ESP32 load cells; in-browser object detection (YOLO model, ONNX); installable web app", "sec": [["Everyday jobs", [["Find it in 3D:", "search a name, size or SKU and the camera flies to the front of the right shelf, fades everything else out and highlights the box."], ["Scan to take or store:", "every item and place has a QR label. Taking an item asks whether it comes back and when, in three taps with no typing. Putting it away closes its loan automatically."], ["Loans and consumables:", "a Loans page shows who has what and flags anything overdue. Consumables like screws and washers are counted by weight, with a reorder list, purchase details and a monthly material requisition draft."], ["Tidy suggestions:", "it spots the same kind of item stored in different places and suggests one home for them, moved with one tap."], ["Tool bags:", "SKUs, item photos and QR labels, and a Keep together page for items that must travel as a set."]]], ["Space mode", [["Draw the maker space:", "rooms are drawn in 2D with an editor that has resize handles, sizes in cm, presets, snapping, undo, shortcuts and copy and paste."], ["Real furniture:", "wall cabinets, workbenches on legs, PC desks and racks with stackable boxes, plus warnings when things collide."], ["Rack view and 3D Find:", "one row per shelf level with a coloured tag per box. Search an item and the 3D view flies to the place it is kept."], ["QR codes:", "one for every place, printed by room, with a Scan button to jump straight to it."]]], ["Fastener recognition", [["Camera detection:", "a webcam recognises fasteners, learning the empty background so unchanged areas are ignored."], ["Label and Detect tabs:", "collect training pictures and warn when there are too few, then load the trained model. It currently knows two types of M6 x 16 screw."], ["Toward automatic sorting:", "with the scale, this is the first step of a fastener sorter that would feed, identify, weigh and sort parts into bins."]]], ["How it is built", [["No framework:", "a single-page app in plain JavaScript that lazy-loads its heavy 3D and camera modules, installable as a phone app with a Lite view."], ["Security in the database:", "every table is read-only to the browser, and every write goes through a server-side function that checks the user's session and validates the input."], ["One source of truth for location:", "search, the 3D view, QR pages and labels all read where an item is from one shelf, level and slot record."], ["Load cells:", "ESP32 load cells under bins report readings to database functions that turn weight changes into pieces used or added. The hooks are ready for per-bin weighing units."]]], ["Design decisions", [["Fewer taps over more fields:", "the take flow started as a text form and became two big buttons plus a duration, because people will not type on a phone in the workshop."], ["Write once, count automatically:", "stock changes come from take and return actions and the load cells, not from asking people to update counts."], ["Phone first, desktop for setup:", "daily jobs stay in Lite view, while the space editor, scales and sorter live in Full view."]]]], "m": [["inv_1", "Find: the 3D map of the maker space, with a box and its contents on the right"], ["inv_2", "Searching for a screw flies to the rack and highlights the box"], ["inv_3", "Keep similar things together: the app suggests one home for items stored in different places"]], "cover": "inv_1"},
- {"id": "makerspace-arcade", "t": "SPACElogic Makerspace Arcade", "cat": "Software", "ctx": "Work", "where": "Maker space TV", "d": "A Wii-style game station for the SPACElogic makerspace: a camera and a TV let visitors choose a game and play it with their whole body, with no controller. A camera tracks one player at a time, and phones can be used as steering wheels.", "d2": "Built in October 2026 and installable as a full-screen app. It started with Maker Run and has grown to four games. Staff press Start once and visitors run everything themselves.", "stack": "MediaPipe Pose Landmarker, JavaScript, HTML canvas, Web Audio; WebRTC (PeerJS) between phones and TV; installable web app", "sec": [["The games", [["Maker Run:", "a runner set inside the makerspace itself. Toolboxes ask for a jump, 3D printers for a lean into a free lane, and laser gantries for a squat, and gears are worth 25 points. A 75-second shift with three power cells as lives, and speed ramps up over the first minute."], ["Circuit Racers:", "up to four phones scan a QR code and become tilt-to-steer wheels with gas, brake and nitro, in split screen on the TV. CPU cars fill empty seats."], ["Escape Protocol:", "an 8-minute escape room with three missions, Orbital, Nexus Lab and Abyss-7, each with its own puzzles: big floor zones, move sequences, arm-drawn patterns, pumping and pose copying. A narrator speaks and wrong moves cost time."], ["Filament Slice:", "swipe both arms through flying filament spools and circuit boards for combos up to x5, and avoid the red-hot nozzles. A shift lasts 75 seconds."]]], ["Making camera data feel like a controller", [["Calibration:", "before each run the player stands in a dashed zone and holds still, with coaching like Step closer or Move to the middle. Every gesture is then measured against that player's own shoulder height and torso length, so a child and an adult both work, at any distance."], ["Smoothing:", "raw landmarks shake even when someone stands still, which would trigger false jumps. A One Euro filter smooths heavily when the body is still and loosens up during fast movement, so real jumps still register without delay."], ["No accidental triggers:", "lane changes use hysteresis, a jump only re-arms once the shoulders come back down, and a squat releases at a lower threshold than it triggers."], ["Fairness:", "every row of obstacles leaves a safe route, a hit gives 1.4 seconds of invulnerability, and the game pauses if the player leaves the camera view."]]], ["Built for a public space", [["Menus by leaning:", "lean left or right to move the highlight and raise both arms to select. It started as pinching with fingers, and I redesigned it for big movements from 1 to 2 metres away."], ["One player locked in:", "the camera follows the person closest to the middle and ignores people walking past."], ["Always ready:", "a welcome screen returns after 45 seconds with nobody around, and every game ends with the SPACElogic and Makerspace logos."], ["No camera needed:", "everything also works with a mouse or keyboard."]]]], "m": [["arcade_2", "Maker Run on the maker space TV: lean, jump and squat to play"], ["arcade_3", "Dodging toolboxes in Maker Run"], ["arcade_1", "Escape Protocol, Nexus Lab: a wire-matching puzzle played with arm movements"]], "cover": "arcade_2"},
- {"id": "mr-tracker", "t": "MR Tracker", "cat": "Software", "ctx": "Work", "where": "SPACElogic internal tool", "d": "Web-based materials requisition and e-signature approval system for SPACElogic: tracked stages, PIN-verified signatures, live dashboard, purchase history and analytics, a built-in assistant, and notifications people choose themselves.", "d2": "", "stack": "HTML, CSS, vanilla JavaScript; Supabase (PostgreSQL, row-level security, PL/pgSQL, Edge Functions); Resend; Telegram; GitHub Pages; jsPDF", "sec": [["What I built", [["Requisition form", "with drafts, running totals, drag-to-reorder rows, duplicate row and duplicate form, an in-form currency converter, and PDF export (including Chinese text)."], ["Sequential e-signature chain", "where approvers sign through a link with a personal PIN, and the order is enforced on the server so steps cannot be skipped."], ["Live dashboard", "with stage counts that double as filters, a banner that only appears when something needs your attention, and an expandable signature trail for every requisition."], ["Decline, revise and resubmit:", "declined requests reopen in the full form, and resubmitting restarts the chain so everyone re-confirms the revised request."], ["Withdraw, reminders and notifications:", "requesters can withdraw before purchase, set their own overdue thresholds per stage, and choose how to be notified (email, Telegram or phone and browser alerts) in one Settings page."], ["Admin tools", "to manage accounts and roles, and to override or reassign a stuck stage."], ["Built-in user manual and FAQ", "for onboarding."], ["Ask MR Tracker:", "an in-app assistant that answers 'any update?' and links to the right page, using fixed rules first with a strictly limited AI fallback."], ["Purchase History and Analytics:", "searchable items, prices and suppliers with smart matching and reorder, item suggestions on the form, and admin charts of procurement metrics."], ["Shared projects:", "admin-managed projects that anyone can pick by typing to filter."], ["Roles and access:", "admins decide who can see and do what, assign members to roles, and route notifications to procurement contacts."], ["Safer actions:", "two-step confirmation for Regenerate link, Reject, Withdraw and Delete, plus a quick tour the first time someone reaches the Dashboard."]]], ["Design decisions", [["Security lives in the database, not the page.", "Tables are closed to direct access and everything goes through functions that check identity and role, so hiding a button is never the only protection."], ["PINs are hashed with bcrypt,", "and signing locks after repeated wrong attempts."], ["Accounts are tied to a verified company email,", "one account per address."], ["Low running cost by design:", "it runs on the free tiers of GitHub Pages, Supabase and Resend, with a clear upgrade path if usage grows."]]], ["Problems I had to solve", [["Chinese text disappeared from exported PDFs.", "The PDF library's built-in fonts only cover Latin characters, so I detected CJK text and rendered just those strings as high-resolution images, keeping everything else as normal vector text."], ["Signature boxes vanished on longer forms.", "With about 10 line items the totals and sign-off sections were drawn below the page edge. I traced the layout maths and added page-break handling."], ["Drag-and-drop reordering was unreliable", "with the browser's native drag events, so I rebuilt it on plain mouse events."], ["Notification emails were delivered but never arrived.", "A brand-new sending domain was being silently held by the company mail filter. I set up a verified domain (SPF and DKIM) and documented what IT needs to allowlist."]]]], "cover": "mr_1", "m": [["mr_1", "MR Tracker: digital materials requisition and e-signature approval system"], ["mr_2", "One requisition moves through five tracked stages, with a timestamped signature at each step"], ["mr_3", "The requisition form (left) and the PIN-protected approval screen (right)"], ["mr_4", "The dashboard: stage counts as filters, an action banner, and a full signature trail per requisition"], ["mr_5", "Architecture: static front end, Supabase back end and Resend email, plus the security design"]]},
  {"id": "forced-to-go", "t": "SCS Forced to Go", "cat": "Mechanical", "ctx": "Work", "where": "Science Centre Singapore", "feat": 1, "d": "Hands-on exhibits for a travelling science exhibition: buoyancy that changes with pressure, a copper plate slowed by magnets, and a slinky on a moving treadmill.", "d2": "", "cover": "s3_image12", "m": [["s3_image12"], ["ftg_dive", "Buoyancy changing with pressure"], ["s3_image13", "Slinky bouncing down a moving treadmill"]], "sec": [["Maintenance log app", [["Phone app:", "log each fix across the 15 exhibits with the issue, the solution, a fix code, parts replaced and up to four photos."], ["Cost and team:", "labour is set once per day (half or full day, number of people) and material cost is estimated per fix."], ["Client report:", "one tap makes a formal report of the day's fixes with photos, cost and team, to download or share, plus a summary to send on WhatsApp."], ["Works offline on the device:", "everything is saved on the phone, with export and import of a backup."]]]]},
+ {"id":"mandai","t":"Mandai Bird Park Installation","cat":"Mechanical","ctx":"Work","where":"Mandai Bird Park","d":"Flip information panel and a mechanism that moves a flamingo head to show how it feeds.","d2":"","cover":"s7_image25","m":[["s7_image24","Flip panel"],["s7_image25","Movable flamingo head"]],"feat":1},
+ {"id":"led-maps","t":"LED Transport Map","cat":"Electronics","ctx":"Work","where":"Philippines","d":"Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.","d2":"On the installed Philippines map wall, the buttons light up the Ports, Lighthouses and RoRo highlights.","cover":"ledmaps_wall","m":[["v:ledmaps_wall","Installed wall, buttons lighting the map"],["ledmaps_wall","Installed wall: Ports, Lighthouses and RoRo"],["v:ledmaps"],["s12_image35"],["s12_image34"]],"feat":1},
+ {"id":"smart-light","t":"Smart Light","cat":"Electronics","ctx":"Work","where":"Maker space; servos, web app, Supabase","d":"Phone app that switches a maker space's square lights and wall spotlights on and off. Two servos with 3D-printed flaps in a printed bracket do the physical switching.","d2":"","cover":"smartlight_1","m":[["smartlight_1","Servo-driven flaps in their bracket"],["smartlight_2","App home screen: both light groups on, connected"],["smartlight_3","Weekly timer with days and on/off times"]],"stack":"HTML, CSS, vanilla JavaScript; Supabase (database and functions); servos; 3D-printed bracket","sec":[["What it does",[["Two light groups:","square lights and wall spotlights, each with a switch plate that shows the current state and when it last changed."],["Weekly timer:","pick days and on/off times; it runs on the server in Singapore time, even when the app is closed."],["Servo calibration:","set each servo's On and Off angle, and reverse On/Off if the app shows the opposite of the real light."]]]],"feat":1},
  {"id": "sam-misting", "t": "SAM Misting Machine", "cat": "Mechanical", "ctx": "Work", "where": "ArtScience Museum, artist Masuri Mazlan", "d": "Self-circulating misting shower unit for an artwork, developed from proof-of-concept prototype to final piece.", "d2": "", "cover": "s4_image14", "m": [["s4_image16", "Prototype for proving the concept"], ["s4_image14", "Final look before power on"], ["s4_image15", "Final look with the misting effect"]]},
- {"id": "robot-pet", "t": "Robot Pet (Cubot)", "cat": "Electronics", "ctx": "Personal", "where": "ESP32, OLED face, Bluetooth app", "d": "Palm-sized desk robot that reacts to touch and head rubbing with vibration and animated facial expressions.", "d2": "Cubot has grown in two directions: a welcome kiosk that guides visitors around the SPACElogic building, and Cubot Astro, a spaceman-helmet version with custom circuit boards, three colourways and a planned first run of 20 units.", "cover": "s17_image49", "m": [["v:robotpet", "Product showcase"], ["s17_image49", "Mini cube version"], ["s17_image47", "Portable version"], ["kiosk_1", "Welcome kiosk: Cubot's animated face and quick-start buttons"], ["kiosk_2", "First-person walk-through to the Boardroom on Level 3"], ["kiosk_3", "3D overview of the route, with a You are here pin"], ["kiosk_4", "Parcels are sent to the HR office"]], "sec": [["Cubot Welcome Kiosk", [["What it is:", "a reception robot I designed and built end to end in October 2026 from a spare office PC with only 2 GB of RAM. It greets visitors, answers questions and guides them around a six-level building with no staffed reception."], ["Find a room or a person:", "55 places and a directory of 102 staff, by name, first name or job title, with spoken directions. Parcels and deliveries are sent to the HR office, and Where am I shows the kiosk's position."], ["Three ways to show a route:", "a first-person 3D walk-through, a 3D overview of the stacked levels, and a 2D map. It falls back to 2D automatically if the PC cannot draw 3D."], ["Real routes, not just floor plans:", "I traced the fire-escape plans into clean floor plans and planned routes with A* pathfinding that follows the real access rules, such as going out through the car park instead of through a workshop."], ["Runs on weak hardware:", "a small local AI model answers only general questions, while rooms, people and directions come straight from a data file so they are always correct. Voice works offline, and the kiosk starts by itself in full screen within about 20 seconds."], ["Easy to keep up to date:", "all company info, places, staff and the kiosk's position live in one plain text file anyone can edit in Notepad."]]], ["Cubot Astro (production version)", [["Design:", "a 56 mm helmet with a smoked visor, so only glowing eyes show from the OLED behind it, a touch crown for head-pats, ear pods, a steel antenna and a collar base with the USB-C port, charge light and power switch."], ["Behaviour:", "13 eye expressions drawn at 40 frames per second, reactions to pat, tilt, shake, spin and drop, up to 5 labelled alarms, a focus timer, and notes sent from a phone over Bluetooth."], ["Custom boards:", "two small boards (a 40 x 32 mm main board and a 38 mm round power board) joined by one 8-pin cable, replacing the hand-wired modules, with an ESP32-C3, a 6-axis motion sensor and a USB-C charger with power path."], ["Built to be made:", "a bill of materials in JLCPCB format, schematics, layout rules, and a 10-week plan to build 2 prototypes and then 20 units."], ["Lower power:", "an estimated week of normal desk use per charge, with deep sleep and wake-on-touch (targets to measure on the prototypes)."]]]], "stack": "ESP32, OLED, Bluetooth web app; kiosk: HTML, CSS, JavaScript, Three.js, Web Speech API, local AI (Ollama), Python web server; Astro: custom PCBs (ESP32-C3), JLCPCB assembly, SLA resin shell"},
- {"id": "chalkline", "t": "Chalkline", "cat": "Software", "ctx": "Personal", "where": "React, Supabase, GitHub Pages", "d": "Climbing log and community app: log every climb, track progress and share it with your crew.", "d2": "", "stack": "React; Supabase (Postgres, Auth, Edge Functions); GitHub Pages", "sec": [["Features", [["Live Log:", "an attempt timer, one-tap falls at 1/4, 1/2 or 3/4 height, and a separate rest timer."], ["Photo markers:", "tap your wall photo to place start, end and numbered fall points."], ["Full story:", "every session on a route adds up (tries, time and sends), in list or grid view."], ["Daily summary:", "best climb, climbs, time, sends and a grade breakdown on its own page, ready to share."], ["Share cards:", "log, day, badge, progress and name tag cards generated in the browser, in four looks: blurred, photo card, transparent PNG and full photo."], ["Community:", "feed, gear deals, climbing sessions and chat between climbers."], ["Private by design:", "Row Level Security in the database keeps private logs private."]]]], "cover": "cl_1", "m": [["cl_1", "Chalkline: climbing log and community app"], ["cl_2", "Logging a climb with a live attempt timer and photo markers"], ["cl_3", "Daily summary with best climb, grade breakdown and share cards"], ["cl_4", "Share cards: one layout, four looks"], ["cl_5", "What is under the hood"]]},
  {"id": "some-call-it-science", "t": "SCS Some Call It Science", "cat": "Mechanical", "ctx": "Work", "where": "Science Centre Singapore", "d": "Upgrade of an 11-exhibit installation: redesigned casings, holders and integrated lighting for durability.", "d2": "", "cover": "s6_image23", "m": [["s6_image23", "Overview"], ["s6_image21", "Modified microphone casing"], ["s6_image22", "Modified handheld UV light and holders"], ["s6_image20", "Redesigned casing with integrated light"]]},
  {"id": "liv-golf", "t": "LIV Golf Game Station", "cat": "Electronics", "ctx": "Work", "where": "Sentosa, Singapore", "d": "Two IR sensor-based public game booths, golf and soccer, for an event at Sentosa.", "d2": "", "cover": "s14_image40", "m": [["s14_image39", "Visitor playing the game"], ["s14_image40", "IR sensor-based golf game"], ["s14_image41", "IR sensor-based soccer game"]]},
- {"id": "mandai", "t": "Mandai Bird Park Installation", "cat": "Mechanical", "ctx": "Work", "where": "Mandai Bird Park", "d": "Flip information panel and a mechanism that moves a flamingo head to show how it feeds.", "d2": "", "cover": "s7_image25", "m": [["s7_image24", "Flip panel"], ["s7_image25", "Movable flamingo head"]]},
- {"id": "gesture-visual", "t": "Hand Gesture Visual Effect Control", "cat": "Other", "ctx": "Personal", "where": "MediaPipe, TouchDesigner", "d": "AI camera system that turns hand gestures into real-time visual effects, touch-free.", "d2": "", "cover": "v:gestvisual", "m": [["v:gestvisual", "Visual output"], ["v:gestbg", "Background system"]]},
- {"id": "gesture-audio", "t": "Hand Gesture Audio Control", "cat": "Other", "ctx": "Personal", "where": "AI hand tracking, audio system", "d": "AI hand tracking that lets users control sound effects with hand gestures.", "d2": "", "cover": "v:gestaudio", "m": [["v:gestaudio"]]},
- {"id": "led-maps", "t": "LED Transport Map", "cat": "Electronics", "ctx": "Work", "where": "Philippines", "d": "Transport map with five coloured LEDs, each with its own button and matching sound. I did the wiring, sound system and electronics integration.", "d2": "On the installed Philippines map wall, the buttons light up the Ports, Lighthouses and RoRo highlights.", "cover": "ledmaps_wall", "m": [["v:ledmaps_wall", "Installed wall, buttons lighting the map"], ["ledmaps_wall", "Installed wall: Ports, Lighthouses and RoRo"], ["v:ledmaps"], ["s12_image35"], ["s12_image34"]]},
- {"id": "water-table", "t": "Water Table", "cat": "Mechanical", "ctx": "Work", "where": "3D-printed water demo", "d": "Water table built from 3D-printed parts. In one demo a hand tilts a pivoting spout under a stream of water; in another a spiral inside a clear tube lifts water up to a star-shaped fountain.", "d2": "I also wrote the engineering report for the full-size Christmas version, checking the frame, platform, hopper and tank.", "cover": "v:watertable2", "m": [["v:watertable2", "Spiral lifting water to a star fountain"], ["v:watertable", "Pivoting spout under a stream of water"]], "sec": [["Engineering report", [["Build:", "1200 x 1200 x 800 mm aluminium frame, an 18 mm clear acrylic platform, a sheet-metal hopper and a 44 litre tank under it."], ["Structural check:", "about 149 kg in total; the highest stress is 25 MPa against about 160 MPa yield, and nothing moves more than 1.5 mm."], ["Recommendations:", "fixing points for the hopper, wire bracing tension, extra cross bars, drain holes and a rim so water never crosses the flat acrylic, and a 24 V pump and lights with mains kept in one protected box."]]]]},
  {"id": "asm-prints", "t": "ASM Installation 3D Prints", "cat": "Mechanical", "ctx": "Work", "where": "ArtScience Museum", "d": "3D-printed bird nest, beehive and eagle tower for an ArtScience Museum art installation. I planned how to print and assemble them efficiently and robustly, then finished them to look like final pieces.", "d2": "Printed in a composite material (metal plus PLA), then finished with putty and spray paint.", "sec": [["What I did", [["Print planning:", "worked out how to split each piece into parts that print efficiently, such as the eagle tower in seven parts."], ["Robust assembly:", "designed the parts to fit together and hold up as one finished piece."], ["Post-processing:", "filled and smoothed with putty, then spray painted so the prints look finished."]]]], "cover": "asm_1", "m": [["asm_1", "Eagle tower: twisted rods between platforms, labelled for assembly"], ["asm_2", "Eagle tower model in CAD"], ["asm_3", "Exploded view: seven parts"], ["asm_4", "Printed piece with a dome base, pole and arms"]]},
+ {"id":"terrain-diorama","t":"Terrain Diorama","cat":"Other","ctx":"Work","where":"Romance of the Three Kingdoms theme","d":"Physical terrain for a 3 m x 3 m projection diorama: four organic corner pieces around a flat centre, printed in sections on a large-format 3D printer.","d2":"","cover":"s21_image54","m":[["s21_image54"],["s21_image55"],["s21_image56"],["terrain_1","Printed terrain section, partly painted"],["terrain_2","Slicer preview: 750 x 750 x 187 mm tile, about 1 day 22 hours to print"],["terrain_3","A terrain section printing on the large-format 3D printer"]]},
+ {"id": "water-table", "t": "Water Table", "cat": "Mechanical", "ctx": "Work", "where": "3D-printed water demo", "d": "Water table built from 3D-printed parts. In one demo a hand tilts a pivoting spout under a stream of water; in another a spiral inside a clear tube lifts water up to a star-shaped fountain.", "d2": "I also wrote the engineering report for the full-size Christmas version, checking the frame, platform, hopper and tank.", "cover": "v:watertable2", "m": [["v:watertable2", "Spiral lifting water to a star fountain"], ["v:watertable", "Pivoting spout under a stream of water"]], "sec": [["Engineering report", [["Build:", "1200 x 1200 x 800 mm aluminium frame, an 18 mm clear acrylic platform, a sheet-metal hopper and a 44 litre tank under it."], ["Structural check:", "about 149 kg in total; the highest stress is 25 MPa against about 160 MPa yield, and nothing moves more than 1.5 mm."], ["Recommendations:", "fixing points for the hopper, wire bracing tension, extra cross bars, drain holes and a rim so water never crosses the flat acrylic, and a 24 V pump and lights with mains kept in one protected box."]]]]},
  {"id": "kinetic-butterfly", "t": "Air-Powered Kinetic Butterfly", "cat": "Mechanical", "ctx": "Personal", "where": "Ceiling aircon airflow, 3D-printed PLA and paper", "d": "A hanging kinetic sculpture that runs on nothing but the air from a ceiling aircon. A hidden air turbine inside a paper bell-flower lantern drives a gear train, and a butterfly below flaps its wings about once every two seconds.", "d2": "Built from 3D-printed PLA and A4 paper, with no motor, battery or electronics in the final design. The v7 drive is printed and working, and the final butterfly is in build. The kinetic bird below is the early prototype of the same idea.", "stack": "Python simulation (blade-element rotor model, drivetrain dynamics), code-based parametric CAD, FDM printing in PLA", "sec": [["Design journey", [["v1 to v4, passive wings:", "flexure hinges and loose paper flaps meant to flutter in the airflow. A physics check showed a pressure-driven flap damps motion instead of sustaining it, so I changed direction before building more."], ["v5 and v6, air turbine:", "a turbine driving a crown gear, crank and sliding yoke. The rotor did not start and the yoke jammed, because two guide rods over-constrained it."], ["v7, rocker drive:", "I replaced the slider with a rocker lever on a single pivot pin, which cannot wedge. Printed, assembled and confirmed working."], ["v8 and v9, the butterfly:", "a restyle with bevelled plates, then a butterfly under a paper bell-flower lantern that hides the rotor and gearbox, reusing the proven v7 mechanism."]]], ["Engineering methods", [["Rotor model:", "a blade-element and momentum model of the flat paper blades set the blade pitch at 42 degrees and the diameter at 184 mm."], ["Drivetrain simulation:", "a time-stepped simulation of the rotor, 6:1 gearing, crank, rocker, wing weight and friction predicted the start-up airflow and flap rate, and sized the counterweight."], ["Robustness sweeps:", "re-running with doubled friction and 50% gear efficiency showed that v5 was too marginal for real aircon airflow."], ["Parametric CAD in code:", "all parts come from one script, so changing a dimension updates every dependent part and print file."], ["Clearance checks:", "every moving part was swept through a full flap cycle to measure the smallest gap, which caught a 0.2 mm crank slot before printing."]]], ["How it works", [["Spin:", "downward air enters the open top of the bell and spins a six-blade paper rotor."], ["Gear down:", "an 8-tooth pinion drives a 48-tooth crown gear, a 6:1 reduction."], ["Rock:", "a crank pin 5 mm off centre rocks a lever about 9 degrees, and a thin pushrod in a black stem moves up and down about 7 mm."], ["Flap:", "a yoke drives both wings together from about 16 degrees down to 40 degrees up. The simulation predicts it starts at about 0.8 m/s of airflow."]]], ["What I learned", [["Check the physics, not the animation:", "the passive-flap idea looked convincing in a simple model that assumed the effect it was meant to prove."], ["Exact constraint beats extra guidance:", "a second guide rod made the slider worse, and a single pivot fixed the jamming for good."], ["Keep the proven core:", "the final butterfly reuses the working v7 gearbox, so the new look did not reset the reliability work."]]]], "m": [["v:kineticbird", "Kinetic bird prototype: the wings flap while a propeller spins above"]], "cover": "v:kineticbird"},
- {"id": "smart-light", "t": "Smart Light", "cat": "Electronics", "ctx": "Work", "where": "Maker space; servos, web app, Supabase", "d": "Phone app that switches a maker space's square lights and wall spotlights on and off. Two servos with 3D-printed flaps in a printed bracket do the physical switching.", "d2": "", "cover": "smartlight_1", "m": [["smartlight_1", "Servo-driven flaps in their bracket"], ["smartlight_2", "App home screen: both light groups on, connected"], ["smartlight_3", "Weekly timer with days and on/off times"]], "stack": "HTML, CSS, vanilla JavaScript; Supabase (database and functions); servos; 3D-printed bracket", "sec": [["What it does", [["Two light groups:", "square lights and wall spotlights, each with a switch plate that shows the current state and when it last changed."], ["Weekly timer:", "pick days and on/off times; it runs on the server in Singapore time, even when the app is closed."], ["Servo calibration:", "set each servo's On and Off angle, and reverse On/Off if the app shows the opposite of the real light."]]]]},
- {"id": "nccs-donor-wall", "t": "NCCS Donor Wall Glowing Light", "cat": "Electronics", "ctx": "Work", "where": "National Cancer Centre Singapore", "d": "Curved wall of LED bulbs that makes a warm, moving glowing star around each donor name. I designed and programmed the animation.", "d2": "", "cover": "s16_image45", "m": [["v:nccs", "Visual animation"], ["s16_image45", "Overview"]]},
+ {"id": "fundamental-exhibits", "t": "SCS Fundamental Exhibits", "cat": "Electronics", "ctx": "Work", "where": "Science Centre Singapore", "d": "Concept mock-ups to validate the science effect and visitor experience: sound wave visualiser, hand-holding experiment, spiral water effect.", "d2": "", "cover": "s13_image37", "m": [["s13_image36"], ["s13_image37"], ["s13_image38"]]},
+ {"id":"nccs-donor-wall","t":"NCCS Donor Wall Glowing Light","cat":"Electronics","ctx":"Work","where":"National Cancer Centre Singapore","d":"Curved wall of LED bulbs that makes a warm, moving glowing star around each donor name. I designed and programmed the animation.","d2":"","cover":"s16_image45","m":[["v:nccs","Visual animation"],["s16_image45","Overview"]]},
  {"id": "bowmore", "t": "Bowmore Running Light Counter", "cat": "Electronics", "ctx": "Work", "where": "Bowmore", "d": "Animated LED light box for a counter tabletop; I arranged the wiring and programmed the running-light sequence.", "d2": "", "cover": "s15_image44", "m": [["s15_image44", "Final look"], ["s15_image42"], ["s15_image43"]]},
- {"id": "shore-gangway", "t": "Telescopic Shore Gangway", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "Adjustable gangway for LNG ship workers to embark, with three mechanical designs for different shore set-ups.", "d2": "", "cover": "s10_image32", "contain": 1, "m": [["v:gangway"], ["s10_image32", "Project poster"]]},
- {"id": "soft-gripper", "t": "Pneumatic Soft Gripper", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "3D-printed hollow-chamber soft gripper that handles small, irregular objects and separates fabric without damage.", "d2": "", "cover": "s9_image29", "contain": 1, "m": [["v:gripper"], ["s9_image29", "Project poster"]]},
  {"id": "planet-gear", "t": "Planet Gear Signage", "cat": "Mechanical", "ctx": "Work", "where": "Maker space signage", "d": "Metallic-look 3D-printed planetary gear mechanism built as a moving sign.", "d2": "", "cover": "s8_image26", "m": [["v:planetgear"], ["s8_image26"], ["s8_image28"]]},
  {"id": "handcrank-fan", "t": "Handcrank Fan", "cat": "Mechanical", "ctx": "Work", "where": "Proof-of-concept mock-up", "d": "Mock-up of a speed step-up gear mechanism driving a counter-rotating blade.", "d2": "", "cover": "v:handcrank", "m": [["v:handcrank", "Working prototype"], ["s5_image17", "Technical drawing"], ["s5_image18", "AI render"]]},
- {"id": "fundamental-exhibits", "t": "SCS Fundamental Exhibits", "cat": "Electronics", "ctx": "Work", "where": "Science Centre Singapore", "d": "Concept mock-ups to validate the science effect and visitor experience: sound wave visualiser, hand-holding experiment, spiral water effect.", "d2": "", "cover": "s13_image37", "m": [["s13_image36"], ["s13_image37"], ["s13_image38"]]},
+ {"id": "robot-pet", "t": "Robot Pet (Cubot)", "cat": "Electronics", "ctx": "Personal", "where": "ESP32, OLED face, Bluetooth app", "d": "Palm-sized desk robot that reacts to touch and head rubbing with vibration and animated facial expressions.", "d2": "Cubot has grown in two directions: a welcome kiosk that guides visitors around the SPACElogic building, and Cubot Astro, a spaceman-helmet version with custom circuit boards, three colourways and a planned first run of 20 units.", "cover": "s17_image49", "m": [["v:robotpet", "Product showcase"], ["s17_image49", "Mini cube version"], ["s17_image47", "Portable version"], ["kiosk_1", "Welcome kiosk: Cubot's animated face and quick-start buttons"], ["kiosk_2", "First-person walk-through to the Boardroom on Level 3"], ["kiosk_3", "3D overview of the route, with a You are here pin"], ["kiosk_4", "Parcels are sent to the HR office"]], "sec": [["Cubot Welcome Kiosk", [["What it is:", "a reception robot I designed and built end to end in October 2026 from a spare office PC with only 2 GB of RAM. It greets visitors, answers questions and guides them around a six-level building with no staffed reception."], ["Find a room or a person:", "55 places and a directory of 102 staff, by name, first name or job title, with spoken directions. Parcels and deliveries are sent to the HR office, and Where am I shows the kiosk's position."], ["Three ways to show a route:", "a first-person 3D walk-through, a 3D overview of the stacked levels, and a 2D map. It falls back to 2D automatically if the PC cannot draw 3D."], ["Real routes, not just floor plans:", "I traced the fire-escape plans into clean floor plans and planned routes with A* pathfinding that follows the real access rules, such as going out through the car park instead of through a workshop."], ["Runs on weak hardware:", "a small local AI model answers only general questions, while rooms, people and directions come straight from a data file so they are always correct. Voice works offline, and the kiosk starts by itself in full screen within about 20 seconds."], ["Easy to keep up to date:", "all company info, places, staff and the kiosk's position live in one plain text file anyone can edit in Notepad."]]], ["Cubot Astro (production version)", [["Design:", "a 56 mm helmet with a smoked visor, so only glowing eyes show from the OLED behind it, a touch crown for head-pats, ear pods, a steel antenna and a collar base with the USB-C port, charge light and power switch."], ["Behaviour:", "13 eye expressions drawn at 40 frames per second, reactions to pat, tilt, shake, spin and drop, up to 5 labelled alarms, a focus timer, and notes sent from a phone over Bluetooth."], ["Custom boards:", "two small boards (a 40 x 32 mm main board and a 38 mm round power board) joined by one 8-pin cable, replacing the hand-wired modules, with an ESP32-C3, a 6-axis motion sensor and a USB-C charger with power path."], ["Built to be made:", "a bill of materials in JLCPCB format, schematics, layout rules, and a 10-week plan to build 2 prototypes and then 20 units."], ["Lower power:", "an estimated week of normal desk use per charge, with deep sleep and wake-on-touch (targets to measure on the prototypes)."]]]], "stack": "ESP32, OLED, Bluetooth web app; kiosk: HTML, CSS, JavaScript, Three.js, Web Speech API, local AI (Ollama), Python web server; Astro: custom PCBs (ESP32-C3), JLCPCB assembly, SLA resin shell"},
+ {"id": "inventory-space", "t": "Inventory Space", "cat": "Software", "ctx": "Work", "where": "SPACElogic maker space", "d": "Web app that tells a workshop where every tool, part and piece of equipment lives, who has it, and when it runs low. It brings together a 3D map of the space, QR labels, load cells and a camera into one flow: find it, take it, put it back.", "d2": "Built in October 2026 in more than 40 updates over ten days, starting from a simple tool status board. Phones open in a Lite view that hides the editing tools.", "stack": "Vanilla JavaScript, Three.js, Supabase (Postgres); ESP32 load cells; in-browser object detection (YOLO model, ONNX); installable web app", "sec": [["Everyday jobs", [["Find it in 3D:", "search a name, size or SKU and the camera flies to the front of the right shelf, fades everything else out and highlights the box."], ["Scan to take or store:", "every item and place has a QR label. Taking an item asks whether it comes back and when, in three taps with no typing. Putting it away closes its loan automatically."], ["Loans and consumables:", "a Loans page shows who has what and flags anything overdue. Consumables like screws and washers are counted by weight, with a reorder list, purchase details and a monthly material requisition draft."], ["Tidy suggestions:", "it spots the same kind of item stored in different places and suggests one home for them, moved with one tap."], ["Tool bags:", "SKUs, item photos and QR labels, and a Keep together page for items that must travel as a set."]]], ["Space mode", [["Draw the maker space:", "rooms are drawn in 2D with an editor that has resize handles, sizes in cm, presets, snapping, undo, shortcuts and copy and paste."], ["Real furniture:", "wall cabinets, workbenches on legs, PC desks and racks with stackable boxes, plus warnings when things collide."], ["Rack view and 3D Find:", "one row per shelf level with a coloured tag per box. Search an item and the 3D view flies to the place it is kept."], ["QR codes:", "one for every place, printed by room, with a Scan button to jump straight to it."]]], ["Fastener recognition", [["Camera detection:", "a webcam recognises fasteners, learning the empty background so unchanged areas are ignored."], ["Label and Detect tabs:", "collect training pictures and warn when there are too few, then load the trained model. It currently knows two types of M6 x 16 screw."], ["Toward automatic sorting:", "with the scale, this is the first step of a fastener sorter that would feed, identify, weigh and sort parts into bins."]]], ["How it is built", [["No framework:", "a single-page app in plain JavaScript that lazy-loads its heavy 3D and camera modules, installable as a phone app with a Lite view."], ["Security in the database:", "every table is read-only to the browser, and every write goes through a server-side function that checks the user's session and validates the input."], ["One source of truth for location:", "search, the 3D view, QR pages and labels all read where an item is from one shelf, level and slot record."], ["Load cells:", "ESP32 load cells under bins report readings to database functions that turn weight changes into pieces used or added. The hooks are ready for per-bin weighing units."]]], ["Design decisions", [["Fewer taps over more fields:", "the take flow started as a text form and became two big buttons plus a duration, because people will not type on a phone in the workshop."], ["Write once, count automatically:", "stock changes come from take and return actions and the load cells, not from asking people to update counts."], ["Phone first, desktop for setup:", "daily jobs stay in Lite view, while the space editor, scales and sorter live in Full view."]]]], "m": [["inv_1", "Find: the 3D map of the maker space, with a box and its contents on the right"], ["inv_2", "Searching for a screw flies to the rack and highlights the box"], ["inv_3", "Keep similar things together: the app suggests one home for items stored in different places"]], "cover": "inv_1"},
+ {"id": "mr-tracker", "t": "MR Tracker", "cat": "Software", "ctx": "Work", "where": "SPACElogic internal tool", "d": "Web-based materials requisition and e-signature approval system for SPACElogic: tracked stages, PIN-verified signatures, live dashboard, purchase history and analytics, a built-in assistant, and notifications people choose themselves.", "d2": "", "stack": "HTML, CSS, vanilla JavaScript; Supabase (PostgreSQL, row-level security, PL/pgSQL, Edge Functions); Resend; Telegram; GitHub Pages; jsPDF", "sec": [["What I built", [["Requisition form", "with drafts, running totals, drag-to-reorder rows, duplicate row and duplicate form, an in-form currency converter, and PDF export (including Chinese text)."], ["Sequential e-signature chain", "where approvers sign through a link with a personal PIN, and the order is enforced on the server so steps cannot be skipped."], ["Live dashboard", "with stage counts that double as filters, a banner that only appears when something needs your attention, and an expandable signature trail for every requisition."], ["Decline, revise and resubmit:", "declined requests reopen in the full form, and resubmitting restarts the chain so everyone re-confirms the revised request."], ["Withdraw, reminders and notifications:", "requesters can withdraw before purchase, set their own overdue thresholds per stage, and choose how to be notified (email, Telegram or phone and browser alerts) in one Settings page."], ["Admin tools", "to manage accounts and roles, and to override or reassign a stuck stage."], ["Built-in user manual and FAQ", "for onboarding."], ["Ask MR Tracker:", "an in-app assistant that answers 'any update?' and links to the right page, using fixed rules first with a strictly limited AI fallback."], ["Purchase History and Analytics:", "searchable items, prices and suppliers with smart matching and reorder, item suggestions on the form, and admin charts of procurement metrics."], ["Shared projects:", "admin-managed projects that anyone can pick by typing to filter."], ["Roles and access:", "admins decide who can see and do what, assign members to roles, and route notifications to procurement contacts."], ["Safer actions:", "two-step confirmation for Regenerate link, Reject, Withdraw and Delete, plus a quick tour the first time someone reaches the Dashboard."]]], ["Design decisions", [["Security lives in the database, not the page.", "Tables are closed to direct access and everything goes through functions that check identity and role, so hiding a button is never the only protection."], ["PINs are hashed with bcrypt,", "and signing locks after repeated wrong attempts."], ["Accounts are tied to a verified company email,", "one account per address."], ["Low running cost by design:", "it runs on the free tiers of GitHub Pages, Supabase and Resend, with a clear upgrade path if usage grows."]]], ["Problems I had to solve", [["Chinese text disappeared from exported PDFs.", "The PDF library's built-in fonts only cover Latin characters, so I detected CJK text and rendered just those strings as high-resolution images, keeping everything else as normal vector text."], ["Signature boxes vanished on longer forms.", "With about 10 line items the totals and sign-off sections were drawn below the page edge. I traced the layout maths and added page-break handling."], ["Drag-and-drop reordering was unreliable", "with the browser's native drag events, so I rebuilt it on plain mouse events."], ["Notification emails were delivered but never arrived.", "A brand-new sending domain was being silently held by the company mail filter. I set up a verified domain (SPF and DKIM) and documented what IT needs to allowlist."]]]], "cover": "mr_1", "m": [["mr_1", "MR Tracker: digital materials requisition and e-signature approval system"], ["mr_2", "One requisition moves through five tracked stages, with a timestamped signature at each step"], ["mr_3", "The requisition form (left) and the PIN-protected approval screen (right)"], ["mr_4", "The dashboard: stage counts as filters, an action banner, and a full signature trail per requisition"], ["mr_5", "Architecture: static front end, Supabase back end and Resend email, plus the security design"]]},
+ {"id": "makerspace-arcade", "t": "SPACElogic Makerspace Arcade", "cat": "Software", "ctx": "Work", "where": "Maker space TV", "d": "A Wii-style game station for the SPACElogic makerspace: a camera and a TV let visitors choose a game and play it with their whole body, with no controller. A camera tracks one player at a time, and phones can be used as steering wheels.", "d2": "Built in October 2026 and installable as a full-screen app. It started with Maker Run and has grown to four games. Staff press Start once and visitors run everything themselves.", "stack": "MediaPipe Pose Landmarker, JavaScript, HTML canvas, Web Audio; WebRTC (PeerJS) between phones and TV; installable web app", "sec": [["The games", [["Maker Run:", "a runner set inside the makerspace itself. Toolboxes ask for a jump, 3D printers for a lean into a free lane, and laser gantries for a squat, and gears are worth 25 points. A 75-second shift with three power cells as lives, and speed ramps up over the first minute."], ["Circuit Racers:", "up to four phones scan a QR code and become tilt-to-steer wheels with gas, brake and nitro, in split screen on the TV. CPU cars fill empty seats."], ["Escape Protocol:", "an 8-minute escape room with three missions, Orbital, Nexus Lab and Abyss-7, each with its own puzzles: big floor zones, move sequences, arm-drawn patterns, pumping and pose copying. A narrator speaks and wrong moves cost time."], ["Filament Slice:", "swipe both arms through flying filament spools and circuit boards for combos up to x5, and avoid the red-hot nozzles. A shift lasts 75 seconds."]]], ["Making camera data feel like a controller", [["Calibration:", "before each run the player stands in a dashed zone and holds still, with coaching like Step closer or Move to the middle. Every gesture is then measured against that player's own shoulder height and torso length, so a child and an adult both work, at any distance."], ["Smoothing:", "raw landmarks shake even when someone stands still, which would trigger false jumps. A One Euro filter smooths heavily when the body is still and loosens up during fast movement, so real jumps still register without delay."], ["No accidental triggers:", "lane changes use hysteresis, a jump only re-arms once the shoulders come back down, and a squat releases at a lower threshold than it triggers."], ["Fairness:", "every row of obstacles leaves a safe route, a hit gives 1.4 seconds of invulnerability, and the game pauses if the player leaves the camera view."]]], ["Built for a public space", [["Menus by leaning:", "lean left or right to move the highlight and raise both arms to select. It started as pinching with fingers, and I redesigned it for big movements from 1 to 2 metres away."], ["One player locked in:", "the camera follows the person closest to the middle and ignores people walking past."], ["Always ready:", "a welcome screen returns after 45 seconds with nobody around, and every game ends with the SPACElogic and Makerspace logos."], ["No camera needed:", "everything also works with a mouse or keyboard."]]]], "m": [["arcade_2", "Maker Run on the maker space TV: lean, jump and squat to play"], ["arcade_3", "Dodging toolboxes in Maker Run"], ["arcade_1", "Escape Protocol, Nexus Lab: a wire-matching puzzle played with arm movements"]], "cover": "arcade_2"},
+ {"id": "chalkline", "t": "Chalkline", "cat": "Software", "ctx": "Personal", "where": "React, Supabase, GitHub Pages", "d": "Climbing log and community app: log every climb, track progress and share it with your crew.", "d2": "", "stack": "React; Supabase (Postgres, Auth, Edge Functions); GitHub Pages", "sec": [["Features", [["Live Log:", "an attempt timer, one-tap falls at 1/4, 1/2 or 3/4 height, and a separate rest timer."], ["Photo markers:", "tap your wall photo to place start, end and numbered fall points."], ["Full story:", "every session on a route adds up (tries, time and sends), in list or grid view."], ["Daily summary:", "best climb, climbs, time, sends and a grade breakdown on its own page, ready to share."], ["Share cards:", "log, day, badge, progress and name tag cards generated in the browser, in four looks: blurred, photo card, transparent PNG and full photo."], ["Community:", "feed, gear deals, climbing sessions and chat between climbers."], ["Private by design:", "Row Level Security in the database keeps private logs private."]]]], "cover": "cl_1", "m": [["cl_1", "Chalkline: climbing log and community app"], ["cl_2", "Logging a climb with a live attempt timer and photo markers"], ["cl_3", "Daily summary with best climb, grade breakdown and share cards"], ["cl_4", "Share cards: one layout, four looks"], ["cl_5", "What is under the hood"]]},
+ {"id": "gesture-visual", "t": "Hand Gesture Visual Effect Control", "cat": "Other", "ctx": "Personal", "where": "MediaPipe, TouchDesigner", "d": "AI camera system that turns hand gestures into real-time visual effects, touch-free.", "d2": "", "cover": "v:gestvisual", "m": [["v:gestvisual", "Visual output"], ["v:gestbg", "Background system"]]},
+ {"id": "gesture-audio", "t": "Hand Gesture Audio Control", "cat": "Other", "ctx": "Personal", "where": "AI hand tracking, audio system", "d": "AI hand tracking that lets users control sound effects with hand gestures.", "d2": "", "cover": "v:gestaudio", "m": [["v:gestaudio"]]},
  {"id": "stock-display", "t": "Real-time Stock Price Display", "cat": "Electronics", "ctx": "Personal", "where": "Wi-Fi, palm-sized", "d": "Palm-sized Wi-Fi device showing live stock prices on its built-in screen.", "d2": "", "cover": "s18_image51", "m": [["s18_image51"], ["s18_image50"]]},
  {"id": "digital-clock", "t": "7-Segment Digital Clock", "cat": "Electronics", "ctx": "Personal", "where": "Bluetooth, smartphone sync", "d": "Bluetooth 7-segment clock that syncs time and settings from a smartphone.", "d2": "", "cover": "s18_image52", "m": [["s18_image52"]]},
+ {"id": "shore-gangway", "t": "Telescopic Shore Gangway", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "Adjustable gangway for LNG ship workers to embark, with three mechanical designs for different shore set-ups.", "d2": "", "cover": "s10_image32", "contain": 1, "m": [["v:gangway"], ["s10_image32", "Project poster"]]},
+ {"id": "soft-gripper", "t": "Pneumatic Soft Gripper", "cat": "Mechanical", "ctx": "Academic", "where": "INTI International University", "d": "3D-printed hollow-chamber soft gripper that handles small, irregular objects and separates fabric without damage.", "d2": "", "cover": "s9_image29", "contain": 1, "m": [["v:gripper"], ["s9_image29", "Project poster"]]},
  {"id": "bluetooth-car", "t": "Bluetooth-Controlled Car", "cat": "Electronics", "ctx": "Academic", "where": "INTI International University", "d": "Omnidirectional toy car controlled from a smartphone over Bluetooth.", "d2": "", "cover": "v:btcar", "m": [["v:btcar"]]}
 ];
 
@@ -546,38 +562,55 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
 const poster=k=>M['p:'+k.slice(2)];
 const coverSrc=k=>k.startsWith('v:')?poster(k):M[k];
 const BG={asm_2:'#ffffff',asm_3:'#ffffff',mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
-let fcat='All',fctx='All',cur=null,list=[];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const byId=id=>P.find(p=>p.id===id);
+let fcat='All',fctx='All',cur=null,list=[],expanded=false;
 const CATS=['All','Mechanical','Electronics','Software','Other'],CTX=['All','Work','Personal','Academic'];
 P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,ease=t=>1-Math.pow(1-t,3);
-
-/* ---------- opening: photo pulls back, then explodes into four layers ---------- */
-const LAYERS=[
- ['s16_image45','Electronics','LED walls, sensors and the code that drives them.'],
- ['s3_image12','Mechanical','Exhibit casings, linkages and moving parts that survive the public.'],
- ['inv_1','Software','Web apps and tools that keep a workshop running.'],
- ['asm_1','Fabrication','3D printing, finishing and assembly, done in-house.']].filter(l=>M[l[0]]);
-$('#fullimg').src=M[LAYERS[0][0]];
-$('#stack').innerHTML=LAYERS.map((l,n)=>`<div class="ly" style="--k:${(LAYERS.length-1)/2-n};z-index:${9-n}"><img src="${M[l[0]]}" alt=""><span class="tag"><span><b>0${n+1}</b>${l[1]}</span></span></div>`).join('');
-$('#capd').textContent=LAYERS[0][2];
-$$('#words img[data-k]').forEach(i=>{i.src=M[i.dataset.k]||''});
 $('#heroimg').src=M['profile'];
 
-/* statement words */
-const W=$('#words');W.innerHTML=W.innerHTML.replace(/(<em>.*?<\/em>|[^\s<]+)/g,'<span class="w">$1</span>');
+/* ---------- hero: exploded view of the four disciplines ---------- */
+const LAYERS=[['s3_image12','Mechanical'],['ledmaps_wall','Electronics'],['s21_image54','Fabrication'],['inv_1','Software']].filter(l=>M[l[0]]);
+$('#stack').innerHTML=LAYERS.map((l,n)=>`<div class="ly" data-n="${n}" style="--k:${(LAYERS.length-1)/2-n};z-index:${9-n}"><img src="${M[l[0]]}" alt=""><span class="tag"><span>0${n+1} ${l[1]}</span></span></div>`).join('');
+$('#legend').innerHTML=LAYERS.map((l,n)=>`<span><b>0${n+1}</b>${l[1]}</span>`).join('');
+const ex=$('#ex');
+if(RM)ex.classList.remove('boot');else requestAnimationFrame(()=>setTimeout(()=>ex.classList.remove('boot'),250));
+addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;
+  document.documentElement.style.setProperty('--mx',e.clientX+'px');document.documentElement.style.setProperty('--my',e.clientY+'px');
+  const st=$('#stack');st.style.setProperty('--py',((e.clientX/innerWidth-.5)*12).toFixed(2));st.style.setProperty('--px',((e.clientY/innerHeight-.5)*-8).toFixed(2));
+},{passive:true});
 
-/* ---------- selected work: the first projects in the list (reorder them in admin) ---------- */
-const SEL=P.filter(p=>p.cover).slice(0,6);
-$('#gat').textContent=String(SEL.length).padStart(2,'0');
-$('#ga').style.setProperty('--gh',(100+SEL.length*70)+'vh');
-SEL.forEach((p,n)=>{
-  const b=el('button','it');b.type='button';b.setAttribute('aria-label','Open '+p.t);
-  const im=el('div','im');const i=new Image();i.alt='';i.loading='lazy';i.src=coverSrc(p.cover);im.appendChild(i);im.appendChild(el('span','no',String(n+1).padStart(2,'0')));b.appendChild(im);
-  b.appendChild(el('span','lab',p.cat+' · '+(p.where||p.ctx)));b.appendChild(el('h3',null,p.t));b.appendChild(el('p',null,p.d));
-  b.onclick=()=>open(p.id);
-  b.addEventListener('focus',()=>{const ga=$('#ga'),top=ga.offsetTop,span=ga.offsetHeight-$('#ga .pin').offsetHeight;const y=top+span*(SEL.length>1?n/(SEL.length-1):0);if(Math.abs(scrollY-y)>40)scrollTo({top:y,behavior:'auto'})});
-  $('#track').appendChild(b);
+/* ---------- services ---------- */
+const ICON={
+ mech:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>',
+ elec:'<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>',
+ fab:'<svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-6h4v6"/></svg>',
+ sw:'<svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg>'};
+const SVC=[
+ {i:'mech',t:'Mechanisms and structures',s:'Main strength',m:1,d:'Moving parts, linkages, gears and enclosures that survive daily public use. Designed in CAD and checked before building.',tools:'Fusion 360 · SolidWorks · Ansys',eg:['mandai','forced-to-go','kinetic-butterfly','sam-misting']},
+ {i:'elec',t:'Electronics and interaction',s:'Strength',m:1,d:'Sensors, buttons, LEDs, sound and motors, wired and programmed so visitors can play with them.',tools:'Arduino · ESP32 · KiCad',eg:['led-maps','liv-golf','robot-pet','bowmore']},
+ {i:'fab',t:'Prototyping and fabrication',d:'Quick mock-ups to prove an idea, then finished parts: large 3D prints, laser cutting, putty and paint.',tools:'FDM and resin 3D printers · laser cutter',eg:['terrain-diorama','asm-prints','fundamental-exhibits']},
+ {i:'sw',t:'Software and apps',s:'With AI support',ai:1,d:'With AI tools I build the software side: phone control apps, web dashboards and camera-based interaction.',tools:'Web apps · Supabase · TouchDesigner · MediaPipe',eg:['smart-light','inventory-space','mr-tracker','gesture-visual']}];
+$('#svc').innerHTML='';
+SVC.forEach(s=>{
+  const c=el('div','sv rv'+(s.m?' main':''));
+  c.innerHTML=`<div class="ic">${ICON[s.i]}</div>${s.s?`<span class="str${s.ai?' ai':''}">${s.s}</span>`:''}`;
+  c.appendChild(el('h3',null,s.t));c.appendChild(el('p',null,s.d));c.appendChild(el('div','tools',s.tools));
+  const eg=el('div','eg');eg.appendChild(el('span','lab','See'));
+  s.eg.map(byId).filter(Boolean).forEach(p=>{const b=el('button',null,p.t);b.type='button';b.onclick=()=>open(p.id,null,P);eg.appendChild(b)});
+  c.appendChild(eg);$('#svc').appendChild(c);
+});
+
+/* ---------- featured: projects ticked "Feature" in admin, in list order ---------- */
+let FEAT=P.filter(p=>p.feat&&p.cover);if(!FEAT.length)FEAT=P.filter(p=>p.cover).slice(0,4);
+const TAGS={Mechanical:['Mechanism','CAD','Fabrication'],Electronics:['Electronics','Programming'],Software:['Software','AI-assisted'],Other:['Interaction']};
+FEAT.forEach(p=>{
+  const c=el('button','fc rv');c.type='button';c.setAttribute('aria-label','Open '+p.t);
+  const im=el('div','im');const i=new Image();i.alt='';i.loading='lazy';i.src=coverSrc(p.cover);im.appendChild(i);if(p.vids)im.appendChild(el('span','vid',p.vids>1?p.vids+' videos':'Video'));c.appendChild(im);
+  const tx=el('div','tx');tx.appendChild(el('span','lab',p.where||p.ctx));tx.appendChild(el('h3',null,p.t));tx.appendChild(el('p',null,p.d));
+  const tg=el('div','tags');(TAGS[p.cat]||[]).forEach(t=>tg.appendChild(el('span',null,t)));tx.appendChild(tg);
+  tx.appendChild(el('span','more','View project →'));c.appendChild(tx);
+  c.onclick=()=>open(p.id,null,FEAT);$('#feat').appendChild(c);
 });
 
 /* ---------- all projects ---------- */
@@ -587,22 +620,20 @@ function mkChips(host,arr,get,cb,label){
     const n=v==='All'?P.length:P.filter(p=>get(p)===v).length;
     const b=el('button','chip',v);b.type='button';b.appendChild(el('i',null,String(n)));
     b.setAttribute('aria-pressed',v==='All'?'true':'false');b.dataset.v=v;
-    b.onclick=()=>{cb(v);host.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===v?'true':'false'));render();const g=$('#projects');if(g.getBoundingClientRect().top<0)g.scrollIntoView()};
+    b.onclick=()=>{cb(v);expanded=true;host.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.v===v?'true':'false'));render()};
     host.appendChild(b);
   });
 }
-mkChips($('#fcat'),CATS,p=>p.cat,v=>fcat=v);
+mkChips($('#fcat'),CATS,p=>p.cat,v=>fcat=v,'Type');
 mkChips($('#fctx'),CTX,p=>p.ctx,v=>fctx=v,'Where');
-
-let seed=7;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280,r2=()=>rnd()*2-1;
-const SCAT=P.map(()=>({sx:r2()*30,sy:20+rnd()*25,sz:-200-rnd()*600,rx:r2()*60,ry:r2()*70,rz:r2()*30}));
+const LIMIT=9;
 function render(){
   const g=$('#grid');g.textContent='';
   list=P.filter(p=>(fcat==='All'||p.cat===fcat)&&(fctx==='All'||p.ctx===fctx));
-  if(!list.length){g.appendChild(el('div','empty','No projects match this combination. Try another filter.'));return}
-  list.forEach(p=>{
-    const s=SCAT[P.indexOf(p)],w=el('div','pc');
-    for(const k in s)w.style.setProperty('--'+k,s[k].toFixed(1));
+  $('#alltitle').textContent=list.length+(list.length===1?' project':' projects');
+  if(!list.length){g.appendChild(el('div','empty','No projects match this combination. Try another filter.'));$('#showall').hidden=true;return}
+  const shown=expanded?list:list.slice(0,LIMIT);
+  shown.forEach(p=>{
     const c=el('button','card');c.type='button';c.setAttribute('aria-label','Open '+p.t);
     const cv=el('div','cover');
     if(p.cover){const im=new Image();im.alt='';im.loading='lazy';im.decoding='async';im.src=coverSrc(p.cover);if(p.contain)im.className='contain';if(BG[p.cover]){im.className='contain';cv.style.background=BG[p.cover]}cv.appendChild(im)}
@@ -610,82 +641,30 @@ function render(){
     if(p.vids)cv.appendChild(el('span','vid',p.vids>1?p.vids+' videos':'Video'));
     c.appendChild(cv);
     const b=el('div','body');b.appendChild(el('span','lab',p.cat+' · '+p.ctx));b.appendChild(el('h3',null,p.t));b.appendChild(el('p',null,p.d));c.appendChild(b);
-    c.onclick=()=>open(p.id);
-    c.addEventListener('pointermove',e=>{if(RM||e.pointerType!=='mouse')return;const r=c.getBoundingClientRect();c.style.setProperty('--ty',((e.clientX-r.left)/r.width-.5)*10+'deg');c.style.setProperty('--tx',(.5-(e.clientY-r.top)/r.height)*10+'deg')});
-    c.addEventListener('pointerleave',()=>{c.style.removeProperty('--tx');c.style.removeProperty('--ty')});
-    w.appendChild(c);g.appendChild(w);
+    c.onclick=()=>open(p.id,null,list);
+    g.appendChild(c);
   });
-  frame();
+  const sa=$('#showall');sa.hidden=expanded||list.length<=LIMIT;sa.textContent='Show all '+list.length+' projects';
 }
+$('#showall').onclick=()=>{expanded=true;render();const c=$$('#grid .card')[LIMIT];if(c)c.focus({preventScroll:true})};
 
-/* ---------- numbers ---------- */
-$('#n1').dataset.n=P.length;$('#n2').dataset.n=P.filter(p=>p.ctx==='Work').length;$('#n3').dataset.n=P.reduce((a,p)=>a+p.m.length,0);
-$$('#nu b').forEach(b=>b.textContent=b.dataset.n);
-if(!RM&&$('#nu').getBoundingClientRect().top>innerHeight){
-  const bs=$$('#nu b');bs.forEach(b=>b.textContent='0');
-  new IntersectionObserver((es,o)=>{if(!es[0].isIntersecting)return;o.disconnect();const t0=performance.now();
-    const run=t=>{const k=ease(clamp((t-t0)/1400));bs.forEach(b=>b.textContent=Math.round(k*b.dataset.n));if(k<1)requestAnimationFrame(run)};requestAnimationFrame(run)},{threshold:.4}).observe($('#nu'));
+/* ---------- reveal on scroll (only for things below the first screen) ---------- */
+if(!RM&&'IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+  $$('.rv').forEach((r,i)=>{if(r.getBoundingClientRect().top>innerHeight){r.classList.add('pre');r.style.transitionDelay=(r.matches('.sv,.fc')?(i%4)*70:0)+'ms';io.observe(r)}});
 }
-
-/* ---------- pointer: spotlight + stack parallax ---------- */
-const root=document.documentElement;
-addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;
-  root.style.setProperty('--mx',e.clientX+'px');root.style.setProperty('--my',e.clientY+'px');
-  const st=$('#stack');st.style.setProperty('--py',((e.clientX/innerWidth-.5)*14).toFixed(2));st.style.setProperty('--px',((e.clientY/innerHeight-.5)*-10).toFixed(2));
-},{passive:true});
-
-/* ---------- scroll engine ---------- */
-const pinP=sec=>{const r=sec.getBoundingClientRect(),h=sec.querySelector('.pin').offsetHeight;return clamp(-r.top/Math.max(1,r.height-h))};
-let lastLayer=-1;
-function frame(){
-  const H=innerHeight;
-  $('.floor').style.setProperty('--gy',(scrollY*-.2).toFixed(1));
-  $('.hd').style.setProperty('--sp',clamp(scrollY/Math.max(1,document.documentElement.scrollHeight-H)).toFixed(3));
-
-  const op=$('#op');
-  if(op.getBoundingClientRect().bottom>0){
-    const p=RM?.8:pinP(op),a=ease(clamp(p/.22)),e=ease(clamp((p-.22)/.4)),w=clamp((p-.62)/.38);
-    op.style.setProperty('--a',a.toFixed(3));op.style.setProperty('--e',e.toFixed(3));
-    const st=op.querySelector('.pin').getBoundingClientRect(),full=$('#full');
-    if(e<=.001){const bx=$('#stack').getBoundingClientRect();
-      full.style.inset='auto';full.style.left=lerp(0,bx.left-st.left,a)+'px';full.style.top=lerp(0,bx.top-st.top,a)+'px';
-      full.style.width=lerp(st.width,bx.width,a)+'px';full.style.height=lerp(st.height,bx.height,a)+'px';}
-    full.style.setProperty('--fo',a>=.999?0:1);
-    const L=$$('.ly'),n=L.length,c=e<1?0:Math.min(n-1,Math.floor(w*n));
-    L.forEach((l,i)=>{l.classList.toggle('off',e>=1&&i!==c);l.classList.toggle('hot',e>=1&&i===c)});
-    if(c!==lastLayer){lastLayer=c;$('#capn').textContent=`Layer 0${c+1} / 0${n}`;$('#capt').textContent=LAYERS[c][1];$('#capd').textContent=LAYERS[c][2]}
-  }
-
-  const ws=$$('#words > .w'),wr=W.getBoundingClientRect();
-  if(wr.top<H&&wr.bottom>0||RM){const wp=RM?1:clamp((H*.8-wr.top)/(wr.height+H*.25));
-    ws.forEach((s,i)=>{const v=clamp(wp*ws.length-i);s.style.setProperty('--o',(.15+.85*v).toFixed(2));const ch=s.querySelector('.chip');if(ch)ch.style.setProperty('--c',v>.6?1:0)})}
-
-  const ga=$('#ga'),gr=ga.getBoundingClientRect();
-  if(gr.top<H&&gr.bottom>0){
-    const tr=$('#track'),its=$$('.it',tr),cw=Math.min(innerWidth*.72,500);tr.style.setProperty('--cw',cw+'px');
-    const gp=pinP(ga),gap=parseFloat(getComputedStyle(tr).columnGap)||24,idx=gp*(its.length-1);
-    tr.style.setProperty('--hx',(innerWidth/2-cw/2-idx*(cw+gap)).toFixed(1));
-    its.forEach((it,i)=>{const d=clamp(i-idx,-1.6,1.6);it.style.setProperty('--d',d.toFixed(3));it.style.setProperty('--ad',Math.min(1,Math.abs(d)).toFixed(3))});
-    $('#gan').textContent=String(Math.round(idx)+1).padStart(2,'0');
-  }
-
-  /* each card flies in from its scattered spot as it reaches the screen */
-  if(!RM)$$('#grid .pc').forEach(w=>{const r=w.getBoundingClientRect();if(r.top>H*1.4||r.bottom<-50)return;w.style.setProperty('--q',ease(clamp((H-r.top)/(H*.45))).toFixed(3))});
-}
-let tick=false;addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(()=>{frame();tick=false})}},{passive:true});
-addEventListener('resize',frame);
 
 /* ---------- project window ---------- */
 function facts(p,host){
-  [['Category',p.cat],['Context',p.ctx],['Setting',p.where]].forEach(([k,v])=>{
+  [['Type',p.cat],['Context',p.ctx],['Setting',p.where]].forEach(([k,v])=>{
     if(!v)return;const d=el('div');d.appendChild(el('small',null,k));d.appendChild(document.createTextNode(v));host.appendChild(d);
   });
 }
 const dlg=$('#dlg');
-let curIdx=0;
-function open(id,start){
-  const p=P.find(x=>x.id===id);if(!p)return;cur=p;track('project/'+id,p.t);
-  if(!list.some(x=>x.id===id))list=P.slice();
+let curIdx=0,nav=P;
+function open(id,start,seq){
+  const p=byId(id);if(!p)return;cur=p;track('project/'+id,p.t);
+  if(seq)nav=seq;if(!nav.some(x=>x.id===id))nav=P;
   $('#dtitle').textContent=p.t;$('#ddesc').textContent=p.d;
   const d2=$('#ddesc2');d2.textContent=p.d2||'';d2.style.display=p.d2?'':'none';
   const fh=$('#dfacts');fh.textContent='';facts(p,fh);
@@ -703,7 +682,7 @@ function open(id,start){
     b.onclick=()=>show(i);th.appendChild(b);
   });
   if(p.m.length)show(start==='last'?p.m.length-1:0);
-  const idx=list.findIndex(x=>x.id===id),pv=list[(idx-1+list.length)%list.length],nx=list[(idx+1)%list.length];
+  const idx=nav.findIndex(x=>x.id===id),pv=nav[(idx-1+nav.length)%nav.length],nx=nav[(idx+1)%nav.length];
   const lab=(btn,dir,q)=>{btn.textContent='';btn.appendChild(el('small',null,dir));btn.appendChild(document.createTextNode(q.t));btn.dataset.id=q.id};
   lab($('#prev'),'Previous project',pv);lab($('#next'),'Next project',nx);
   if(!dlg.open){dlg.showModal()}
@@ -792,7 +771,7 @@ document.querySelectorAll('a[href*="linkedin.com"]').forEach(a=>a.addEventListen
 document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.addEventListener('click',()=>track('click/phone','Phone')));
 
 render();
-if(location.hash.length>1){try{open(decodeURIComponent(location.hash.slice(1)))}catch(e){}}
+if(location.hash.length>1&&byId(decodeURIComponent(location.hash.slice(1)))){try{open(decodeURIComponent(location.hash.slice(1)))}catch(e){}}
 </script>
 </body>
 </html>
