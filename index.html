@@ -90,7 +90,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   transform:translateZ(calc(var(--k)*var(--e,1)*var(--gap,72px)));border:1px solid rgba(63,208,224,.7);background:var(--hall2);
   box-shadow:0 0 22px rgba(63,208,224,.18),0 30px 60px rgba(0,0,0,.45)}
 .ly img{width:100%;height:100%;object-fit:cover;transition:filter .3s}
-.ly .mk{position:absolute;right:0;top:0;width:1px;height:1px}
+.ly .mk{position:absolute;right:0;bottom:0;width:1px;height:1px}
 .ex.pick .ly:not(.on) img{filter:brightness(.3) saturate(.4)}
 .ly.on{border-color:var(--glow);box-shadow:0 0 34px rgba(63,208,224,.45),0 30px 60px rgba(0,0,0,.45)}
 .ex.boot{--e:0}
@@ -267,7 +267,7 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
   .hero{padding-block:28px 36px;gap:6px}
   .hero .cta .btn{flex:1 1 auto;justify-content:center}
   .ex{aspect-ratio:4/3}
-  .stack{width:50%;left:10%;top:18%;--gap:42px}
+  .stack{width:48%;left:10%;top:14%;--gap:56px}
   .tg{max-width:46%;padding:5px 8px}.tg span{font-size:12.5px}.tg b{font-size:10.5px}
   .svc,.grid,.steps{grid-template-columns:minmax(0,1fr)}
   .sv .eg button{padding:6px 0}
@@ -590,8 +590,8 @@ function placeTags(){
   leads.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);
   leads.innerHTML=`<path d="${d}"/>`+pts.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3"/>`).join('');
 }
-let raf=0;const follow=ms=>{const t0=performance.now();cancelAnimationFrame(raf);const go=t=>{placeTags();if(t-t0<ms)raf=requestAnimationFrame(go)};raf=requestAnimationFrame(go)};
-if(RM){ex.classList.remove('boot');placeTags()}else{requestAnimationFrame(()=>setTimeout(()=>{ex.classList.remove('boot');follow(1700)},250))}
+let raf=0,until=0;const follow=ms=>{until=Math.max(until,performance.now()+ms);if(raf)return;const go=t=>{placeTags();raf=t<until?requestAnimationFrame(go):0};raf=requestAnimationFrame(go)};
+if(RM){ex.classList.remove('boot');placeTags()}else{requestAnimationFrame(()=>setTimeout(()=>{ex.classList.remove('boot');follow(1800)},250))}
 addEventListener('resize',()=>follow(50));
 if(document.fonts)document.fonts.ready.then(()=>follow(50));
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;
