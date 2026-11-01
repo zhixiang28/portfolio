@@ -94,6 +94,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .ex.pick .ly:not(.on) img{filter:brightness(.3) saturate(.4)}
 .ly.on{border-color:var(--glow);box-shadow:0 0 34px rgba(63,208,224,.45),0 30px 60px rgba(0,0,0,.45)}
 .ex.boot{--e:0}
+.ex.nt .stack,.ex.nt .ly{transition:none!important}
 .leads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:20;opacity:1;transition:opacity .5s}
 .leads path{fill:none;stroke:var(--glow);stroke-width:1}
 .leads circle{fill:var(--glow)}
@@ -105,6 +106,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tg:hover,.tg.on{background:var(--glow)}.tg:hover b,.tg.on b,.tg:hover span,.tg.on span{color:var(--glow-ink)}
 .tg:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
 .ex.boot .tg,.ex.boot .leads{opacity:0}
+.t-mouse{display:none}@media (hover:hover) and (pointer:fine){.t-mouse{display:inline}.t-touch{display:none}}
 .exhint{margin:6px 0 0;text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--fg2)}
 
 /* sections */
@@ -298,6 +300,12 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
   .dnav{padding-bottom:env(safe-area-inset-bottom,0px)}
   .dnav button{font-size:16px;padding:10px 12px;min-height:44px}
 }
+@media (pointer:coarse){
+  .sv .eg{gap:2px 14px}.sv .eg button{padding:9px 0}
+  .chip{min-height:40px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 14px}
+  .contact dd a{display:inline-block;padding:9px 0}
+  .copy,.zoom{padding:8px 12px}
+}
 @media (max-width:360px){.hd .btn{padding:0 12px}.hd nav a.opt3{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv.pre{opacity:1;transform:none}}
 </style>
@@ -334,7 +342,7 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
         <svg class="leads" id="leads" aria-hidden="true"></svg>
         <div class="tags2" id="tags2" role="group" aria-label="Open a highlighted project"></div>
       </div>
-      <p class="exhint" aria-hidden="true">Tap a layer to open the project</p>
+      <p class="exhint" aria-hidden="true"><span class="t-touch">Tap</span><span class="t-mouse">Click</span> a layer to open the project</p>
     </div>
     <div class="ht">
       <div class="trust">
@@ -557,7 +565,7 @@ const coverSrc=k=>k.startsWith('v:')?poster(k):M[k];
 const BG={asm_2:'#ffffff',asm_3:'#ffffff',mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const byId=id=>P.find(p=>p.id===id);
-let fcat='All',fctx='All',cur=null,list=[],expanded=false;
+let fcat='All',cur=null,list=[],expanded=false;
 const CATS=['All','Mechanical','Electronics','Fabrication','Software'];
 P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
 $('#heroimg').src=M['profile'];
@@ -591,9 +599,20 @@ function placeTags(){
   leads.innerHTML=`<path d="${d}"/>`+pts.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3"/>`).join('');
 }
 let raf=0,until=0;const follow=ms=>{until=Math.max(until,performance.now()+ms);if(raf)return;const go=t=>{placeTags();raf=t<until?requestAnimationFrame(go):0};raf=requestAnimationFrame(go)};
+/* keep the exploded stack fully inside its box (centred), so it never covers the buttons above */
+function fit(){
+  const boot=ex.classList.contains('boot');ex.classList.add('nt');ex.classList.remove('boot');
+  stack.style.top='';ex.style.minHeight='';void ex.offsetHeight;
+  const pad=10,ls=$$('.ly',stack).map(l=>l.getBoundingClientRect());
+  let r=ex.getBoundingClientRect();const top=Math.min(...ls.map(q=>q.top)),bot=Math.max(...ls.map(q=>q.bottom)),uh=bot-top;
+  if(uh+2*pad>r.height){ex.style.minHeight=(uh+2*pad)+'px';r=ex.getBoundingClientRect()}
+  const dy=(r.top+(r.height-uh)/2)-top;stack.style.top=(stack.offsetTop+dy)+'px';
+  if(boot)ex.classList.add('boot');void ex.offsetHeight;ex.classList.remove('nt');
+}
+fit();
 if(RM){ex.classList.remove('boot');placeTags()}else{requestAnimationFrame(()=>setTimeout(()=>{ex.classList.remove('boot');follow(1800)},250))}
-addEventListener('resize',()=>follow(50));
-if(document.fonts)document.fonts.ready.then(()=>follow(50));
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{fit();follow(50)},120)});
+if(document.fonts)document.fonts.ready.then(()=>{fit();follow(50)});
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;
   document.documentElement.style.setProperty('--mx',e.clientX+'px');document.documentElement.style.setProperty('--my',e.clientY+'px');
   stack.style.setProperty('--py',((e.clientX/innerWidth-.5)*10).toFixed(2));stack.style.setProperty('--px',((e.clientY/innerHeight-.5)*-6).toFixed(2));follow(1500);
