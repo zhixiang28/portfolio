@@ -106,6 +106,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tg:hover,.tg.on{background:var(--glow)}.tg:hover b,.tg.on b,.tg:hover span,.tg.on span{color:var(--glow-ink)}
 .tg:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
 .ex.boot .tg,.ex.boot .leads{opacity:0}
+.t-mouse{display:none}@media (hover:hover) and (pointer:fine){.t-mouse{display:inline}.t-touch{display:none}}
 .exhint{margin:6px 0 0;text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--fg2)}
 
 /* sections */
@@ -299,6 +300,12 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
   .dnav{padding-bottom:env(safe-area-inset-bottom,0px)}
   .dnav button{font-size:16px;padding:10px 12px;min-height:44px}
 }
+@media (pointer:coarse){
+  .sv .eg{gap:2px 14px}.sv .eg button{padding:9px 0}
+  .chip{min-height:40px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 14px}
+  .contact dd a{display:inline-block;padding:9px 0}
+  .copy,.zoom{padding:8px 12px}
+}
 @media (max-width:360px){.hd .btn{padding:0 12px}.hd nav a.opt3{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv.pre{opacity:1;transform:none}}
 </style>
@@ -335,7 +342,7 @@ dialog::backdrop{background:rgba(4,7,9,.8);backdrop-filter:blur(4px)}
         <svg class="leads" id="leads" aria-hidden="true"></svg>
         <div class="tags2" id="tags2" role="group" aria-label="Open a highlighted project"></div>
       </div>
-      <p class="exhint" aria-hidden="true">Tap a layer to open the project</p>
+      <p class="exhint" aria-hidden="true"><span class="t-touch">Tap</span><span class="t-mouse">Click</span> a layer to open the project</p>
     </div>
     <div class="ht">
       <div class="trust">
@@ -558,7 +565,7 @@ const coverSrc=k=>k.startsWith('v:')?poster(k):M[k];
 const BG={asm_2:'#ffffff',asm_3:'#ffffff',mr_1:'#151b3d',mr_2:'#eef1f6',mr_3:'#151b3d',mr_4:'#eef1f6',mr_5:'#151b3d',cl_1:'#e7e3d8',cl_2:'#e7e3d8',cl_3:'#e7e3d8',cl_4:'#e7e3d8',cl_5:'#e7e3d8'};
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const byId=id=>P.find(p=>p.id===id);
-let fcat='All',fctx='All',cur=null,list=[],expanded=false;
+let fcat='All',cur=null,list=[],expanded=false;
 const CATS=['All','Mechanical','Electronics','Fabrication','Software'];
 P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
 $('#heroimg').src=M['profile'];
