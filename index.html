@@ -94,6 +94,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .ex.pick .ly:not(.on) img{filter:brightness(.3) saturate(.4)}
 .ly.on{border-color:var(--glow);box-shadow:0 0 34px rgba(63,208,224,.45),0 30px 60px rgba(0,0,0,.45)}
 .ex.boot{--e:0}
+.ex.nt .stack,.ex.nt .ly{transition:none!important}
 .leads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:20;opacity:1;transition:opacity .5s}
 .leads path{fill:none;stroke:var(--glow);stroke-width:1}
 .leads circle{fill:var(--glow)}
@@ -591,9 +592,20 @@ function placeTags(){
   leads.innerHTML=`<path d="${d}"/>`+pts.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3"/>`).join('');
 }
 let raf=0,until=0;const follow=ms=>{until=Math.max(until,performance.now()+ms);if(raf)return;const go=t=>{placeTags();raf=t<until?requestAnimationFrame(go):0};raf=requestAnimationFrame(go)};
+/* keep the exploded stack fully inside its box (centred), so it never covers the buttons above */
+function fit(){
+  const boot=ex.classList.contains('boot');ex.classList.add('nt');ex.classList.remove('boot');
+  stack.style.top='';ex.style.minHeight='';void ex.offsetHeight;
+  const pad=10,ls=$$('.ly',stack).map(l=>l.getBoundingClientRect());
+  let r=ex.getBoundingClientRect();const top=Math.min(...ls.map(q=>q.top)),bot=Math.max(...ls.map(q=>q.bottom)),uh=bot-top;
+  if(uh+2*pad>r.height){ex.style.minHeight=(uh+2*pad)+'px';r=ex.getBoundingClientRect()}
+  const dy=(r.top+(r.height-uh)/2)-top;stack.style.top=(stack.offsetTop+dy)+'px';
+  if(boot)ex.classList.add('boot');void ex.offsetHeight;ex.classList.remove('nt');
+}
+fit();
 if(RM){ex.classList.remove('boot');placeTags()}else{requestAnimationFrame(()=>setTimeout(()=>{ex.classList.remove('boot');follow(1800)},250))}
-addEventListener('resize',()=>follow(50));
-if(document.fonts)document.fonts.ready.then(()=>follow(50));
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{fit();follow(50)},120)});
+if(document.fonts)document.fonts.ready.then(()=>{fit();follow(50)});
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;
   document.documentElement.style.setProperty('--mx',e.clientX+'px');document.documentElement.style.setProperty('--my',e.clientY+'px');
   stack.style.setProperty('--py',((e.clientX/innerWidth-.5)*10).toFixed(2));stack.style.setProperty('--px',((e.clientY/innerHeight-.5)*-6).toFixed(2));follow(1500);
