@@ -570,7 +570,7 @@ P.forEach(p=>{p.vids=p.m.filter(x=>x[0].startsWith('v:')).length});
 $('#heroimg').src=M['profile'];
 
 /* ---------- hero: exploded view of the four disciplines ---------- */
-const LAYERS=[['s3_image12','Mechanical'],['ledmaps_wall','Electronics'],['asm_1','Fabrication'],['inv_1','Software']].filter(l=>M[l[0]]);
+const LAYERS=[['s3_image12','Mechanical'],['ledmaps_wall','Electronics'],['s21_image54','Fabrication'],['inv_1','Software']].filter(l=>M[l[0]]);
 $('#stack').innerHTML=LAYERS.map((l,n)=>`<div class="ly" data-n="${n}" style="--k:${(LAYERS.length-1)/2-n};z-index:${9-n}"><img src="${M[l[0]]}" alt=""><span class="tag"><span>0${n+1} ${l[1]}</span></span></div>`).join('');
 $('#legend').innerHTML=LAYERS.map((l,n)=>`<span><b>0${n+1}</b>${l[1]}</span>`).join('');
 const ex=$('#ex');
@@ -589,7 +589,7 @@ const ICON={
 const SVC=[
  {i:'mech',t:'Mechanisms and structures',s:'Main strength',m:1,d:'Moving parts, linkages, gears and enclosures that survive daily public use. Designed in CAD and checked before building.',tools:'Fusion 360 · SolidWorks · Ansys',eg:['mandai','forced-to-go','kinetic-butterfly','sam-misting']},
  {i:'elec',t:'Electronics and interaction',s:'Strength',m:1,d:'Sensors, buttons, LEDs, sound and motors, wired and programmed so visitors can play with them.',tools:'Arduino · ESP32 · KiCad',eg:['led-maps','liv-golf','robot-pet','bowmore']},
- {i:'fab',t:'Prototyping and fabrication',d:'Quick mock-ups to prove an idea, then finished parts: large 3D prints, laser cutting, putty and paint.',tools:'FDM and resin 3D printers · laser cutter',eg:['asm-prints','terrain-diorama','fundamental-exhibits']},
+ {i:'fab',t:'Prototyping and fabrication',d:'Quick mock-ups to prove an idea, then finished parts: large 3D prints, laser cutting, putty and paint.',tools:'FDM and resin 3D printers · laser cutter',eg:['terrain-diorama','asm-prints','fundamental-exhibits']},
  {i:'sw',t:'Software and apps',s:'With AI support',ai:1,d:'With AI tools I build the software side: phone control apps, web dashboards and camera-based interaction.',tools:'Web apps · Supabase · TouchDesigner · MediaPipe',eg:['smart-light','inventory-space','mr-tracker','gesture-visual']}];
 $('#svc').innerHTML='';
 SVC.forEach(s=>{
